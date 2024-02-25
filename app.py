@@ -13,7 +13,7 @@ def main():
     st.markdown("""
             <p style="font-size: 44px; color: #023047;font-weight: bold">House Price Prediction App</p>
             """, unsafe_allow_html=True)
-    st.markdown("Aplikasi ini dibuat oleh untuk Capstone Project Tetris Batch 4 dari DQLab")
+    st.markdown("This application was created for the Capstone Project Tetris Batch 4 from DQLab")
 
     with st.sidebar:
         st.image("house_price.jpg")
@@ -38,19 +38,20 @@ def main():
         text1 = """
                 Cerita Dataset:
 
-                - Dataset ini terdiri dari total 9.000 baris (entries) dengan rentang indeks baris dari 0 hingga 8999, dan terdapat 6 kolom.
-                - Variabel independen melibatkan title,lokasi,kamar_tidur,luas_bangunan_m2,dan luas_tanah_m2, yang berisi informasi tentang spesifikasi rumah.
-                - Variabel dependen adalah harga, yang menginformasikan harga jual rumah tersebut.
+                - This dataset consists of a total of 9,000 rows (entries) with a row index range from 0 to 8999, and contains 6 columns of variable.
+                - The dataset contains house information data from 6 regions, namely **Jakarta**, **Bogor**, **Depok**, **Tangerang**, **Bekasi** and **Tangerang Selatan**. Where the amount of data for each region is 1500 data.
+                - The independent variables consist of **title**, **lokasi**, **kamar_tidur**, **luas_bangunan_m2**, and **luas_tanah_m2**, which contain information about the house specifications.
+                - The dependent variable is **harga**, which informs the selling price of the house.
                 
                 Fitur:
 
                 - Columns :
-                - title : Title of the house for sale advertisement 
-                - lokasi : Location of the house being sold
-                - harga : The price of the house being sold
-                - kamar_tidur : Number of bedrooms
-                - luas_bangunan_m2 : Building area of the house in square meters
-                - luas_tanah_m2 : Land area of the house in square meters
+                - **title** : Title of the house for sale advertisement 
+                - **lokasi** : Location of the house being sold
+                - **harga** : The price of the house being sold
+                - **kamar_tidur** : Number of bedrooms
+                - **luas_bangunan_m2** : Building area of the house in square meters
+                - **luas_tanah_m2** : Land area of the house in square meters
                 """
         
         text2 = """
@@ -149,31 +150,30 @@ def run_ml_app():
     """, unsafe_allow_html=True)
 
     left, right = st.columns((2,2))
-    gender = left.selectbox('Gender',
-                            ('Male', 'Female'))
-    age = left.number_input('Age', 1, 100)
-    credit_score = left.number_input('Credit Score',0,1000)
-    estimated_salary = right.number_input('Estimated Salary',0.0,100000000.00)
-    has_credit_card = right.selectbox('Credit Card',('Yes','No'))
+    kota = left.selectbox('Location',
+                            ('Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat', 'Jakarta Selatan', 'Jakarta Timur', 'Bogor', 'Depok', 'Bekasi', 'Tangerang', 'Tangerang Selatan'))
+    kamar_tidur = left.number_input('Number of Bedrooms', 1, 50)
+    luas_bangunan_m2 = left.number_input('Building Area (m2)', 10, 5000)
+    luas_tanah_m2 = right.number_input('Land Area (m2)', 10, 10000)
 
     button = st.button('Predict')
 
     #if button is clicked (ketika button dipencet)
     if button:
         #make prediction
-        result = predict(gender,age,credit_score,estimated_salary,has_credit_card)
+        result = predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2)
         if result == 'Eligible':
             st.success(f'You have {result} from the loan')
         else:
             st.warning(f'You have {result} for the loan')
 
-def predict(gender,age,credit_score,estimated_salary,has_credit_card):
+def predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
     #processing user input
     gen = 0 if gender == 'Male' else 1
     cre = 0 if has_credit_card == 'No' else 1
 
     #Making prediction
-    prediction = Final_Model.predict([[gen, cre, age, credit_score,estimated_salary]])
+    prediction = Final_Model.predict([[kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2]])
     result = 'Stayed' if prediction == 0 else 'Exited'
 
     return result
