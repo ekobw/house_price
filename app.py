@@ -27,7 +27,7 @@ def main():
         st.markdown("House Price Prediction App utilize machine learning to predict house prices based on house specifications and location. This allows users to find out the price range of the house they want to sell, or find out the price of the house they are looking for so they can adjust it to their budget.")
 
         st.markdown("""
-            <p style="font-size: 16px; font-weight: bold">Sekilas tentang Dataset yang digunakan</p>
+            <p style="font-size: 16px; font-weight: bold">Dataset Overview</p>
             """, unsafe_allow_html=True)
 
         url = "https://raw.githubusercontent.com/ekobw/house_price_prediction/main/data/house_price_jabodetabek.csv"
@@ -36,16 +36,14 @@ def main():
         st.table(top_10_rows)
 
         text1 = """
-                Cerita Dataset:
-
+                
                 - This dataset consists of a total of 9,000 rows (entries) with a row index range from 0 to 8999, and contains 6 columns of variable.
                 - The dataset contains house information data from 6 regions, namely **Jakarta**, **Bogor**, **Depok**, **Tangerang**, **Bekasi** and **Tangerang Selatan**. Where the amount of data for each region is 1500 data.
                 - The independent variables consist of **title**, **lokasi**, **kamar_tidur**, **luas_bangunan_m2**, and **luas_tanah_m2**, which contain information about the house specifications.
                 - The dependent variable is **harga**, which informs the selling price of the house.
                 
-                Fitur:
+                Features:
 
-                - Columns :
                 - **title** : Title of the house for sale advertisement 
                 - **lokasi** : Location of the house being sold
                 - **harga** : The price of the house being sold
@@ -126,7 +124,7 @@ def main():
                 """
 
         st.markdown("""
-            <p style="font-size: 16px; font-weight: bold">Deskripsi Dataset</p>
+            <p style="font-size: 16px; font-weight: bold">Dataset Description</p>
             """, unsafe_allow_html=True)
         st.markdown(text1)
         st.image("output1.png")
