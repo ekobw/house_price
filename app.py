@@ -150,9 +150,9 @@ def run_ml_app():
     left, right = st.columns((2,2))
     kota = left.selectbox('Location',
                             ('Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat', 'Jakarta Selatan', 'Jakarta Timur', 'Bogor', 'Depok', 'Bekasi', 'Tangerang', 'Tangerang Selatan'))
-    kamar_tidur = left.number_input('Number of Bedrooms', 1, 50)
-    luas_bangunan_m2 = left.number_input('Building Area (m2)', 10, 5000)
-    luas_tanah_m2 = right.number_input('Land Area (m2)', 10, 10000)
+    kamar_tidur = left.number_input('Number of Bedrooms', 0, 50)
+    luas_bangunan_m2 = right.number_input('Building Area (m2)', 0, 5000)
+    luas_tanah_m2 = right.number_input('Land Area (m2)', 0, 10000)
 
     button = st.button('Predict')
 
