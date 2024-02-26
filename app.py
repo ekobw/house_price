@@ -30,7 +30,7 @@ def main():
             <p style="font-size: 16px; font-weight: bold">Dataset Overview</p>
             """, unsafe_allow_html=True)
 
-        url = "https://raw.githubusercontent.com/ekobw/house_price_prediction/main/data/house_price_jabodetabek.csv"
+        url = "https://raw.githubusercontent.com/ekobw/house_price_prediction/main/data/house_price_clean.csv"
         df = pd.read_csv(url)
         top_10_rows = df.head(10)
         st.table(top_10_rows)
@@ -127,14 +127,14 @@ def main():
             <p style="font-size: 16px; font-weight: bold">Dataset Description</p>
             """, unsafe_allow_html=True)
         st.markdown(text1)
-        st.image("output1.png")
+        #st.image("output1.png")
         st.markdown(text2)
-        st.image("output3.png")
+        #st.image("output3.png")
         st.markdown(text3)
         st.markdown("""
             <p style="font-size: 16px; font-weight: bold">Mengatasi Imbalance Dataset</p>
             """, unsafe_allow_html=True)
-        st.image("output2.png")
+        #st.image("output2.png")
         st.markdown(text4)
 
     elif choice == "Machine Learning":
