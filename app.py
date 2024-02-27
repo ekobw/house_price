@@ -162,12 +162,6 @@ def main():
         # Display the chart title
         st.title("Correlation Matrix of Numeric Variables")
 
-        # Check for seaborn installation
-        try:
-            import seaborn as sns  # Check if seaborn is installed
-        except ModuleNotFoundError:
-            !pip install seaborn  # Install seaborn if not found
-
         # Create the heatmap within a Streamlit container
         with st.container():
             plt.figure(figsize=(8, 6))
