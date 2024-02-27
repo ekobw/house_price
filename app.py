@@ -153,17 +153,18 @@ def main():
         # Display the chart title
         st.title("Correlation Matrix of Numeric Variables")
 
-        # Additional error handling (optional)
-        try:
-            # Attempt to create the heatmap
-            with st.container():
-                plt.figure(figsize=(8, 6))
-                sns.heatmap(df.select_dtypes(include=[np.number]), annot=True, linewidths=0.5)
-                plt.title('Correlation Matrix of Numeric Variables')
-                plt.show()
-                st.pyplot(plt)
-        except Exception as e:  # Catch any errors during heatmap creation
-            st.error("An error occurred while creating the heatmap. Please check your code and data.")
+        # Calculate correlation matrix
+        correlation_matrix = df.corr()
+
+        # Create a new figure and axis
+        fig, ax = plt.subplots(figsize=(8, 6))
+
+        # Create heatmap
+        sns.heatmap(correlation_matrix, annot=True, linewidths=0.5, ax=ax)
+        ax.set_title('Correlation Matrix of Numeric Variables')
+
+        # Display heatmap
+        st.pyplot(fig)
 
         st.markdown(text5)
 
