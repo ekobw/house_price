@@ -164,9 +164,9 @@ def main():
 
         # Check for seaborn installation
         try:
-        import seaborn as sns  # Check if seaborn is installed
+            import seaborn as sns  # Check if seaborn is installed
         except ModuleNotFoundError:
-        !pip install seaborn  # Install seaborn if not found
+            !pip install seaborn  # Install seaborn if not found
 
         # Create the heatmap within a Streamlit container
         with st.container():
