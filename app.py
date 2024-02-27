@@ -60,12 +60,10 @@ def main():
                 Most of the data has a low value, meaning that the most sale houses have specifications and prices that are still quite affordable.
                 """
 
-
         text3 = """
                 From the bar chart above, it can be seen that the number of houses sold for each region is more or less the same. \
                 Likewise for the Jakarta area, if it is accumulated, the total is around 1300 houses for sale for the entire Jakarta area.
                 """
-
 
         text4 = """
                 1. **Korelasi antara Umur (Age) dan Exited:**
@@ -113,7 +111,6 @@ def main():
             st.pyplot(fig)
 
         st.markdown(text2)
-
 
         # Display the chart title and explanation
         st.title("Number of Houses for Sale per City")
