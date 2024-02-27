@@ -61,34 +61,14 @@ def main():
                 """
 
         text3 = """
-                From the bar chart above, it can be seen that the number of houses sold for each region is more or less the same. \
+                From the bar chart above, we can see that the number of houses being sale for each region is more or less the same. \
                 Likewise for the Jakarta area, if it is accumulated, the total is around 1300 houses for sale for the entire Jakarta area.
                 """
 
         text4 = """
-                1. **Korelasi antara Umur (Age) dan Exited:**
-                - Korelasi positif menunjukkan bahwa ada hubungan yang moderat antara usia nasabah dan kecenderungan untuk keluar dari layanan.
-                - Ini dapat diartikan bahwa semakin tua seseorang, semakin cenderung mereka bertahan dalam layanan.
-
-                2. **Korelasi antara Jenis Kelamin (Gender) dan Exited:**
-                - Korelasi negatif menunjukkan bahwa terdapat hubungan cukup negatif antara jenis kelamin (laki-laki) dan kecenderungan untuk keluar dari layanan.
-                - Hal ini dapat diartikan bahwa nasabah perempuan mungkin cenderung lebih loyal terhadap layanan dibandingkan dengan nasabah laki-laki.
-
-                3. **Korelasi antara Kepemilikan Kartu Kredit (HasCrCard) dan Exited:**
-                - Korelasi negatif menunjukkan bahwa kepemilikan kartu kredit memiliki pengaruh cukup negatif terhadap kecenderungan keluar dari layanan.
-                - Artinya, nasabah yang memiliki kartu kredit cenderung lebih setia terhadap layanan.
-
-                4. **Korelasi antara Skor Kredit (CreditScore) dan Exited:**
-                - Korelasi negatif menunjukkan bahwa terdapat hubungan yang kurang kuat antara skor kredit dan kecenderungan keluar dari layanan.
-                - Hal ini mungkin menandakan bahwa nasabah dengan skor kredit yang lebih tinggi memiliki kecenderungan yang sedikit lebih rendah untuk keluar dari layanan.
-
-                5. **Korelasi antara Estimasi Pendapatan (EstimatedSalary) dan Exited:**
-                - Korelasi positif yang sangat lemah menunjukkan bahwa tidak ada korelasi yang signifikan antara estimasi pendapatan dan kecenderungan keluar dari layanan.
-                - Dengan kata lain, estimasi pendapatan tidak menjadi faktor utama yang mempengaruhi keputusan nasabah untuk keluar dari layanan.
-
-                5. **Korelasi antara Kepemilikan Kartu Kredit (HasCrCard) dan Jenis Kelamin (Gender):**
-                - Korelasi positif menunjukkan bahwa ada hubungan positif yang kurang kuat antara kepemilikan kartu kredit dan jenis kelamin laki-laki.
-                - Artinya, laki-laki mungkin sedikit lebih mungkin memiliki kartu kredit.
+                From the bar chart above, we can see that the average price of houses sold in the Jakarta area is higher than in areas outside Jakarta. \
+                Almost all areas of Jakarta are in the top position, except East Jakarta which is below South Tangerang. \
+                This may occur due to the unequal amount of data in the two cities, where data for the East Jakarta area is less than for South Tangerang area.
                 """
 
         st.markdown("""
@@ -114,8 +94,8 @@ def main():
         # Show the plot using st.pyplot
         st.pyplot(fig)
 
-
         st.markdown(text2)
+
 
         # Display the chart title and explanation
         st.title("Number of Houses for Sale per City")
@@ -141,13 +121,29 @@ def main():
         st.markdown(text3)
 
 
+        # Display the chart title and explanation
+        st.title("Average House Price per City")
+        st.write("This chart visualizes the average sale price of houses across different cities.")
 
+        # Sort and filter data for better presentation (optional)
+        mean_prices = df.groupby('kota')['harga'].mean().sort_values(ascending=True)
 
-        st.markdown("""
-            <p style="font-size: 16px; font-weight: bold">Mengatasi Imbalance Dataset</p>
-            """, unsafe_allow_html=True)
-        #st.image("output2.png")
+        # Create the bar chart within a Streamlit container
+        with st.container():
+            plt.figure(figsize=(8, 6))
+            bars2 = plt.barh(mean_prices.index, mean_prices, color='lightgreen')
+            plt.title('Average House Price per City')
+            plt.ylabel('City')
+            plt.xlabel('Average Price')
+
+            # Add labels to bars
+            plt.bar_label(bars2, fontsize=10)
+
+            plt.tight_layout()
+            st.pyplot(plt)
+
         st.markdown(text4)
+
 
     elif choice == "Machine Learning":
         st.header("Prediction Model")
