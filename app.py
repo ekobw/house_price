@@ -154,13 +154,16 @@ def main():
         # Display the chart title
         st.title("Correlation Matrix of Numeric Variables")
 
-        # Create the heatmap within a Streamlit container
-        with st.container():
-            plt.figure(figsize=(8, 6))
-            sns.heatmap(df.select_dtypes(include=[np.number]), annot=True, linewidths=0.5)  # Improve clarity
-            plt.title('Correlation Matrix of Numeric Variables')
-            plt.show()
-            st.pyplot(plt)
+                # Calculate correlation matrix
+        correlation_matrix = df.corr()
+
+        # Create heatmap
+        plt.figure(figsize=(8, 6))
+        sns.heatmap(correlation_matrix, annot=True, linewidths=0.5)
+        plt.title('Correlation Matrix of Numeric Variables')
+
+        # Display heatmap
+        st.pyplot(plt)
 
         st.markdown(text5)
 
