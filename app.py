@@ -154,11 +154,6 @@ def main():
         # Display the chart title
         st.title("Correlation Matrix of Numeric Variables")
 
-        import streamlit as st
-        import pandas as pd
-        import matplotlib.pyplot as plt
-        import seaborn as sns
-
         # Display the chart title
         st.title("Correlation Matrix of Numeric Variables")
 
