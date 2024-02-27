@@ -71,6 +71,12 @@ def main():
                 This may occur due to the unequal amount of data in the two cities, where data for the East Jakarta area is less than for South Tangerang area.
                 """
 
+        text5 = """
+                Correlation Matrix also shows the same results as Pearson Correlation. \
+                Where the luas_bangunan_m2 and luas_tanah_m2 variables have a stronger relationship than the kamar_tidur variable.
+                It can be concluded that houses that have a larger building area or land area tend to have higher prices than houses that have many bedrooms.
+                """
+
         st.markdown("""
             <p style="font-size: 16px; font-weight: bold">Dataset Description</p>
             """, unsafe_allow_html=True)
@@ -143,6 +149,20 @@ def main():
             st.pyplot(plt)
 
         st.markdown(text4)
+
+
+        # Display the chart title
+        st.title("Correlation Matrix of Numeric Variables")
+
+        # Create the heatmap within a Streamlit container
+        with st.container():
+            plt.figure(figsize=(8, 6))
+            sns.heatmap(df.select_dtypes(include=[np.number]), annot=True, linewidths=0.5)  # Improve clarity
+            plt.title('Correlation Matrix of Numeric Variables')
+            plt.show()
+            st.pyplot(plt)
+
+        st.markdown(text5)
 
 
     elif choice == "Machine Learning":
