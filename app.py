@@ -97,18 +97,18 @@ def main():
 
         st.markdown(text1)
 
-        # Memilih hanya kolom-kolom numerik dari dataframe
-        numeric_cols = df.select_dtypes(include=['int', 'float']).columns
+        # Display the chart title
+        st.title("Distribution of Data")
 
-        # Membuat histogram untuk setiap kolom numerik
-        for col in numeric_cols:
-            fig, ax = plt.subplots(figsize=(14, 8))
-            ax.hist(df[col], bins=20, color='skyblue', edgecolor='black')
-            ax.set_xlabel(col)
-            ax.set_ylabel('Frekuensi')
-            ax.set_title(f'Distribusi {col}')
+        # Create the histogram within a Streamlit container
+        with st.container():
+            plt.figure(figsize=(14, 8))
+            df.hist(bins=20, color='skyblue', edgecolor='black')
+            plt.title('Distribution of Data')
+            plt.xlabel('Values')
+            plt.ylabel('Count')
             plt.tight_layout()
-            st.pyplot(fig)
+            st.pyplot(plt)
 
         st.markdown(text2)
 
@@ -136,18 +136,7 @@ def main():
         st.markdown(text3)
 
 
-        # Display the chart title
-        st.title("Distribution of Data")
 
-        # Create the histogram within a Streamlit container
-        with st.container():
-            plt.figure(figsize=(14, 8))
-            df.hist(bins=20, color='skyblue', edgecolor='black')
-            plt.title('Distribution of Data')
-            plt.xlabel('Values')
-            plt.ylabel('Count')
-            plt.tight_layout()
-            st.pyplot(plt)
 
         st.markdown("""
             <p style="font-size: 16px; font-weight: bold">Mengatasi Imbalance Dataset</p>
