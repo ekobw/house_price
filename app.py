@@ -154,16 +154,27 @@ def main():
         # Display the chart title
         st.title("Correlation Matrix of Numeric Variables")
 
-                # Calculate correlation matrix
-        correlation_matrix = df.corr()
+        import streamlit as st
+        import pandas as pd
+        import matplotlib.pyplot as plt
+        import seaborn as sns
 
-        # Create heatmap
-        plt.figure(figsize=(8, 6))
-        sns.heatmap(correlation_matrix, annot=True, linewidths=0.5)
-        plt.title('Correlation Matrix of Numeric Variables')
+        # Display the chart title
+        st.title("Correlation Matrix of Numeric Variables")
 
-        # Display heatmap
-        st.pyplot(plt)
+        # Check for seaborn installation
+        try:
+        import seaborn as sns  # Check if seaborn is installed
+        except ModuleNotFoundError:
+        !pip install seaborn  # Install seaborn if not found
+
+        # Create the heatmap within a Streamlit container
+        with st.container():
+            plt.figure(figsize=(8, 6))
+            sns.heatmap(df.select_dtypes(include=[np.number]), annot=True, linewidths=0.5)  # Improve clarity
+            plt.title('Correlation Matrix of Numeric Variables')
+            plt.show()
+            st.pyplot(plt)
 
         st.markdown(text5)
 
