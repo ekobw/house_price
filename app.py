@@ -100,15 +100,22 @@ def main():
         # Display the chart title
         st.title("Distribution of Data")
 
-        # Create the histogram within a Streamlit container
-        with st.container():
-            plt.figure(figsize=(14, 8))
-            df.hist(bins=20, color='skyblue', edgecolor='black')
-            plt.title('Distribution of Data')
-            plt.xlabel('Values')
-            plt.ylabel('Count')
-            plt.tight_layout()
-            st.pyplot(plt)
+        # Create the figure without labels
+        fig, ax = plt.subplots()
+        df.hist(bins=20, color='skyblue', edgecolor='black', ax=ax)
+
+        # Add labels and title separately below the chart
+        ax.set_xlabel('Values')
+        ax.set_ylabel('Count')
+        ax.set_title('Distribution of Data')
+
+        # Move the x-axis labels to the bottom
+        ax.xaxis.set_major_locator(plt.MaxNLocator(integer=True))
+        ax.set_xlabel_text("Values", ha="center")
+
+        # Show the plot using st.pyplot
+        st.pyplot(fig)
+
 
         st.markdown(text2)
 
