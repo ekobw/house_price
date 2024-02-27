@@ -154,16 +154,17 @@ def main():
         # Display the chart title
         st.title("Correlation Matrix of Numeric Variables")
 
-        # Display the chart title
-        st.title("Correlation Matrix of Numeric Variables")
-
-        # Create the heatmap within a Streamlit container
-        with st.container():
-            plt.figure(figsize=(8, 6))
-            sns.heatmap(df.select_dtypes(include=[np.number]), annot=True, linewidths=0.5)  # Improve clarity
-            plt.title('Correlation Matrix of Numeric Variables')
-            plt.show()
-            st.pyplot(plt)
+        # Additional error handling (optional)
+        try:
+            # Attempt to create the heatmap
+            with st.container():
+                plt.figure(figsize=(8, 6))
+                sns.heatmap(df.select_dtypes(include=[np.number]), annot=True, linewidths=0.5)
+                plt.title('Correlation Matrix of Numeric Variables')
+                plt.show()
+                st.pyplot(plt)
+        except Exception as e:  # Catch any errors during heatmap creation
+            st.error("An error occurred while creating the heatmap. Please check your code and data.")
 
         st.markdown(text5)
 
