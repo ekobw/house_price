@@ -129,12 +129,17 @@ def main():
             <p style="font-size: 16px; font-weight: bold">Dataset Description</p>
             """, unsafe_allow_html=True)
         
-        # Data Distribution
-        plt.hist(df, bins=20, color='skyblue', edgecolor='black')
-        plt.xlabel('Nilai')
-        plt.ylabel('Frekuensi')
-        plt.title('Distribusi Data')
-        plt.tight_layout()
+        # Memilih hanya kolom-kolom numerik dari dataframe
+        numeric_cols = df.select_dtypes(include=['int', 'float']).columns
+
+        # Membuat histogram untuk setiap kolom numerik
+        for col in numeric_cols:
+            plt.hist(df[col], bins=20, color='skyblue', edgecolor='black')
+            plt.xlabel(col)
+            plt.ylabel('Frekuensi')
+            plt.title(f'Distribusi {col}')
+            plt.tight_layout()
+            st.pyplot()
 
         # Menampilkan plot menggunakan st.pyplot()
         st.pyplot()
