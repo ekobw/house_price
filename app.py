@@ -3,6 +3,8 @@ import streamlit.components.v1 as stc
 import pickle
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 with open('random_forest_model.pkl','rb') as file:
     Final_Model = pickle.load(file)
