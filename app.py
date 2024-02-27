@@ -134,12 +134,13 @@ def main():
 
         # Membuat histogram untuk setiap kolom numerik
         for col in numeric_cols:
-            plt.hist(df[col], bins=20, color='skyblue', edgecolor='black')
-            plt.xlabel(col)
-            plt.ylabel('Frekuensi')
-            plt.title(f'Distribusi {col}')
+            fig, ax = plt.subplots()
+            ax.hist(df[col], bins=20, color='skyblue', edgecolor='black')
+            ax.set_xlabel(col)
+            ax.set_ylabel('Frekuensi')
+            ax.set_title(f'Distribusi {col}')
             plt.tight_layout()
-            st.pyplot()
+            st.pyplot(fig)
 
         # Menampilkan plot menggunakan st.pyplot()
         st.pyplot()
