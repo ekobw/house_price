@@ -109,8 +109,6 @@ def main():
         ax.set_ylabel('Count')
         ax.set_title('Distribution of Data')
 
-        # Rotate and adjust y-axis labels for better readability (optional)
-        plt.xticks(rotation=45)  # Rotate x-axis labels
         plt.tight_layout()  # Adjust spacing
 
         # Show the plot using st.pyplot
