@@ -153,8 +153,11 @@ def main():
         # Display the chart title
         st.title("Correlation Matrix of Numeric Variables")
 
+        # Filter out columns with object data type
+        numeric_df = df.select_dtypes(include=['float64', 'int64'])
+
         # Calculate correlation matrix
-        correlation_matrix = df.corr()
+        correlation_matrix = numeric_df.corr()
 
         # Create a new figure and axis
         fig, ax = plt.subplots(figsize=(8, 6))
