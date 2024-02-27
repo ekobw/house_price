@@ -72,8 +72,7 @@ def main():
                 """
 
         text5 = """
-                Correlation Matrix also shows the same results as Pearson Correlation. \
-                Where the luas_bangunan_m2 and luas_tanah_m2 variables have a stronger relationship than the kamar_tidur variable.
+                Correlation Matrix shows that luas_bangunan_m2 and luas_tanah_m2 variables have a stronger relationship than the kamar_tidur variable. \
                 It can be concluded that houses that have a larger building area or land area tend to have higher prices than houses that have many bedrooms.
                 """
 
