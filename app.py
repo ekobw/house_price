@@ -144,7 +144,7 @@ def main():
 
         # Menampilkan plot menggunakan st.pyplot()
         st.pyplot()
-        st.markdown(text1)
+        #st.markdown(text1)
         #st.image("output1.png")
         st.markdown(text2)
         #st.image("output3.png")
