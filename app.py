@@ -55,9 +55,9 @@ def main():
                 """
         
         text2 = """
-                1. **Distribusi variabel dependen 'Exited' terhadap variabel independen 'Gender':**
-                - Female memiliki jumlah yang lebih tinggi pada kategori '1' (Exited), yang sesuai dengan rendahnya nilai KDE pada kategori tertentu.
-                - Male memiliki jumlah yang lebih tinggi pada kategori '0' (Not Exited), yang sesuai dengan tingginya nilai KDE pada kategori tertentu.
+                1. From the histogram chart above, we can see that the graph is right-skewed. \
+                This means that the range of data values is quite wide, but the data distribution is not evenly distributed. \
+                Most of the data has a low value, meaning that the most sale houses have specifications and prices that are still quite affordable.
 
                 2. **Distribusi variabel dependen 'Exited' terhadap variabel independen 'Age':**
                 - Mayoritas pelanggan berada dalam kelompok usia 30 - 40 dan 40 - 50.
@@ -129,12 +129,14 @@ def main():
             <p style="font-size: 16px; font-weight: bold">Dataset Description</p>
             """, unsafe_allow_html=True)
         
+        st.markdown(text1)
+
         # Memilih hanya kolom-kolom numerik dari dataframe
         numeric_cols = df.select_dtypes(include=['int', 'float']).columns
 
         # Membuat histogram untuk setiap kolom numerik
         for col in numeric_cols:
-            fig, ax = plt.subplots()
+            fig, ax = plt.subplots(figsize=(14, 8))
             ax.hist(df[col], bins=20, color='skyblue', edgecolor='black')
             ax.set_xlabel(col)
             ax.set_ylabel('Frekuensi')
@@ -142,10 +144,36 @@ def main():
             plt.tight_layout()
             st.pyplot(fig)
 
+
         # Menampilkan plot menggunakan st.pyplot()
         st.pyplot()
-        #st.markdown(text1)
         #st.image("output1.png")
+
+        # Display the chart title and explanation
+        st.title("Number of Houses for Sale per City")
+        st.write("This chart visualizes the distribution of houses across different cities.")
+
+        # Sort and filter data for better visualization (optional)
+        value_counts = df['kota'].value_counts().sort_values(ascending=True)
+        top_n_cities = 10  # Adjust this parameter as needed
+
+        if st.checkbox("Show only top N cities:", value=True):
+            value_counts = value_counts.head(top_n_cities)
+
+        # Create the bar chart within a Streamlit container
+        with st.container():
+            plt.figure(figsize=(8, 6))
+            bars1 = plt.barh(value_counts.index, value_counts, color='skyblue')
+            plt.title('Number of Houses for Sale per City')
+            plt.ylabel('City')
+            plt.xlabel('Number of Houses')
+
+            # Add labels to bars
+            plt.bar_label(bars1, fontsize=10)
+
+            plt.tight_layout()
+            st.pyplot(plt)
+
         st.markdown(text2)
         #st.image("output3.png")
         st.markdown(text3)
@@ -172,7 +200,7 @@ def run_ml_app():
     luas_bangunan_m2 = right.number_input('Building Area (m2)', 0, 5000)
     luas_tanah_m2 = right.number_input('Land Area (m2)', 0, 10000)
 
-    button = st.button('Predict')
+    button = st.button('Predict House Prices')
 
     #if button is clicked (ketika button dipencet)
     if button:
@@ -190,7 +218,7 @@ def predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
 
     #Making prediction
     prediction = Final_Model.predict([[kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2]])
-    result = 'Stayed' if prediction == 0 else 'Exited'
+    result = prediction
 
     return result
 
