@@ -83,23 +83,23 @@ def main():
         # Display the chart title
         st.title("Distribution of Data")
 
-        # Create histogram using Altair
-        histogram = alt.Chart(df).mark_bar().encode(
-            alt.X('value', bin=alt.Bin(maxbins=20)),
-            y='count()'
-        ).properties(
-            width=600,
-            height=400,
-            title='Distribution of Numeric Data'
-        )
+        numeric_columns = df.select_dtypes(include=['float64', 'int64']).columns
 
-        # Add axis labels and title
-        histogram = histogram.configure_axis(
-            labelFontSize=12,
-            titleFontSize=14
-        ).configure_title(
-            fontSize=16
-        )
+        # Create histograms for each numeric column
+        histograms = []
+        for col in numeric_columns:
+            histogram = alt.Chart(df).mark_bar().encode(
+                alt.X(col, bin=alt.Bin(maxbins=20)),
+                y='count()'
+            ).properties(
+                width=300,
+                height=200,
+                title=f'Distribution of {col}'
+            )
+            histograms.append(histogram)
+
+        # Arrange histograms in a grid layout
+        histogram_grid = alt.vconcat(*histograms)
 
         # Display Altair chart
         st.altair_chart(histogram, use_container_width=True)
