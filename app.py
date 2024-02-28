@@ -234,7 +234,7 @@ def run_ml_app():
 
             # Access feature names from the model (assuming XGBRegressor)
             try:
-                feature_names = model.get_booster().feature_names
+                feature_names = final_model.get_booster().feature_names
                 print(f"Expected number of features: {len(feature_names)}")
             except AttributeError:
                 print("Model does not provide feature names information.")
