@@ -99,11 +99,8 @@ def main():
 
 
         # Display the chart title and explanation
-        st.title("Number of Houses for Sale per City")
+        st.title("Number of Houses Being Sold per City")
         st.write("This chart visualizes the distribution of houses across different cities.")
-
-        # Sort and filter data for better visualization (optional)
-        value_counts = df['kota'].value_counts().sort_values(ascending=True)
 
         # Count the number of houses per city
         house_counts = df['kota'].value_counts().reset_index()
@@ -114,8 +111,8 @@ def main():
 
         # Create Altair chart
         chart = alt.Chart(house_counts).mark_bar().encode(
-            x=alt.X('jumlah:Q', title='Jumlah Rumah Dijual'),
-            y=alt.Y('kota:N', title='Kota', sort='-x')  # Sort the bars by 'jumlah' in descending order
+            x=alt.X('jumlah:Q', title='Number of Houses Being Sold'),
+            y=alt.Y('kota:N', title='City', sort='-x')  # Sort the bars by 'jumlah' in descending order
         ).properties(
             width=500,
             height=300
@@ -144,22 +141,25 @@ def main():
         st.title("Average House Price per City")
         st.write("This chart visualizes the average sale price of houses across different cities.")
 
-        # Sort and filter data for better presentation (optional)
-        mean_prices = df.groupby('kota')['harga'].mean().sort_values(ascending=True)
+        # Compute the average house price per city
+        mean_prices = df.groupby('kota')['harga'].mean().sort_values()
 
-        # Create the bar chart within a Streamlit container
-        with st.container():
-            plt.figure(figsize=(8, 6))
-            bars2 = plt.barh(mean_prices.index, mean_prices, color='lightgreen')
-            plt.title('Average House Price per City')
-            plt.ylabel('City')
-            plt.xlabel('Average Price')
+        # Create Altair chart
+        chart = alt.Chart(mean_prices.reset_index()).mark_bar().encode(
+            x=alt.X('harga:Q', title='Average Price'),
+            y=alt.Y('kota:N', title='City')
+        ).properties(
+            width=500,
+            height=300,
+            title="Average House Price per City"
+        )
 
-            # Add labels to bars
-            plt.bar_label(bars2, fontsize=10)
+        # Add chart title and explanation
+        st.title("Average House Price per City")
+        st.write("This chart visualizes the average sale price of houses across different cities.")
 
-            plt.tight_layout()
-            st.pyplot(plt)
+        # Display Altair chart
+        st.altair_chart(chart, use_container_width=True)
 
         st.markdown(text4)
 
