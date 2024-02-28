@@ -174,9 +174,9 @@ def main():
         st.markdown(text5)
 
 
-    elif choice == "Machine Learning":
-        st.header("Prediction Model")
-        run_ml_app()
+    # elif choice == "Machine Learning":
+    #     st.header("Prediction Model")
+    #     run_ml_app()
 
 
 
@@ -495,5 +495,5 @@ def main():
 
 #     return result
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
