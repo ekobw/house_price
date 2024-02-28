@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import RobustScaler
+import altair as alt
 
 # with open('./data/final_model.pkl','rb') as file:
 #     Final_Model = pickle.load(file)
@@ -85,19 +86,17 @@ def main():
         # Display the chart title
         st.title("Distribution of Data")
 
-        # Create the figure without labels
-        fig, ax = plt.subplots()
-        df.hist(bins=20, color='skyblue', edgecolor='black', ax=ax)
+        # Create Altair chart
+        chart = alt.Chart(data).mark_bar().encode(
+            x=alt.X('values', bin=True),
+            y='count()'
+        ).properties(
+            width=500,
+            height=300
+        )
 
         # Add labels and title separately below the chart
-        ax.set_xlabel('Values')
-        ax.set_ylabel('Count')
-        ax.set_title('Distribution of Data')
-
-        plt.tight_layout()  # Adjust spacing
-
-        # Show the plot using st.pyplot
-        st.pyplot(fig)
+        st.write(chart)
 
         st.markdown(text2)
 
