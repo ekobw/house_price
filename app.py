@@ -22,8 +22,8 @@ def main():
     with st.sidebar:
         st.image("house_price.jpg")
 
-        # menu = ["Overview","Machine Learning"]
-        # choice = st.sidebar.selectbox("Menu", menu)
+        menu = ["Overview"]
+        choice = st.sidebar.selectbox("Menu", menu)
 
     if choice == "Overview":
         st.header("Overview")
