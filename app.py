@@ -160,23 +160,44 @@ def main():
 
 
         # Display the chart title
-        st.title("Correlation Matrix of Numeric Variables")
-
-        # Filter out columns with object data type
-        numeric_df = df.select_dtypes(include=['float64', 'int64'])
+        #st.title("Correlation Matrix of Numeric Variables")
 
         # Calculate correlation matrix
-        correlation_matrix = numeric_df.corr()
+        correlation_matrix = df.corr()
 
-        # Create a new figure and axis
-        fig, ax = plt.subplots(figsize=(8, 6))
+        # Create a DataFrame for heatmap
+        heatmap_df = correlation_matrix.stack().reset_index()
+        heatmap_df.columns = ['variable1', 'variable2', 'correlation']
 
-        # Create heatmap
-        sns.heatmap(correlation_matrix, annot=True, linewidths=0.5, ax=ax)
-        ax.set_title('Correlation Matrix of Numeric Variables')
+        # Create Altair chart for heatmap
+        heatmap = alt.Chart(heatmap_df).mark_rect().encode(
+            x='variable1:N',
+            y='variable2:N',
+            color='correlation:Q'
+        ).properties(
+            width=500,
+            height=400
+        ).encode(
+            tooltip=['variable1', 'variable2', 'correlation']
+        )
 
-        # Display heatmap
-        st.pyplot(fig)
+        # Create text layer to show correlation values on the heatmap
+        text = alt.Chart(heatmap_df).mark_text(baseline='middle').encode(
+            x='variable1:N',
+            y='variable2:N',
+            text=alt.Text('correlation:Q', format='.2f'),
+            color=alt.condition(
+                alt.datum.correlation > 0.5,
+                alt.value('white'),
+                alt.value('black')
+            )
+        )
+
+        # Combine heatmap and text layer
+        chart = (heatmap + text).properties(title="Correlation Matrix of Numeric Variables")
+
+        # Display the chart
+        st.altair_chart(chart, use_container_width=True)
 
         st.markdown(text5)
 
