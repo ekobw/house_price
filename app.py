@@ -229,6 +229,12 @@ def run_ml_app():
             # Load the trained model
             model = joblib.load('./data/final_model.pkl')
 
+            # Print the number of features in the input data
+            print(f"Input data shape: {input_data.shape}")
+
+            # Print the number of features expected by the model
+            print(f"Expected number of features: {len(model.feature_names_)})")
+
             # Making prediction
             prediction = model.predict(input_data)
 
