@@ -85,7 +85,7 @@ def main():
 
         # Create Altair chart
         chart = alt.Chart(df).mark_bar().encode(
-            x=alt.X('values', bin=True),
+            x=alt.X('values:Q', bin=True),
             y='count()'
         ).properties(
             width=500,
