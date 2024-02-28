@@ -206,6 +206,10 @@ def preprocess_input(kota, kamar_tidur, luas_bangunan, luas_tanah):
 
     # Create a DataFrame from the input data
     input_df = pd.DataFrame([input_data])
+
+    # Reorder columns to match the expected order
+    input_df = input_df[['kamar_tidur', 'luas_bangunan_m2', 'luas_tanah_m2'] + kota_columns]
+
     return input_df
 
 # Define function to make prediction
