@@ -233,6 +233,7 @@ def encode_kota(kota):
 
 # Define scaler for numeric features
 scaler = RobustScaler()
+scaled_features = scaler.fit_transform(data[['kamar_tidur', 'luas_bangunan_m2', 'luas_tanah_m2']])
 
 # Load model from pickle
 model = joblib.load('./data/final_model.pkl')
