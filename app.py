@@ -105,19 +105,23 @@ def main():
         # Sort and filter data for better visualization (optional)
         value_counts = df['kota'].value_counts().sort_values(ascending=True)
 
-        # # Create the bar chart within a Streamlit container
+        # Membuat chart Altair
+        chart = alt.Chart(df).mark_bar().encode(
+            x='jumlah:Q',  # Sumbu x mewakili jumlah
+            y=alt.Y('kota:N', sort=-1),  # Sumbu y mewakili kota dengan urutan menurun
+            color=alt.Color('skyblue')  # Warna batang
+        ).properties(
+            title='Jumlah Rumah Dijual per Kota',
+            width=800,  # Sesuaikan lebar sesuai kebutuhan
+            height=600   # Sesuaikan tinggi sesuai kebutuhan
+        )
+
+        # Menambahkan label ke batang
+        chart = chart.configure_mark(tooltip=alt.Tooltip([(alt.X('jumlah:Q'), 'Jumlah')]))
+
+        # Menampilkan chart di container Streamlit
         with st.container():
-            plt.figure(figsize=(8, 6))
-            bars1 = plt.barh(value_counts.index, value_counts, color='skyblue')
-            plt.title('Number of Houses for Sale per City')
-            plt.ylabel('City')
-            plt.xlabel('Number of Houses')
-
-            # Add labels to bars
-            plt.bar_label(bars1, fontsize=10)
-
-            plt.tight_layout()
-            st.pyplot(plt)
+            st.altair_chart(chart)
 
         st.markdown(text3)
 
