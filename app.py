@@ -173,8 +173,8 @@ def main():
 
         # Create heatmap using Altair
         heatmap = alt.Chart(melted_df).mark_rect().encode(
-            x='variable1:N',
-            y='variable2:N',
+            x=('variable1:N', axis=alt.Axis(labelAngle=0)),
+            y=('variable2:N'),
             color='correlation:Q',
             tooltip=['variable1', 'variable2', 'correlation']
         ).properties(
