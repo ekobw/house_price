@@ -195,36 +195,16 @@ def run_ml_app():
 
     button = st.button('Predict House Prices')
 
-    #if button is clicked (ketika button dipencet)
+    #if button is clicked
     if button:
         try:
             # Preprocess user input
-            if kota == 'Jakarta Pusat':
-                kota_encoded = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            elif kota == 'Jakarta Utara':
-                kota_encoded = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
-            elif kota == 'Jakarta Barat':
-                kota_encoded = [0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
-            elif kota == 'Jakarta Selatan':
-                kota_encoded = [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
-            elif kota == 'Jakarta Timur':
-                kota_encoded = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
-            elif kota == 'Bogor':
-                kota_encoded = [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
-            elif kota == 'Depok':
-                kota_encoded = [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
-            elif kota == 'Bekasi':
-                kota_encoded = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
-            elif kota == 'Tangerang':
-                kota_encoded = [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
-            elif kota == 'Tangerang Selatan':
-                kota_encoded = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
-
-            # Convert kota_encoded list to array
-            kota_encoded_array = np.array(kota_encoded)
+            kota_encoded = encode_kota(kota)
+            kota_encoded_array = np.array([kota_encoded])  # Reshape to 2D array
+            other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2])
 
             # Combine all input features to a 2D array
-            input_data = np.concatenate((kota_encoded_array, [kamar_tidur, luas_bangunan_m2, luas_tanah_m2]), axis=0)
+            input_data = np.concatenate((kota_encoded_array, [other_features]), axis=1)
 
             # Load the trained model
             model = joblib.load('./data/final_model.pkl')
@@ -232,15 +212,103 @@ def run_ml_app():
             # Making prediction
             prediction = model.predict(input_data)
 
-            # Format hasil
+            # Format result
             result = f"Harga Rumah Diperkirakan: Rp {prediction[0]:,.2f}"
-
             st.success(result)
         except Exception as e:
             st.error(f"Terjadi Kesalahan: {e}")
 
+def encode_kota(kota):
+    if kota == 'Jakarta Pusat':
+        return [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    elif kota == 'Jakarta Utara':
+        return [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+    elif kota == 'Jakarta Barat':
+        return [0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
+    elif kota == 'Jakarta Selatan':
+        return [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+    elif kota == 'Jakarta Timur':
+        return [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+    elif kota == 'Bogor':
+        return [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+    elif kota == 'Depok':
+        return [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+    elif kota == 'Bekasi':
+        return [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+    elif kota == 'Tangerang':
+        return [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+    elif kota == 'Tangerang Selatan':
+        return [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+
 if __name__ == "__main__":
     run_ml_app()
+
+
+
+
+# def run_ml_app():
+
+#     st.markdown("""
+#     <p style="font-size: 16px; font-weight: bold">Insert Data</p>
+#     """, unsafe_allow_html=True)
+
+#     left, right = st.columns((2,2))
+#     kota = left.selectbox('Location',
+#                             ('Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat',
+#                              'Jakarta Selatan', 'Jakarta Timur', 'Bogor', 'Depok',
+#                              'Bekasi', 'Tangerang', 'Tangerang Selatan'))
+#     kamar_tidur = left.number_input('Number of Bedrooms', 0, 50)
+#     luas_bangunan_m2 = right.number_input('Building Area (m2)', 0, 5000)
+#     luas_tanah_m2 = right.number_input('Land Area (m2)', 0, 10000)
+
+#     button = st.button('Predict House Prices')
+
+#     #if button is clicked (ketika button dipencet)
+#     if button:
+#         try:
+#             # Preprocess user input
+#             if kota == 'Jakarta Pusat':
+#                 kota_encoded = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+#             elif kota == 'Jakarta Utara':
+#                 kota_encoded = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+#             elif kota == 'Jakarta Barat':
+#                 kota_encoded = [0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
+#             elif kota == 'Jakarta Selatan':
+#                 kota_encoded = [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+#             elif kota == 'Jakarta Timur':
+#                 kota_encoded = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+#             elif kota == 'Bogor':
+#                 kota_encoded = [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+#             elif kota == 'Depok':
+#                 kota_encoded = [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+#             elif kota == 'Bekasi':
+#                 kota_encoded = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+#             elif kota == 'Tangerang':
+#                 kota_encoded = [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+#             elif kota == 'Tangerang Selatan':
+#                 kota_encoded = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+
+#             # Convert kota_encoded list to array
+#             kota_encoded_array = np.array(kota_encoded)
+
+#             # Combine all input features to a 2D array
+#             input_data = np.concatenate((kota_encoded_array, [kamar_tidur, luas_bangunan_m2, luas_tanah_m2]), axis=0)
+
+#             # Load the trained model
+#             model = joblib.load('./data/final_model.pkl')
+
+#             # Making prediction
+#             prediction = model.predict(input_data)
+
+#             # Format hasil
+#             result = f"Harga Rumah Diperkirakan: Rp {prediction[0]:,.2f}"
+
+#             st.success(result)
+#         except Exception as e:
+#             st.error(f"Terjadi Kesalahan: {e}")
+
+# if __name__ == "__main__":
+#     run_ml_app()
 
 
 # def run_ml_app():
