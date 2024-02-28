@@ -83,17 +83,25 @@ def main():
         # Display the chart title
         st.title("Distribution of Data")
 
-        # Create Altair chart
-        chart = alt.Chart(df).mark_bar().encode(
-            x=alt.X('values:Q', bin=True),
+        # Create histogram using Altair
+        histogram = alt.Chart(df).mark_bar().encode(
+            alt.X('value', bin=alt.Bin(maxbins=20)),
             y='count()'
         ).properties(
-            width=500,
-            height=300
+            width=600,
+            height=400,
         )
 
-        # Add labels and title separately below the chart
-        st.altair_chart(chart)
+        # Add axis labels and title
+        histogram = histogram.configure_axis(
+            labelFontSize=12,
+            titleFontSize=14
+        ).configure_title(
+            fontSize=16
+        )
+
+        # Display Altair chart
+        st.altair_chart(histogram, use_container_width=True)
 
         st.markdown(text2)
 
