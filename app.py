@@ -224,7 +224,7 @@ def run_ml_app():
             kota_encoded_array = np.array(kota_encoded)
 
             # Combine all input features to a 2D array
-            input_data = np.array([[kota_encoded_array + [kamar_tidur, luas_bangunan_m2, luas_tanah_m2]]])
+            input_data = np.concatenate((kota_encoded_array, [kamar_tidur, luas_bangunan_m2, luas_tanah_m2]), axis=0)
 
             # Load the trained model
             model = joblib.load('./data/final_model.pkl')
