@@ -232,8 +232,12 @@ def run_ml_app():
             # Print the number of features in the input data
             print(f"Input data shape: {input_data.shape}")
 
-            # Print the number of features expected by the model
-            print(f"Expected number of features: {len(model.feature_names_)})")
+            # Access feature names from the model (assuming XGBRegressor)
+            try:
+                feature_names = model.get_booster().feature_names
+                print(f"Expected number of features: {len(feature_names)}")
+            except AttributeError:
+                print("Model does not provide feature names information.")
 
             # Making prediction
             prediction = model.predict(input_data)
