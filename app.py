@@ -220,21 +220,21 @@ def run_ml_app():
 
 def encode_kota(kota):
     if kota == 'Jakarta Pusat':
-        return [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    elif kota == 'Jakarta Utara':
-        return [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
-    elif kota == 'Jakarta Barat':
-        return [0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
-    elif kota == 'Jakarta Selatan':
-        return [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
-    elif kota == 'Jakarta Timur':
         return [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
-    elif kota == 'Bogor':
-        return [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
-    elif kota == 'Depok':
-        return [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
-    elif kota == 'Bekasi':
+    elif kota == 'Jakarta Utara':
         return [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+    elif kota == 'Jakarta Barat':
+        return [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+    elif kota == 'Jakarta Selatan':
+        return [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+    elif kota == 'Jakarta Timur':
+        return [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+    elif kota == 'Bogor':
+        return [0, 1, 0, 0, 0, 1, 0, 0, 0, 0]
+    elif kota == 'Depok':
+        return [0, 0, 1, 0, 0, 0, 1, 0, 0, 0]
+    elif kota == 'Bekasi':
+        return [1, 0, 0, 0, 0, 0, 0, 1, 0, 0]
     elif kota == 'Tangerang':
         return [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
     elif kota == 'Tangerang Selatan':
