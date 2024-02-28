@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-with open('/data/final_model.pkl','rb') as file:
+with open('./data/final_model.pkl','rb') as file:
     Final_Model = pickle.load(file)
 
 def main():
@@ -223,7 +223,7 @@ def predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
         kota_encoded = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
 
     # Load the trained model
-    model = joblib.load('/data/final_model.pkl')
+    model = joblib.load('./data/final_model.pkl')
 
     # Making prediction
     prediction = model.predict([[kota_encoded, kamar_tidur, luas_bangunan_m2, luas_tanah_m2]])
