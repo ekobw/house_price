@@ -93,7 +93,7 @@ def main():
         )
 
         # Add labels and title separately below the chart
-        st.write(chart)
+        st.altair_chart(chart)
 
         st.markdown(text2)
 
