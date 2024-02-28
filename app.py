@@ -204,7 +204,13 @@ def run_ml_app():
             other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2])
 
             # Combine all input features to a 2D array
-            input_data = np.concatenate((kota_encoded_array, [other_features]), axis=1)
+            #input_data = np.concatenate((kota_encoded_array, [other_features]), axis=1)
+
+            # Scale other features (excluding kota_encoded)
+            other_features_scaled = scaler.fit_transform(other_features.reshape(1, -1))
+
+            # Combine all features
+            input_data = np.concatenate((kota_encoded_array, other_features_scaled), axis=1)
 
             # Load the trained model
             model = joblib.load('./data/final_model.pkl')
