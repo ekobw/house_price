@@ -147,16 +147,11 @@ def main():
         # Create Altair chart
         chart = alt.Chart(mean_prices.reset_index()).mark_bar().encode(
             x=alt.X('harga:Q', title='Average Price'),
-            y=alt.Y('kota:N', title='City')
+            y=alt.Y('kota:N', title='City', sort='-x')
         ).properties(
             width=500,
             height=300,
-            title="Average House Price per City"
         )
-
-        # Add chart title and explanation
-        st.title("Average House Price per City")
-        st.write("This chart visualizes the average sale price of houses across different cities.")
 
         # Display Altair chart
         st.altair_chart(chart, use_container_width=True)
