@@ -226,8 +226,8 @@ def predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
     # Convert kota_encoded list to array
     kota_encoded_array = np.array(kota_encoded)
 
-    # Combine all input features to a single array
-    input_data = np.array([kota_encoded + [kamar_tidur, luas_bangunan_m2, luas_tanah_m2]])
+    # Combine all input features to a 2D array
+    input_data = np.array([[kota_encoded_array + [kamar_tidur, luas_bangunan_m2, luas_tanah_m2]]])
 
     # Load the trained model
     model = joblib.load('./data/final_model.pkl')
