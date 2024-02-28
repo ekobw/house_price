@@ -162,29 +162,29 @@ def main():
         # Display the chart title
         #st.title("Correlation Matrix of Numeric Variables")
 
+        # Select only numeric columns
+        numeric_df = df.select_dtypes(include=['float64', 'int64'])
+
         # Calculate correlation matrix
-        correlation_matrix = df.corr()
+        correlation_matrix = numeric_df.corr().reset_index().rename(columns={'index': 'variable1'})
 
-        # Create a DataFrame for heatmap
-        heatmap_df = correlation_matrix.stack().reset_index()
-        heatmap_df.columns = ['variable1', 'variable2', 'correlation']
+        # Melt correlation matrix
+        melted_df = pd.melt(correlation_matrix, id_vars='variable1', var_name='variable2', value_name='correlation')
 
-        # Create Altair chart for heatmap
-        heatmap = alt.Chart(heatmap_df).mark_rect().encode(
+        # Create heatmap using Altair
+        heatmap = alt.Chart(melted_df).mark_rect().encode(
             x='variable1:N',
             y='variable2:N',
-            color='correlation:Q'
+            color='correlation:Q',
+            tooltip=['variable1', 'variable2', 'correlation']
         ).properties(
             width=500,
-            height=400
-        ).encode(
-            tooltip=['variable1', 'variable2', 'correlation']
+            height=400,
+            title='Correlation Matrix of Numeric Variables'
         )
 
-        # Create text layer to show correlation values on the heatmap
-        text = alt.Chart(heatmap_df).mark_text(baseline='middle').encode(
-            x='variable1:N',
-            y='variable2:N',
+        # Add text on heatmap
+        text = heatmap.mark_text(baseline='middle').encode(
             text=alt.Text('correlation:Q', format='.2f'),
             color=alt.condition(
                 alt.datum.correlation > 0.5,
@@ -193,8 +193,8 @@ def main():
             )
         )
 
-        # Combine heatmap and text layer
-        chart = (heatmap + text).properties(title="Correlation Matrix of Numeric Variables")
+        # Combine heatmap and text layers
+        chart = (heatmap + text)
 
         # Display the chart
         st.altair_chart(chart, use_container_width=True)
