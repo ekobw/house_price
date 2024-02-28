@@ -197,10 +197,26 @@ def run_ml_app():
   if button:
     try:
       # Preprocess user input
-      if kota == 'Jakarta Pusat':
-        kota_encoded = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      elif kota == 'Jakarta Utara':
-        kota_encoded = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+        if kota == 'Jakarta Pusat':
+            kota_encoded = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        elif kota == 'Jakarta Utara':
+            kota_encoded = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+        elif kota == 'Jakarta Barat':
+            kota_encoded = [0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
+        elif kota == 'Jakarta Selatan':
+            kota_encoded = [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+        elif kota == 'Jakarta Timur':
+            kota_encoded = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+        elif kota == 'Bogor':
+            kota_encoded = [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+        elif kota == 'Depok':
+            kota_encoded = [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+        elif kota == 'Bekasi':
+            kota_encoded = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+        elif kota == 'Tangerang':
+            kota_encoded = [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+        elif kota == 'Tangerang Selatan':
+            kota_encoded = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
       ...
 
       # Convert kota_encoded list to array
