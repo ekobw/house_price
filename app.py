@@ -114,8 +114,8 @@ def main():
 
         # Create Altair chart
         chart = alt.Chart(house_counts).mark_bar().encode(
-            x='jumlah:Q',
-            y=alt.Y('kota:N', title='Kota')
+            x=alt.X('jumlah:Q', title='Jumlah Rumah Dijual'),
+            y=alt.Y('kota:N', title='Kota', sort='-x')  # Sort the bars by 'jumlah' in descending order
         ).properties(
             width=500,
             height=300
