@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-with open('random_forest_model.pkl','rb') as file:
+with open('final_model.pkl','rb') as file:
     Final_Model = pickle.load(file)
 
 def main():
@@ -33,7 +33,7 @@ def main():
             <p style="font-size: 16px; font-weight: bold">Dataset Overview</p>
             """, unsafe_allow_html=True)
 
-        url = "https://raw.githubusercontent.com/ekobw/house_price_prediction/main/data/house_price_clean.csv"
+        url = "https://raw.githubusercontent.com/ekobw/house_price_prediction/main/data/clean_house_price.csv"
         df = pd.read_csv(url)
         top_10_rows = df.head(10)
         st.table(top_10_rows)
@@ -50,18 +50,18 @@ def main():
                 - **kamar_tidur** : Number of bedrooms
                 - **luas_bangunan_m2** : Building area of the house in square meters
                 - **luas_tanah_m2** : Land area of the house in square meters
-                - **kota** : Name of the city where the house is being sale
-                - **harga** : The price of the house being sale
+                - **kota** : Name of the city where the house is being sold
+                - **harga** : The price of the house being sold
                 """
 
         text2 = """
                 From the histogram chart above, we can see that the graph is right-skewed. \
                 This means that the range of data values is quite wide, but the data distribution is not evenly distributed. \
-                Most of the data has a low value, meaning that the most sale houses have specifications and prices that are still quite affordable.
+                Most of the data has a low value, meaning that the most sold houses have specifications and prices that are still quite affordable.
                 """
 
         text3 = """
-                From the bar chart above, we can see that the number of houses being sale for each region is more or less the same. \
+                From the bar chart above, we can see that the number of houses being sold for each region is more or less the same. \
                 Likewise for the Jakarta area, if it is accumulated, the total is around 1300 houses for sale for the entire Jakarta area.
                 """
 
@@ -176,6 +176,7 @@ def main():
         st.header("Prediction Model")
         run_ml_app()
 
+
 def run_ml_app():
 
     st.markdown("""
@@ -195,21 +196,81 @@ def run_ml_app():
     if button:
         #make prediction
         result = predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2)
-        if result == 'Eligible':
-            st.success(f'You have {result} from the loan')
-        else:
-            st.warning(f'You have {result} for the loan')
+        st.write('Predicted House Price:', result)
 
 def predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
-    #processing user input
-    gen = 0 if gender == 'Male' else 1
-    cre = 0 if has_credit_card == 'No' else 1
+    # Preprocess user input (if necessary)
+    # Example: Perform One-Hot Encoding for 'kota' feature
+    if kota == 'Jakarta Pusat':
+        kota_encoded = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    elif kota == 'Jakarta Utara':
+        kota_encoded = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+    elif kota == 'Jakarta Barat':
+        kota_encoded = [0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
+    elif kota == 'Jakarta Selatan':
+        kota_encoded = [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+    elif kota == 'Jakarta Timur':
+        kota_encoded = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+    elif kota == 'Bogor':
+        kota_encoded = [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+    elif kota == 'Depok':
+        kota_encoded = [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+    elif kota == 'Bekasi':
+        kota_encoded = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+    elif kota == 'Tangerang':
+        kota_encoded = [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+    elif kota == 'Tangerang Selatan':
+        kota_encoded = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
 
-    #Making prediction
-    prediction = Final_Model.predict([[kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2]])
-    result = prediction
+    # Load the trained model
+    model = joblib.load('final_model.pkl')
 
-    return result
+    # Making prediction
+    prediction = model.predict([[kota_encoded, kamar_tidur, luas_bangunan_m2, luas_tanah_m2]])
+
+    return prediction
 
 if __name__ == "__main__":
-    main()
+    run_ml_app()
+
+
+
+
+
+# def run_ml_app():
+
+#     st.markdown("""
+#     <p style="font-size: 16px; font-weight: bold">Insert Data</p>
+#     """, unsafe_allow_html=True)
+
+#     left, right = st.columns((2,2))
+#     kota = left.selectbox('Location',
+#                             ('Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat', 'Jakarta Selatan', 'Jakarta Timur', 'Bogor', 'Depok', 'Bekasi', 'Tangerang', 'Tangerang Selatan'))
+#     kamar_tidur = left.number_input('Number of Bedrooms', 0, 50)
+#     luas_bangunan_m2 = right.number_input('Building Area (m2)', 0, 5000)
+#     luas_tanah_m2 = right.number_input('Land Area (m2)', 0, 10000)
+
+#     button = st.button('Predict House Prices')
+
+#     #if button is clicked (ketika button dipencet)
+#     if button:
+#         #make prediction
+#         result = predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2)
+#         if result == 'Eligible':
+#             st.success(f'You have {result} from the loan')
+#         else:
+#             st.warning(f'You have {result} for the loan')
+
+# def predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
+#     #processing user input
+#     gen = 0 if gender == 'Male' else 1
+#     cre = 0 if has_credit_card == 'No' else 1
+
+#     #Making prediction
+#     prediction = Final_Model.predict([[kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2]])
+#     result = prediction
+
+#     return result
+
+# if __name__ == "__main__":
+#     main()
