@@ -105,23 +105,33 @@ def main():
         # Sort and filter data for better visualization (optional)
         value_counts = df['kota'].value_counts().sort_values(ascending=True)
 
-        # Membuat chart Altair
-        chart = alt.Chart(df).mark_bar().encode(
-            x='jumlah:Q',  # Sumbu x mewakili jumlah
-            y=alt.Y('kota:N', sort=-1),  # Sumbu y mewakili kota dengan urutan menurun
-            color=alt.Color('skyblue')  # Warna batang
+        # Count the number of houses per city
+        house_counts = df['kota'].value_counts().reset_index()
+        house_counts.columns = ['kota', 'jumlah']
+
+        # Create Altair chart
+        chart = alt.Chart(house_counts).mark_bar().encode(
+            x='jumlah:Q',
+            y=alt.Y('kota:N', title='Kota')
         ).properties(
-            title='Jumlah Rumah Dijual per Kota',
-            width=800,  # Sesuaikan lebar sesuai kebutuhan
-            height=600   # Sesuaikan tinggi sesuai kebutuhan
+            width=500,
+            height=300
         )
 
-        # Menambahkan label ke batang
-        chart = chart.configure_mark(tooltip=alt.Tooltip([(alt.X('jumlah:Q'), 'Jumlah')]))
+        # Add labels to bars
+        text = chart.mark_text(
+            align='left',
+            baseline='middle',
+            dx=3  # Nudge text to right side of bar
+        ).encode(
+            text='Jumlah Kota:Q'  # Use 'Number of Houses' as text
+        )
 
-        # Menampilkan chart di container Streamlit
-        with st.container():
-            st.altair_chart(chart)
+        # Combine chart and text
+        chart = (chart + text).interactive()
+
+        # Display Altair chart
+        st.altair_chart(chart, use_container_width=True)
 
         st.markdown(text3)
 
