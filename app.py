@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.preprocessing import RobustScaler
 
 with open('./data/final_model.pkl','rb') as file:
     Final_Model = pickle.load(file)
@@ -194,6 +195,8 @@ def run_ml_app():
     luas_tanah_m2 = right.number_input('Land Area (m2)', 0, 10000)
 
     button = st.button('Predict House Prices')
+
+    scaler = RobustScaler()
 
     #if button is clicked
     if button:
