@@ -181,32 +181,14 @@ def main():
 
 import streamlit as st
 import numpy as np
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.preprocessing import RobustScaler  # Adjust scaler type if needed
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
+import joblib
 
-# Load data (optional, can be replaced with preprocessing steps)
-# data = pd.read_csv('data.csv')
-
-# Define function for prediction
-def predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2, model, scaler):
-
-    # Preprocess user input
-    kota_encoded = encode_kota(kota)
-    kota_encoded_array = np.array([kota_encoded])
-    other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2])
-    other_features_scaled = scaler.transform(other_features.reshape(1, -1))
-
-    # Combine all features
-    input_data = np.concatenate((kota_encoded_array, other_features_scaled), axis=1)
-
-    # Make prediction
-    prediction = model.predict(input_data)
-
-    # Format result
-    result = f"Harga Rumah Diperkirakan: Rp {prediction[0]:,.2f}"
-
-    return result
+# Load model and scaler from pickle files
+model = joblib.load('./data/final_model.pkl')
+scaler = joblib.load('./data/scaler.pkl')
 
 # Define function to encode kota
 def encode_kota(kota):
@@ -231,13 +213,6 @@ def encode_kota(kota):
     elif kota == 'Tangerang Selatan':
         return [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
 
-# Define scaler for numeric features
-scaler = RobustScaler()
-scaled_features = scaler.fit_transform(data[['kamar_tidur', 'luas_bangunan_m2', 'luas_tanah_m2']])
-
-# Load model from pickle
-model = joblib.load('./data/final_model.pkl')
-
 # Initialize Streamlit app
 st.markdown("""
 <p style="font-size: 16px; font-weight: bold">Prediksi Harga Rumah</p>
@@ -259,17 +234,23 @@ button = st.button('Prediksi Harga')
 # Make prediction and show result
 if button:
     try:
-        result = predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2, model, scaler)
+        # Preprocess user input
+        kota_encoded = encode_kota(kota)
+        kota_encoded_array = np.array([kota_encoded])
+        other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2])
+        other_features_scaled = scaler.transform(other_features.reshape(1, -1))
+
+        # Combine all features
+        input_data = np.concatenate((kota_encoded_array, other_features_scaled), axis=1)
+
+        # Make prediction
+        prediction = model.predict(input_data)
+
+        # Format result
+        result = f"Harga Rumah Diperkirakan: Rp {prediction[0]:,.2f}"
         st.success(result)
     except Exception as e:
         st.error(f"Terjadi Kesalahan: {e}")
-
-# Display MAE (optional, if you have it available)
-# st.markdown(f"""
-# <p style="font-size: 14px; font-weight: normal">
-# Mean Absolute Error (MAE) pada data tes: {mae:.2f}
-# </p>
-# """, unsafe_allow_html=True)
 
 
 
