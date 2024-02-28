@@ -83,25 +83,20 @@ def main():
         # Display the chart title
         st.title("Distribution of Data")
 
-        # Create histogram using Altair
-        histogram = alt.Chart(df).mark_bar().encode(
-            alt.X('value', bin=alt.Bin(maxbins=20)),
-            y='count()'
+        # Create the Altair histogram
+        chart = alt.Chart(df).mark_bar().encode(
+            x=alt.X("values:Q", bin=alt.Bin(maxbins=20)),  # Binning with a maximum of 20 bins
+            y="count()",
+            color=alt.Color("skyblue"),
+            stroke=alt.value("black")  # Edge color
         ).properties(
-            width=600,
-            height=400,
+            width=500,
+            height=300,
+            title="Distribution of Data"
         )
 
-        # Add axis labels and title
-        histogram = histogram.configure_axis(
-            labelFontSize=12,
-            titleFontSize=14
-        ).configure_title(
-            fontSize=16
-        )
-
-        # Display Altair chart
-        st.altair_chart(histogram, use_container_width=True)
+        # Display the chart in Streamlit
+        st.altair_chart(chart)
 
         st.markdown(text2)
 
