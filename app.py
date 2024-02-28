@@ -199,9 +199,7 @@ def run_ml_app():
         result = predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2)
         st.write('Predicted House Price:', result)
 
-def predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
-    # Preprocess user input (if necessary)
-    # Example: Perform One-Hot Encoding for 'kota' feature
+def encode_kota(kota):
     if kota == 'Jakarta Pusat':
         kota_encoded = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif kota == 'Jakarta Utara':
@@ -223,11 +221,12 @@ def predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
     elif kota == 'Tangerang Selatan':
         kota_encoded = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
 
-    # Convert kota_encoded list to array
-    kota_encoded_array = np.array(kota_encoded)
+def predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
+    # Encode 'kota' feature
+    kota_encoded = encode_kota(kota)
 
     # Combine all input features to a 2D array
-    input_data = np.array([[kota_encoded_array + [kamar_tidur, luas_bangunan_m2, luas_tanah_m2]]])
+    input_data = np.array([[kota_encoded + [kamar_tidur, luas_bangunan_m2, luas_tanah_m2]]])
 
     # Load the trained model
     model = joblib.load('./data/final_model.pkl')
