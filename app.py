@@ -236,12 +236,13 @@ if button:
     try:
         # Preprocess user input
         kota_encoded = encode_kota(kota)
-        kota_encoded_array = np.array([kota_encoded])
         other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2])
+
+        # Scale other features using the loaded scaler
         other_features_scaled = scaler.transform(other_features.reshape(1, -1))
 
         # Combine all features
-        input_data = np.concatenate((kota_encoded_array, other_features_scaled), axis=1)
+        input_data = np.concatenate((kota_encoded, other_features_scaled), axis=1)
 
         # Make prediction
         prediction = model.predict(input_data)
