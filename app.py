@@ -84,7 +84,7 @@ def main():
         st.title("Distribution of Data")
 
         # Create Altair chart
-        chart = alt.Chart(data).mark_bar().encode(
+        chart = alt.Chart(df).mark_bar().encode(
             x=alt.X('values', bin=True),
             y='count()'
         ).properties(
