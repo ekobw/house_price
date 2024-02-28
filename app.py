@@ -109,6 +109,9 @@ def main():
         house_counts = df['kota'].value_counts().reset_index()
         house_counts.columns = ['kota', 'jumlah']
 
+        # Sort the DataFrame by 'jumlah' column in descending order
+        house_counts = house_counts.sort_values(by='jumlah', ascending=False)
+
         # Create Altair chart
         chart = alt.Chart(house_counts).mark_bar().encode(
             x='jumlah:Q',
@@ -122,9 +125,10 @@ def main():
         text = chart.mark_text(
             align='left',
             baseline='middle',
-            dx=3  # Nudge text to right side of bar
+            dx=3,  # Nudge text to right side of bar
+            color='black'  # Set text color
         ).encode(
-            text='Jumlah Kota:Q'  # Use 'Number of Houses' as text
+            text='jumlah:Q'  # Use 'jumlah' as text
         )
 
         # Combine chart and text
