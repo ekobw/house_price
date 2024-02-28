@@ -25,7 +25,7 @@ def main():
 
     if choice == "Overview":
         st.header("Overview")
-        st.markdown("This is a dashboard for analyzing the prices of houses sold in the Jakarta, Bogor, Depok, Tangerang, Bekasi and South Tangerang areas.")
+        st.markdown("This is a dashboard for analyzing the prices of houses sold in the Jakarta, Bogor, Depok, Tangerang, Bekasi and Tangerang Selatan areas.")
 
         st.markdown("""
             <p style="font-size: 16px; font-weight: bold">Dataset Overview</p>
@@ -210,6 +210,7 @@ def main():
 
         st.markdown(text5)
 
+        st.caption('Copyright :copyright: 2024 by Eko B.W.: https://www.linkedin.com/in/eko-bw')
 
 if __name__ == "__main__":
     main()
