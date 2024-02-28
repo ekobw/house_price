@@ -229,16 +229,6 @@ def run_ml_app():
             # Load the trained model
             model = joblib.load('./data/final_model.pkl')
 
-            # Print the number of features in the input data
-            print(f"Input data shape: {input_data.shape}")
-
-            # Access feature names from the model (assuming XGBRegressor)
-            try:
-                feature_names = final_model.get_booster().feature_names
-                print(f"Expected number of features: {len(feature_names)}")
-            except AttributeError:
-                print("Model does not provide feature names information.")
-
             # Making prediction
             prediction = model.predict(input_data)
 
