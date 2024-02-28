@@ -199,7 +199,7 @@ def run_ml_app():
         result = predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2)
         st.write('Predicted House Price:', result)
 
-def predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
+def predict(kota_encoded, kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
     # Preprocess user input (if necessary)
     # Example: Perform One-Hot Encoding for 'kota' feature
     if kota == 'Jakarta Pusat':
