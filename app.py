@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import RobustScaler
 
-with open('./data/final_model.pkl','rb') as file:
-    Final_Model = pickle.load(file)
+# with open('./data/final_model.pkl','rb') as file:
+#     Final_Model = pickle.load(file)
 
 def main():
     # stc.html(html_temp)
@@ -22,9 +22,8 @@ def main():
     with st.sidebar:
         st.image("house_price.jpg")
 
-        menu = ["Overview","Machine Learning"]
-        choice = st.sidebar.selectbox("Menu", menu)
-
+        # menu = ["Overview","Machine Learning"]
+        # choice = st.sidebar.selectbox("Menu", menu)
 
     if choice == "Overview":
         st.header("Overview")
