@@ -13,9 +13,9 @@ def main():
     # stc.html(html_temp)
     # st.title("House Price Prediction App")
     st.markdown("""
-            <p style="font-size: 44px; color: #023047;font-weight: bold">House Price Analytics (Jabodetabek)</p>
+            <p style="font-size: 38px; color: #023047;font-weight: bold">House Price Analytics (Jabodetabek)</p>
             """, unsafe_allow_html=True)
-    st.markdown("This application was created for the Capstone Project Tetris Batch 4 from DQLab")
+    st.markdown("This dashboard was created for the Capstone Project Tetris Batch 4 from DQLab")
 
     with st.sidebar:
         st.image("house_price.jpg")
