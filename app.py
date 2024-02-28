@@ -102,7 +102,7 @@ def main():
         histogram_grid = alt.vconcat(*histograms)
 
         # Display Altair chart
-        st.altair_chart(histogram, use_container_width=True)
+        st.altair_chart(histogram_grid, use_container_width=True)
 
         st.markdown(text2)
 
