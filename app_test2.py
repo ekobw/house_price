@@ -226,7 +226,24 @@ def run_ml_app():
 
     # Function to encode city name
     def encode_city(city):
-        return city
+    # Create a mapping dictionary
+        mapping = {
+            'Jakarta Pusat': 'kota_jakarta_pusat',
+            'Jakarta Selatan': 'kota_jakarta_selatan',
+            'Jakarta Barat': 'kota_jakarta_barat',
+            'Jakarta Utara': 'kota_jakarta_utara',
+            'Jakarta Timur': 'kota_jakarta_timur',
+            'Bogor': 'kota_bogor',
+            'Depok': 'kota_depok',
+            'Bekasi': 'kota_bekasi',
+            'Tangerang': 'kota_tangerang',
+            'Tangerang Selatan': 'kota_tangerang_selatan'
+        }
+
+        # Map the selected city to the corresponding column name
+        encoded_city = mapping[city]
+
+        return encoded_city
 
     # Main function to run the Streamlit app
     city = st.selectbox('Pilih Nama Kota', ['Jakarta Pusat', 'Jakarta Selatan', 'Jakarta Barat',
