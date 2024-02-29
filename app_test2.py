@@ -21,7 +21,7 @@ def main():
     with st.sidebar:
         st.image("house_price.jpg")
 
-        menu = ["Overview"]
+        menu = ["Overview", "Machine Learning"]
         choice = st.sidebar.selectbox("Menu", menu)
 
     if choice == "Overview":
