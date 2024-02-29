@@ -222,7 +222,7 @@ import pickle
 from sklearn.preprocessing import RobustScaler
 
 # Load the model and scaler
-@st.cache
+@st.cache(hash_funcs={builtins.dict: my_hash_func})
 def load_model():
     with open('./data/final_model.pkl', 'rb') as f:
         model = pickle.load(f)
