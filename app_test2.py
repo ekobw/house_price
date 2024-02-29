@@ -270,17 +270,14 @@ def run_ml_app():
         scaled_values = scale_values(int(kamar_tidur), int(luas_bangunan_m2), int(luas_tanah_m2))
 
         # Create feature vector
-        features = [0] * 13  # Initialize features with zeros
+        features = [0] * 10  # Initialize features with zeros
         city_index = encoding_object.columns.get_loc(encoded_city)
         features[city_index] = 1  # Set the value for the encoded city
-        scaled_values = scale_values(int(kamar_tidur), int(luas_bangunan_m2), int(luas_tanah_m2))
         features.extend(scaled_values)  # Add scaled values
 
         # Predict house price
         prediction = model.predict([features])
         st.write('Prediksi Harga Rumah:', prediction[0])
-
-
 
 
 if __name__ == '__main__':
