@@ -236,23 +236,23 @@ def run_ml_app():
         return scaled_values[0]
 
     # Main function to run the Streamlit app
-    def predict():
+    #def predict():
         # Dropdown menu for city selection
-        city = st.selectbox('Pilih Nama Kota', ['Jakarta Pusat', 'Jakarta Selatan', 'Jakarta Barat',
-                                                'Jakarta Utara', 'Jakarta Timur', 'Bogor', 'Depok',
-                                                'Bekasi', 'Tangerang', 'Tangerang Selatan'])
-        encoded_city = encode_city(city)
+    city = st.selectbox('Pilih Nama Kota', ['Jakarta Pusat', 'Jakarta Selatan', 'Jakarta Barat',
+                                            'Jakarta Utara', 'Jakarta Timur', 'Bogor', 'Depok',
+                                            'Bekasi', 'Tangerang', 'Tangerang Selatan'])
+    encoded_city = encode_city(city)
 
-        # Textbox for input values
-        kamar_tidur = st.text_input('Kamar Tidur')
-        luas_bangunan_m2 = st.text_input('Luas Bangunan (m2)')
-        luas_tanah_m2 = st.text_input('Luas Tanah (m2)')
+    # Textbox for input values
+    kamar_tidur = st.text_input('Kamar Tidur')
+    luas_bangunan_m2 = st.text_input('Luas Bangunan (m2)')
+    luas_tanah_m2 = st.text_input('Luas Tanah (m2)')
 
-        # Button to predict house price
-        if st.button('Prediksi Harga Rumah'):
-            scaled_values = scale_values(int(kamar_tidur), int(luas_bangunan_m2), int(luas_tanah_m2))
-            prediction = model.predict([[encoded_city] + list(scaled_values)])
-            st.write('Prediksi Harga Rumah:', prediction[0])
+    # Button to predict house price
+    if st.button('Prediksi Harga Rumah'):
+        scaled_values = scale_values(int(kamar_tidur), int(luas_bangunan_m2), int(luas_tanah_m2))
+        prediction = model.predict([[encoded_city] + list(scaled_values)])
+        st.write('Prediksi Harga Rumah:', prediction[0])
 
 
 if __name__ == '__main__':
