@@ -5,6 +5,7 @@ import joblib
 import pandas as pd
 import numpy as np
 import altair as alt
+from sklearn.preprocessing import RobustScaler
 
 # with open('./data/final_model.pkl','rb') as file:
 #     Final_Model = pickle.load(file)
@@ -216,6 +217,58 @@ def main():
         run_ml_app()
 
 
+def run_ml_app():
+
+
+    # Load model pickle
+    model = pickle.load(open('./data/final_model.pkl', 'rb'))
+
+    # Load encoding and scaling objects
+    encoding_object = pickle.load(open('./data/encoding_object.pkl', 'rb'))
+    scaling_object = pickle.load(open('./data/scaling_object.pkl', 'rb'))
+
+    # Function to encode city name
+    def encode_city(city):
+        encoded_city = encoding_object.transform([[city]])
+        return encoded_city[0][0]
+
+    # Function to scale input values
+    def scale_values(kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
+        scaled_values = scaling_object.transform([[kamar_tidur, luas_bangunan_m2, luas_tanah_m2]])
+        return scaled_values[0]
+
+    # Main function to run the Streamlit app
+    def main():
+        # Create example DataFrame
+        data = {
+            'kota': ['Kota 1', 'Kota 2', 'Kota 3', 'Kota 4', 'Kota 5'],
+            'kamar_tidur': [3, 2, 4, 3, 2],
+            'luas_bangunan_m2': [150, 120, 180, 160, 130],
+            'luas_tanah_m2': [300, 250, 350, 320, 270]
+        }
+        df = pd.DataFrame(data)
+
+        # Dropdown menu for city selection
+        city = st.selectbox('Pilih Nama Kota', df['kota'])
+        encoded_city = encode_city(city)
+
+        # Textbox for input values
+        kamar_tidur = st.text_input('Kamar Tidur')
+        luas_bangunan_m2 = st.text_input('Luas Bangunan (m2)')
+        luas_tanah_m2 = st.text_input('Luas Tanah (m2)')
+
+        # Button to predict house price
+        if st.button('Prediksi Harga Rumah'):
+            scaled_values = scale_values(int(kamar_tidur), int(luas_bangunan_m2), int(luas_tanah_m2))
+            prediction = model.predict([[encoded_city] + list(scaled_values)])
+            st.write('Prediksi Harga Rumah:', prediction[0])
+
+if __name__ == '__main__':
+    main()
+
+
+#================================================================================================================
+
 # import streamlit as st
 # import pandas as pd
 # import pickle
@@ -231,7 +284,7 @@ def main():
 # model, scaler = load_model()
 
 # def encode_city(city):
-#     cities = ['Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat', 'Jakarta Selatan', 'Jakarta Timur', 
+#     cities = ['Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat', 'Jakarta Selatan', 'Jakarta Timur',
 #               'Bogor', 'Depok', 'Bekasi', 'Tangerang', 'Tangerang Selatan']
 #     encoded_city = [0] * len(cities)
 #     if city in cities:
@@ -249,14 +302,14 @@ def main():
 # def preprocess_input(city, bedrooms, building_area, land_area):
 #     # Encode city
 #     encoded_city = encode_city(city)
-    
+
 #     # Combine input features
 #     features = [[bedrooms, building_area, land_area]]  # Hanya fitur numerik yang diikutsertakan
-    
+
 #     # Scale input features
 #     scaler = RobustScaler()
 #     features_scaled = scaler.fit_transform(features)
-    
+
 #     # Flatten the scaled features
 #     bedrooms_scaled, building_area_scaled, land_area_scaled = features_scaled[0]
 
@@ -265,18 +318,18 @@ def main():
 # # Streamlit app
 # def main():
 #     st.title("House Price Prediction")
-    
+
 #     # Dropdown for city selection
 #     city = st.selectbox("Select city", ["City 1", "City 2", "City 3", "City 4", "City 5", "City 6", "City 7", "City 8", "City 9"])
-    
+
 #     # Textboxes for input
 #     bedrooms = st.number_input("Number of bedrooms", min_value=1, step=1)
 #     building_area = st.number_input("Building area (m^2)", min_value=0, step=1)
 #     land_area = st.number_input("Land area (m^2)", min_value=0, step=1)
-    
+
 #     # Preprocess input data
 #     encoded_city, bedrooms, building_area, land_area = preprocess_input(city, bedrooms, building_area, land_area)
-    
+
 #     # Scale features using loaded scaler
 #     features = scaler.transform([[bedrooms, building_area, land_area]])
 
@@ -288,78 +341,79 @@ def main():
 # if __name__ == "__main__":
 #     main()
 
+#=================================================================================================================
 
-import streamlit as st
-import pandas as pd
-import pickle
-from sklearn.preprocessing import RobustScaler
+# import streamlit as st
+# import pandas as pd
+# import pickle
+# from sklearn.preprocessing import RobustScaler
 
-# Load the model
-@st.cache(allow_output_mutation=True)
-def load_model():
-    with open('./data/final_model.pkl', 'rb') as f:
-        model = pickle.load(f)
-    return model
+# # Load the model
+# @st.cache(allow_output_mutation=True)
+# def load_model():
+#     with open('./data/final_model.pkl', 'rb') as f:
+#         model = pickle.load(f)
+#     return model
 
-model = load_model()
+# model = load_model()
 
-def encode_city(city):
-    cities = ['Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat', 'Jakarta Selatan', 'Jakarta Timur', 
-              'Bogor', 'Depok', 'Bekasi', 'Tangerang', 'Tangerang Selatan']
-    encoded_city = [0] * len(cities)
-    if city in cities:
-        index = cities.index(city)
-        encoded_city[index] = 1
-    return encoded_city
+# def encode_city(city):
+#     cities = ['Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat', 'Jakarta Selatan', 'Jakarta Timur',
+#               'Bogor', 'Depok', 'Bekasi', 'Tangerang', 'Tangerang Selatan']
+#     encoded_city = [0] * len(cities)
+#     if city in cities:
+#         index = cities.index(city)
+#         encoded_city[index] = 1
+#     return encoded_city
 
-# Function to predict house price
-def predict_price(encoded_city, bedrooms, building_area, land_area):
-    features = [encoded_city + [bedrooms, building_area, land_area]]  # Menggabungkan fitur-fitur menjadi satu array
-    prediction = model.predict(features)
-    return prediction[0]
+# # Function to predict house price
+# def predict_price(encoded_city, bedrooms, building_area, land_area):
+#     features = [encoded_city + [bedrooms, building_area, land_area]]  # Menggabungkan fitur-fitur menjadi satu array
+#     prediction = model.predict(features)
+#     return prediction[0]
 
-# Function to preprocess input data
-def preprocess_input(city, bedrooms, building_area, land_area):
-    # Encode city
-    encoded_city = encode_city(city)
-    
-    # Combine input features
-    #features = [[bedrooms, building_area, land_area]]  # Hanya fitur numerik yang diikutsertakan
-    features = [encoded_city + [bedrooms, building_area, land_area]]
-    
-    # Scale input features
-    scaler = RobustScaler()
-    features_scaled = scaler.fit_transform(features)
+# # Function to preprocess input data
+# def preprocess_input(city, bedrooms, building_area, land_area):
+#     # Encode city
+#     encoded_city = encode_city(city)
 
-    # Check the length of features_scaled[0]
-    if len(features_scaled[0]) != 3:
-        raise ValueError("Unexpected number of scaled features")
-    
-    # Flatten the scaled features
-    bedrooms_scaled, building_area_scaled, land_area_scaled = features_scaled[0]
-    
-    return encoded_city, bedrooms_scaled, building_area_scaled, land_area_scaled
+#     # Combine input features
+#     #features = [[bedrooms, building_area, land_area]]  # Hanya fitur numerik yang diikutsertakan
+#     features = [encoded_city + [bedrooms, building_area, land_area]]
 
-# Streamlit app
-def main():
-    st.title("House Price Prediction")
-    
-    # Dropdown for city selection
-    city = st.selectbox("Select city", ["City 1", "City 2", "City 3", "City 4", "City 5", "City 6", "City 7", "City 8", "City 9"])
-    
-    # Textboxes for input
-    bedrooms = st.number_input("Number of bedrooms", min_value=1, step=1)
-    building_area = st.number_input("Building area (m^2)", min_value=0, step=1)
-    land_area = st.number_input("Land area (m^2)", min_value=0, step=1)
-    
-    # Preprocess input data
-    encoded_city, bedrooms_scaled, building_area_scaled, land_area_scaled = preprocess_input(city, bedrooms, building_area, land_area)
-    
-    # Predict house price
-    if st.button("Predict"):
-        price_prediction = predict_price(encoded_city, bedrooms_scaled, building_area_scaled, land_area_scaled)
-        st.success(f"Predicted house price: {price_prediction}")
+#     # Scale input features
+#     scaler = RobustScaler()
+#     features_scaled = scaler.fit_transform(features)
 
-if __name__ == "__main__":
-    main()
+#     # Check the length of features_scaled[0]
+#     if len(features_scaled[0]) != 3:
+#         raise ValueError("Unexpected number of scaled features")
+
+#     # Flatten the scaled features
+#     bedrooms_scaled, building_area_scaled, land_area_scaled = features_scaled[0]
+
+#     return encoded_city, bedrooms_scaled, building_area_scaled, land_area_scaled
+
+# # Streamlit app
+# def main():
+#     st.title("House Price Prediction")
+
+#     # Dropdown for city selection
+#     city = st.selectbox("Select city", ["City 1", "City 2", "City 3", "City 4", "City 5", "City 6", "City 7", "City 8", "City 9"])
+
+#     # Textboxes for input
+#     bedrooms = st.number_input("Number of bedrooms", min_value=1, step=1)
+#     building_area = st.number_input("Building area (m^2)", min_value=0, step=1)
+#     land_area = st.number_input("Land area (m^2)", min_value=0, step=1)
+
+#     # Preprocess input data
+#     encoded_city, bedrooms_scaled, building_area_scaled, land_area_scaled = preprocess_input(city, bedrooms, building_area, land_area)
+
+#     # Predict house price
+#     if st.button("Predict"):
+#         price_prediction = predict_price(encoded_city, bedrooms_scaled, building_area_scaled, land_area_scaled)
+#         st.success(f"Predicted house price: {price_prediction}")
+
+# if __name__ == "__main__":
+#     main()
 
