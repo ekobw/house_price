@@ -227,7 +227,7 @@ def run_ml_app():
 
     # Function to encode city name
     def encode_city(city):
-        encoded_city = encoding_object.transform([[city]])
+        encoded_city = encoding_object.transform([city])
         return encoded_city[0][0]
 
     # Function to scale input values
