@@ -258,7 +258,7 @@ def run_ml_app():
                                             'Jakarta Utara', 'Jakarta Timur', 'Bogor', 'Depok',
                                             'Bekasi', 'Tangerang', 'Tangerang Selatan'])
     #city_encoded = map_city_to_encoding(city)
-    encoded_city = encoding_object.transform([[city]])
+    encoded_city = encoding_object.transform([city])
 
     # Textbox for input values
     kamar_tidur = st.text_input('Kamar Tidur')
