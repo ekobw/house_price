@@ -255,7 +255,72 @@ def main():
 #         st.error(f"Terjadi Kesalahan: {e}")
 
 
-# def run_ml_app():
+def run_ml_app():
+
+import streamlit as st
+import pandas as pd
+import pickle
+from sklearn.preprocessing import RobustScaler
+
+# Load the model
+@st.cache(allow_output_mutation=True)
+def load_model():
+    with open('./data/final_model.pkl', 'rb') as f:
+        model = pickle.load(f)
+    return model
+
+model = load_model()
+
+# Function to preprocess input data
+def preprocess_input(city, bedrooms, building_area, land_area):
+    # Encode city
+    encoded_city = encode_city(city)
+    
+    # Scale input features
+    scaler = RobustScaler()
+    bedrooms_scaled = scaler.fit_transform([[bedrooms]])[0][0]
+    building_area_scaled = scaler.fit_transform([[building_area]])[0][0]
+    land_area_scaled = scaler.fit_transform([[land_area]])[0][0]
+    
+    return encoded_city, bedrooms_scaled, building_area_scaled, land_area_scaled
+
+# Function to encode city
+def encode_city(city):
+    # Your encoding logic here
+    # Return the encoded value
+    pass
+
+# Function to predict house price
+def predict_price(encoded_city, bedrooms, building_area, land_area):
+    features = [[encoded_city, bedrooms, building_area, land_area]]
+    prediction = model.predict(features)
+    return prediction[0]
+
+# Streamlit app
+def main():
+    st.title("House Price Prediction")
+    
+    # Dropdown for city selection
+    city = st.selectbox("Select city", ["City 1", "City 2", "City 3", "City 4", "City 5", "City 6", "City 7", "City 8", "City 9"])
+    
+    # Textboxes for input
+    bedrooms = st.number_input("Number of bedrooms", min_value=1, step=1)
+    building_area = st.number_input("Building area (m^2)", min_value=0, step=1)
+    land_area = st.number_input("Land area (m^2)", min_value=0, step=1)
+    
+    # Preprocess input data
+    encoded_city, bedrooms_scaled, building_area_scaled, land_area_scaled = preprocess_input(city, bedrooms, building_area, land_area)
+    
+    # Predict house price
+    if st.button("Predict"):
+        price_prediction = predict_price(encoded_city, bedrooms_scaled, building_area_scaled, land_area_scaled)
+        st.success(f"Predicted house price: {price_prediction}")
+
+if __name__ == "__main__":
+    main()
+
+
+
 
 #     st.markdown("""
 #     <p style="font-size: 16px; font-weight: bold">Insert Data</p>
