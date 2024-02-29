@@ -236,7 +236,7 @@ def run_ml_app():
         return scaled_values[0]
 
     # Main function to run the Streamlit app
-    def main():
+    def predict():
         # Dropdown menu for city selection
         city = st.selectbox('Pilih Nama Kota', ['Jakarta Pusat', 'Jakarta Selatan', 'Jakarta Barat',
                                                 'Jakarta Utara', 'Jakarta Timur', 'Bogor', 'Depok',
