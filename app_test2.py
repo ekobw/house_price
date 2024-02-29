@@ -330,6 +330,10 @@ def preprocess_input(city, bedrooms, building_area, land_area):
     # Scale input features
     scaler = RobustScaler()
     features_scaled = scaler.fit_transform(features)
+
+    # Check the length of features_scaled[0]
+    if len(features_scaled[0]) != 3:
+        raise ValueError("Unexpected number of scaled features")
     
     # Flatten the scaled features
     bedrooms_scaled, building_area_scaled, land_area_scaled = features_scaled[0]
