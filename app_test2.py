@@ -227,15 +227,7 @@ def run_ml_app():
 
     # Function to encode city name
     def encode_city(city):
-        encoded_city = encoding_object.transform([city])
-        return encoded_city[0][0]
-
-    # Function to scale input values
-    def scale_values(kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
-        scaled_values = scaling_object.transform([[kamar_tidur, luas_bangunan_m2, luas_tanah_m2]])
-        return scaled_values[0]
-
-    def map_city_to_encoding(city):
+        # Create a mapping dictionary
         mapping = {
             'Jakarta Pusat': 'kota_jakarta_pusat',
             'Jakarta Selatan': 'kota_jakarta_selatan',
@@ -248,7 +240,16 @@ def run_ml_app():
             'Tangerang': 'kota_tangerang',
             'Tangerang Selatan': 'kota_tangerang_selatan'
         }
-        return mapping.get(city)
+
+        # Map the selected city to the corresponding column name
+        encoded_city = encoding_object.transform([mapping[city]])
+
+        return encoded_city
+
+    # Function to scale input values
+    def scale_values(kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
+        scaled_values = scaling_object.transform([[kamar_tidur, luas_bangunan_m2, luas_tanah_m2]])
+        return scaled_values[0]
 
     # Main function to run the Streamlit app
     #def predict():
@@ -256,8 +257,8 @@ def run_ml_app():
     city = st.selectbox('Pilih Nama Kota', ['Jakarta Pusat', 'Jakarta Selatan', 'Jakarta Barat',
                                             'Jakarta Utara', 'Jakarta Timur', 'Bogor', 'Depok',
                                             'Bekasi', 'Tangerang', 'Tangerang Selatan'])
-    city_encoded = map_city_to_encoding(city)
-    encoded_city = encoding_object.transform([[city_encoded]])
+    #city_encoded = map_city_to_encoding(city)
+    encoded_city = encoding_object.transform([[city]])
 
     # Textbox for input values
     kamar_tidur = st.text_input('Kamar Tidur')
