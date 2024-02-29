@@ -219,20 +219,17 @@ def main():
 
 def run_ml_app():
     import streamlit as st
-    import pandas as pd
     import numpy as np
     import pickle
-    from sklearn.preprocessing import RobustScaler
-    from sklearn.preprocessing import OneHotEncoder
 
     # Load the model, scaler, and encoder objects
-    with open('./data/final_model.pkl', 'rb') as f:
+    with open('final_model.pkl', 'rb') as f:
         model = pickle.load(f)
 
-    with open('./data/scaling_object.pkl', 'rb') as f:
+    with open('scaling_object.pkl', 'rb') as f:
         scaler = pickle.load(f)
 
-    with open('./data/encoding_object.pkl', 'rb') as f:
+    with open('encoding_object.pkl', 'rb') as f:
         encoder = pickle.load(f)
 
     # Define the city options for the dropdown menu
@@ -247,8 +244,7 @@ def run_ml_app():
     land_area = st.number_input('Masukkan Luas Tanah (m2)', min_value=1, max_value=1000, step=1)
 
     # Perform one-hot encoding for the selected city
-    city_encoded = encoder.transform([[city]])
-    city_encoded = city_encoded.toarray()
+    city_encoded = encoder.transform([[city]]).toarray()
 
     # Scale the input features
     scaled_bedrooms = scaler.transform([[bedrooms]])
@@ -263,6 +259,7 @@ def run_ml_app():
 
     # Display the predicted price
     st.write(f'Prediksi Harga Rumah: Rp {predicted_price[0]:,.2f}')
+
 
 if __name__ == '__main__':
     main()
