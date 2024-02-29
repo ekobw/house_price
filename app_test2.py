@@ -242,7 +242,7 @@ def run_ml_app():
         }
 
         # Map the selected city to the corresponding column name
-        encoded_city = mapping.get(city)
+        encoded_city = mapping[city]
 
         return encoded_city
 
