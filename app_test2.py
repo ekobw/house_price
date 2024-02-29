@@ -249,11 +249,15 @@ def preprocess_input(city, bedrooms, building_area, land_area):
     # Encode city
     encoded_city = encode_city(city)
     
+    # Combine input features
+    features = [[bedrooms, building_area, land_area]]  # Hanya fitur numerik yang diikutsertakan
+    
     # Scale input features
     scaler = RobustScaler()
-    bedrooms_scaled = scaler.fit_transform([[bedrooms]])[0][0]
-    building_area_scaled = scaler.fit_transform([[building_area]])[0][0]
-    land_area_scaled = scaler.fit_transform([[land_area]])[0][0]
+    features_scaled = scaler.fit_transform(features)
+    
+    # Flatten the scaled features
+    bedrooms_scaled, building_area_scaled, land_area_scaled = features_scaled[0]
     
     return encoded_city, bedrooms_scaled, building_area_scaled, land_area_scaled
 
