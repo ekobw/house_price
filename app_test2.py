@@ -229,6 +229,15 @@ def load_model():
 
 model = load_model()
 
+def encode_city(city):
+    cities = ['Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat', 'Jakarta Selatan', 'Jakarta Timur', 
+              'Bogor', 'Depok', 'Bekasi', 'Tangerang', 'Tangerang Selatan']
+    encoded_city = [0] * len(cities)
+    if city in cities:
+        index = cities.index(city)
+        encoded_city[index] = 1
+    return encoded_city
+
 # Function to preprocess input data
 def preprocess_input(city, bedrooms, building_area, land_area):
     # Encode city
