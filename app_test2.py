@@ -270,8 +270,8 @@ def run_ml_app():
         scaled_values = scale_values(int(kamar_tidur), int(luas_bangunan_m2), int(luas_tanah_m2))
 
         # Create feature vector
-        features = [0] * (len(encoding_object.get_feature_names_out()) - 1)  # Initialize features with zeros
-        city_index = encoding_object.get_feature_names_out().index(encoded_city)
+        features = [0] * (len(encoding_object.columns) - 1)  # Initialize features with zeros
+        city_index = encoding_object.columns.get_loc(encoded_city)
         features[city_index] = 1  # Set the value for the encoded city
         features.extend(scaled_values)  # Add scaled values
 
