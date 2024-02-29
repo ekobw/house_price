@@ -226,13 +226,13 @@ def run_ml_app():
     from sklearn.preprocessing import OneHotEncoder
 
     # Load the model, scaler, and encoder objects
-    with open('final_model.pkl', 'rb') as f:
+    with open('./data/final_model.pkl', 'rb') as f:
         model = pickle.load(f)
 
-    with open('scaling_object.pkl', 'rb') as f:
+    with open('./data/scaling_object.pkl', 'rb') as f:
         scaler = pickle.load(f)
 
-    with open('encoding_object.pkl', 'rb') as f:
+    with open('./data/encoding_object.pkl', 'rb') as f:
         encoder = pickle.load(f)
 
     # Define the city options for the dropdown menu
