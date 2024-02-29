@@ -218,8 +218,6 @@ def main():
 
 
 def run_ml_app():
-
-
     # Load model pickle
     model = pickle.load(open('./data/final_model.pkl', 'rb'))
 
