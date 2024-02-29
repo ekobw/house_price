@@ -238,6 +238,12 @@ def encode_city(city):
         encoded_city[index] = 1
     return encoded_city
 
+# Function to predict house price
+def predict_price(encoded_city, bedrooms, building_area, land_area):
+    features = [encoded_city + [bedrooms, building_area, land_area]]  # Menggabungkan fitur-fitur menjadi satu array
+    prediction = model.predict(features)
+    return prediction[0]
+
 # Function to preprocess input data
 def preprocess_input(city, bedrooms, building_area, land_area):
     # Encode city
@@ -250,18 +256,6 @@ def preprocess_input(city, bedrooms, building_area, land_area):
     land_area_scaled = scaler.fit_transform([[land_area]])[0][0]
     
     return encoded_city, bedrooms_scaled, building_area_scaled, land_area_scaled
-
-# Function to encode city
-def encode_city(city):
-    # Your encoding logic here
-    # Return the encoded value
-    pass
-
-# Function to predict house price
-def predict_price(encoded_city, bedrooms, building_area, land_area):
-    features = [[encoded_city, bedrooms, building_area, land_area]]
-    prediction = model.predict(features)
-    return prediction[0]
 
 # Streamlit app
 def main():
@@ -285,3 +279,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
