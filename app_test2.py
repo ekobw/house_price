@@ -223,7 +223,7 @@ from sklearn.preprocessing import RobustScaler
 # Load the model
 @st.cache(allow_output_mutation=True)
 def load_model():
-    with open('final_model.pkl', 'rb') as f:
+    with open('./data/final_model.pkl', 'rb') as f:
         model = pickle.load(f)
     return model
 
