@@ -239,17 +239,10 @@ def run_ml_app():
 
     # Main function to run the Streamlit app
     def main():
-        # Create example DataFrame
-        data = {
-            'kota': ['Kota 1', 'Kota 2', 'Kota 3', 'Kota 4', 'Kota 5'],
-            'kamar_tidur': [3, 2, 4, 3, 2],
-            'luas_bangunan_m2': [150, 120, 180, 160, 130],
-            'luas_tanah_m2': [300, 250, 350, 320, 270]
-        }
-        df = pd.DataFrame(data)
-
         # Dropdown menu for city selection
-        city = st.selectbox('Pilih Nama Kota', df['kota'])
+        city = st.selectbox('Pilih Nama Kota', ['Jakarta Pusat', 'Jakarta Selatan', 'Jakarta Barat',
+                                                'Jakarta Utara', 'Jakarta Timur', 'Bogor', 'Depok',
+                                                'Bekasi', 'Tangerang', 'Tangerang Selatan'])
         encoded_city = encode_city(city)
 
         # Textbox for input values
@@ -262,6 +255,7 @@ def run_ml_app():
             scaled_values = scale_values(int(kamar_tidur), int(luas_bangunan_m2), int(luas_tanah_m2))
             prediction = model.predict([[encoded_city] + list(scaled_values)])
             st.write('Prediksi Harga Rumah:', prediction[0])
+
 
 if __name__ == '__main__':
     main()
