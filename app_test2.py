@@ -217,6 +217,58 @@ def main():
         run_ml_app()
 
 
+def run_ml_app():
+    import streamlit as st
+    import pandas as pd
+    import numpy as np
+    import pickle
+    from sklearn.preprocessing import RobustScaler
+    from sklearn.preprocessing import OneHotEncoder
+
+    # Load the model, scaler, and encoder objects
+    with open('final_model.pkl', 'rb') as f:
+        model = pickle.load(f)
+
+    with open('scaling_object.pkl', 'rb') as f:
+        scaler = pickle.load(f)
+
+    with open('encoding_object.pkl', 'rb') as f:
+        encoder = pickle.load(f)
+
+    # Define the city options for the dropdown menu
+    city_options = ['bekasi', 'bogor', 'depok', 'jakarta_barat', 'jakarta_pusat', 'jakarta_selatan', 'jakarta_timur', 'jakarta_utara', 'tangerang', 'tangerang_selatan']
+
+    st.title('Prediksi Harga Rumah')
+
+    # Define the user input fields
+    city = st.selectbox('Pilih Kota', city_options)
+    bedrooms = st.number_input('Masukkan Jumlah Kamar Tidur', min_value=1, max_value=10, step=1)
+    building_area = st.number_input('Masukkan Luas Bangunan (m2)', min_value=1, max_value=1000, step=1)
+    land_area = st.number_input('Masukkan Luas Tanah (m2)', min_value=1, max_value=1000, step=1)
+
+    # Perform one-hot encoding for the selected city
+    city_encoded = encoder.transform([[city]])
+    city_encoded = city_encoded.toarray()
+
+    # Scale the input features
+    scaled_bedrooms = scaler.transform([[bedrooms]])
+    scaled_building_area = scaler.transform([[building_area]])
+    scaled_land_area = scaler.transform([[land_area]])
+
+    # Combine the scaled features and city encoding
+    input_features = np.concatenate((city_encoded, scaled_bedrooms, scaled_building_area, scaled_land_area), axis=1)
+
+    # Make predictions using the trained model
+    predicted_price = model.predict(input_features)
+
+    # Display the predicted price
+    st.write(f'Prediksi Harga Rumah: Rp {predicted_price[0]:,.2f}')
+
+if __name__ == '__main__':
+    main()
+
+#==============================================================================================================
+
 # def run_ml_app():
 #     # Load model pickle
 #     model = pickle.load(open('./data/final_model.pkl', 'rb'))
@@ -273,74 +325,76 @@ def main():
 #         prediction = model.predict([features])
 #         st.write('Prediksi Harga Rumah:', prediction[0])
 
+# if __name__ == '__main__':
+#     main()
 
 #=================================================================================================================
 
-def run_ml_app():
-    # Load model pickle
-    model = pickle.load(open('./data/final_model.pkl', 'rb'))
+# def run_ml_app():
+#     # Load model pickle
+#     model = pickle.load(open('./data/final_model.pkl', 'rb'))
 
-    # Load encoding and scaling objects
-    encoding_object = pickle.load(open('./data/encoding_object.pkl', 'rb'))
-    scaling_object = pickle.load(open('./data/scaling_object.pkl', 'rb'))
+#     # Load encoding and scaling objects
+#     encoding_object = pickle.load(open('./data/encoding_object.pkl', 'rb'))
+#     scaling_object = pickle.load(open('./data/scaling_object.pkl', 'rb'))
 
-    # Function to encode city name
-    def encode_city(city):
-        # Create a mapping dictionary
-        mapping = {
-            'Jakarta Pusat': 'kota_jakarta_pusat',
-            'Jakarta Selatan': 'kota_jakarta_selatan',
-            'Jakarta Barat': 'kota_jakarta_barat',
-            'Jakarta Utara': 'kota_jakarta_utara',
-            'Jakarta Timur': 'kota_jakarta_timur',
-            'Bogor': 'kota_bogor',
-            'Depok': 'kota_depok',
-            'Bekasi': 'kota_bekasi',
-            'Tangerang': 'kota_tangerang',
-            'Tangerang Selatan': 'kota_tangerang_selatan'
-        }
+#     # Function to encode city name
+#     def encode_city(city):
+#         # Create a mapping dictionary
+#         mapping = {
+#             'Jakarta Pusat': 'kota_jakarta_pusat',
+#             'Jakarta Selatan': 'kota_jakarta_selatan',
+#             'Jakarta Barat': 'kota_jakarta_barat',
+#             'Jakarta Utara': 'kota_jakarta_utara',
+#             'Jakarta Timur': 'kota_jakarta_timur',
+#             'Bogor': 'kota_bogor',
+#             'Depok': 'kota_depok',
+#             'Bekasi': 'kota_bekasi',
+#             'Tangerang': 'kota_tangerang',
+#             'Tangerang Selatan': 'kota_tangerang_selatan'
+#         }
 
-        # Map the selected city to the corresponding column name
-        encoded_city = mapping[city]
+#         # Map the selected city to the corresponding column name
+#         encoded_city = mapping[city]
 
-        return encoded_city
+#         return encoded_city
 
-    # Function to scale input values
-    def scale_values(kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
-        scaled_values = scaling_object.transform([[kamar_tidur, luas_bangunan_m2, luas_tanah_m2]])
-        return scaled_values[0]
+#     # Function to scale input values
+#     def scale_values(kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
+#         scaled_values = scaling_object.transform([[kamar_tidur, luas_bangunan_m2, luas_tanah_m2]])
+#         return scaled_values[0]
 
-    # Main function to run the Streamlit app
-    city = st.selectbox('Pilih Nama Kota', ['Jakarta Pusat', 'Jakarta Selatan', 'Jakarta Barat',
-                                            'Jakarta Utara', 'Jakarta Timur', 'Bogor', 'Depok',
-                                            'Bekasi', 'Tangerang', 'Tangerang Selatan'])
+#     # Main function to run the Streamlit app
+#     city = st.selectbox('Pilih Nama Kota', ['Jakarta Pusat', 'Jakarta Selatan', 'Jakarta Barat',
+#                                             'Jakarta Utara', 'Jakarta Timur', 'Bogor', 'Depok',
+#                                             'Bekasi', 'Tangerang', 'Tangerang Selatan'])
 
-    # Textbox for input values
-    kamar_tidur = st.text_input('Kamar Tidur')
-    luas_bangunan_m2 = st.text_input('Luas Bangunan (m2)')
-    luas_tanah_m2 = st.text_input('Luas Tanah (m2)')
+#     # Textbox for input values
+#     kamar_tidur = st.text_input('Kamar Tidur')
+#     luas_bangunan_m2 = st.text_input('Luas Bangunan (m2)')
+#     luas_tanah_m2 = st.text_input('Luas Tanah (m2)')
 
-    # Button to predict house price
-    if st.button('Prediksi Harga Rumah'):
-        # Encode city
-        encoded_city = encode_city(city)
+#     # Button to predict house price
+#     if st.button('Prediksi Harga Rumah'):
+#         # Encode city
+#         encoded_city = encode_city(city)
 
-        # Scale input values
-        scaled_values = scale_values(int(kamar_tidur), int(luas_bangunan_m2), int(luas_tanah_m2))
+#         # Scale input values
+#         scaled_values = scale_values(int(kamar_tidur), int(luas_bangunan_m2), int(luas_tanah_m2))
 
-        # Create feature vector
-        features = [0] * 10  # Initialize features with zeros
-        city_index = encoding_object.columns.get_loc(encoded_city)
-        features[city_index] = 1  # Set the value for the encoded city
-        features.extend(scaled_values)  # Add scaled values
+#         # Create feature vector
+#         features = [0] * 10  # Initialize features with zeros
+#         city_index = encoding_object.columns.get_loc(encoded_city)
+#         features[city_index] = 1  # Set the value for the encoded city
+#         features.extend(scaled_values)  # Add scaled values
 
-        # Predict house price
-        prediction = model.predict([features])
-        st.write('Prediksi Harga Rumah:', prediction[0])
+#         # Predict house price
+#         prediction = model.predict([features])
+#         st.write('Prediksi Harga Rumah:', prediction[0])
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
 
 
 #================================================================================================================
