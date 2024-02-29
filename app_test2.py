@@ -226,7 +226,7 @@ from sklearn.preprocessing import RobustScaler
 def load_model():
     with open('./data/final_model.pkl', 'rb') as f:
         model = pickle.load(f)
-    return model, model.named_steps['robustscaler']  # Assuming scaler is part of the pipeline
+    return model
 
 model, scaler = load_model()
 
