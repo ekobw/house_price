@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import RobustScaler
+import altair as alt
 
 # with open('./data/final_model.pkl','rb') as file:
 #     Final_Model = pickle.load(file)
