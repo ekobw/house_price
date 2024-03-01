@@ -245,7 +245,7 @@ def run_ml_app():
     luas_bangunan_m2 = st.sidebar.number_input("Luas Bangunan (m²)", min_value=0)
     luas_tanah_m2 = st.sidebar.number_input("Luas Tanah (m²)", min_value=0)
     kamar_tidur = st.sidebar.number_input("Jumlah Kamar Tidur", min_value=0)
-    kota_input = st.sidebar.selectbox('Kota', list(city_mapping.keys()))
+    kota_input = st.sidebar.selectbox('Kota', encoded_data['encoded_city'])
 
     # Map the selected city to the corresponding encoded column
     kota_encoded_column = city_mapping.get(kota_input)
@@ -259,8 +259,15 @@ def run_ml_app():
             'kamar_tidur': [kamar_tidur]
         })
 
-        # Add the selected city's encoded column to the input data
-        data_input[kota_encoded_column] = 1
+        # Map the selected city to the corresponding encoded column
+        kota_encoded_column = 'kota_' + kota_input.lower().replace(' ', '_')
+
+        # Check if the selected city is in the encoded data
+        if kota_encoded_column in encoded_data.columns:
+            # Add the selected city's encoded column to the input data
+            data_input[kota_encoded_column] = 1
+        else:
+            st.error("Error: Invalid city selected.")
 
         # Predict house price
         prediksi = model.predict(data_input)
