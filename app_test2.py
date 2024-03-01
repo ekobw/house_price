@@ -222,13 +222,16 @@ def run_ml_app():
     import numpy as np
     import pickle
 
-    # Load encoded data used during training
-    with open('./data/encoded_data.pkl', 'rb') as f:
-        encoded_data = pickle.load(f)
+    # # Load encoded data used during training
+    # with open('./data/encoded_data.pkl', 'rb') as f:
+    #     encoded_data = pickle.load(f)
 
-    # Load model
-    with open('./data/final_model.pkl', 'rb') as f:
-        model = pickle.load(f)
+    # # Load model
+    # with open('./data/final_model.pkl', 'rb') as f:
+    #     model = pickle.load(f)
+
+    encoded_data = joblib.load('./data/encoded_data.pkl')
+    model = joblib.load('./data/final_model.pkl')    
 
     # Sidebar for input data
     st.sidebar.header("Masukkan Data Rumah")
