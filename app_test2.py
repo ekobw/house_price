@@ -233,20 +233,39 @@ def run_ml_app():
     with open('./data/final_model.pkl', 'rb') as f:
         model = pickle.load(f)
 
+    # Create a mapping dictionary
+        kota_mapping = {
+            'Jakarta Pusat': 'kota_jakarta_pusat',
+            'Jakarta Selatan': 'kota_jakarta_selatan',
+            'Jakarta Barat': 'kota_jakarta_barat',
+            'Jakarta Utara': 'kota_jakarta_utara',
+            'Jakarta Timur': 'kota_jakarta_timur',
+            'Bogor': 'kota_bogor',
+            'Depok': 'kota_depok',
+            'Bekasi': 'kota_bekasi',
+            'Tangerang': 'kota_tangerang',
+            'Tangerang Selatan': 'kota_tangerang_selatan'
+        }
+
     # Buat sidebar untuk input data
     st.sidebar.header("Masukkan Data Rumah")
     luas_bangunan_m2 = st.sidebar.number_input("Luas Bangunan (m²)", min_value=0)
     luas_tanah_m2 = st.sidebar.number_input("Luas Tanah (m²)", min_value=0)
     kamar_tidur = st.sidebar.number_input("Jumlah Kamar Tidur", min_value=0)
-    kota_input = st.sidebar.selectbox('Kota', ['Jakarta Pusat', 'Jakarta Selatan', 'Jakarta Barat',
-                                            'Jakarta Utara', 'Jakarta Timur', 'Bogor', 'Depok',
-                                            'Bekasi', 'Tangerang', 'Tangerang Selatan'])
+    kota_input = st.sidebar.selectbox('Kota', list(kota_mapping.keys()))
+
+    # Dapatkan value yang dimapping
+    kota_encoded = kota_mapping[kota_input]
 
     # Lakukan one-hot encoding pada data input pengguna
-    kota_encoded_input = pd.get_dummies([kota_input], columns=kota_encoded_training.columns)
+    kota_encoded_input = pd.get_dummies([kota_encoded], columns=kota_encoded_training.columns)
 
     # Gabungkan data kota dengan variabel lain
-    data_input = np.hstack((kota_encoded_input, luas_bangunan_m2, luas_tanah_m2, kamar_tidur))
+    luas_bangunan_series = pd.Series([luas_bangunan_m2])
+    luas_tanah_series = pd.Series([luas_tanah_m2])
+    kamar_tidur_series = pd.Series([kamar_tidur])
+
+    data_input = pd.concat([kota_encoded_input, luas_bangunan_series, luas_tanah_series, kamar_tidur_series], axis=1)
 
     # Prediksi harga rumah
     prediksi = model.predict(data_input)
