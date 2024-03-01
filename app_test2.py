@@ -250,7 +250,7 @@ def run_ml_app():
 
     # Concatenate all columns containing encoded city information
     encoded_city_columns = [col for col in encoded_data.columns if col.startswith('kota_')]
-    encoded_data['encoded_city'] = encoded_data[encoded_city_columns].apply(lambda x: ''.join(x), axis=1)
+    encoded_data['encoded_city'] = encoded_data[encoded_city_columns].apply(lambda row: ''.join(row.astype(str)), axis=1)
 
     # Map encoded city names to user-friendly city names
     encoded_data['city_name'] = encoded_data['encoded_city'].map(city_mapping)
