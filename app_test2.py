@@ -230,7 +230,8 @@ def run_ml_app():
     # with open('./data/final_model.pkl', 'rb') as f:
     #     model = pickle.load(f)
 
-    encoded_data = joblib.load('./data/encoded_data.pkl')
+    encoded_data = pd.read_csv('./data/encoded_data.csv')
+    #encoded_data = joblib.load('./data/encoded_data.pkl')
     model = joblib.load('./data/final_model.pkl')    
 
     # Sidebar for input data
