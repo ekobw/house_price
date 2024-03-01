@@ -219,50 +219,93 @@ def main():
 
 def run_ml_app():
     import streamlit as st
+    import pandas as pd
     import numpy as np
-    import pickle
+    from sklearn.linear_model import LinearRegression
 
-    # Load the model, scaler, and encoder objects
+    # Muat data training
+    data_training = pd.read_csv("./data/clean_house_price.csv")
+
+    # Lakukan one-hot encoding pada data training
+    kota_encoded_training = pd.get_dummies(data_training["kota"])
+
+    # Muat model
     with open('./data/final_model.pkl', 'rb') as f:
         model = pickle.load(f)
 
-    with open('./data/scaling_object.pkl', 'rb') as f:
-        scaler = pickle.load(f)
+    # Buat sidebar untuk input data
+    st.sidebar.header("Masukkan Data Rumah")
+    luas_bangunan_m2 = st.sidebar.number_input("Luas Bangunan (m²)", min_value=0)
+    luas_tanah_m2 = st.sidebar.number_input("Luas Tanah (m²)", min_value=0)
+    kamar_tidur = st.sidebar.number_input("Jumlah Kamar Tidur", min_value=0)
+    kota_input = st.sidebar.selectbox('Kota', ['Jakarta Pusat', 'Jakarta Selatan', 'Jakarta Barat',
+                                            'Jakarta Utara', 'Jakarta Timur', 'Bogor', 'Depok',
+                                            'Bekasi', 'Tangerang', 'Tangerang Selatan'])
 
-    with open('./data/encoding_object.pkl', 'rb') as f:
-        encoder = pickle.load(f)
+    # Lakukan one-hot encoding pada data input pengguna
+    kota_encoded_input = pd.get_dummies([kota_input], columns=kota_encoded_training.columns)
 
-    # Define the city options for the dropdown menu
-    city_options = ['bekasi', 'bogor', 'depok', 'jakarta_barat', 'jakarta_pusat', 'jakarta_selatan', 'jakarta_timur', 'jakarta_utara', 'tangerang', 'tangerang_selatan']
+    # Gabungkan data kota dengan variabel lain
+    data_input = pd.concat([kota_encoded_input, luas_bangunan_m2, luas_tanah_m2, kamar_tidur], axis=1)
 
-    st.title('Prediksi Harga Rumah')
+    # Prediksi harga rumah
+    prediksi = model.predict(data_input)
 
-    # Define the user input fields
-    city = st.selectbox('Pilih Kota', city_options)
-    bedrooms = st.number_input('Masukkan Jumlah Kamar Tidur', min_value=1, max_value=10, step=1)
-    building_area = st.number_input('Masukkan Luas Bangunan (m2)', min_value=1, max_value=1000, step=1)
-    land_area = st.number_input('Masukkan Luas Tanah (m2)', min_value=1, max_value=1000, step=1)
-
-    # Perform one-hot encoding for the selected city
-    city_encoded = encoder.transform([[city]]).toarray()
-
-    # Scale the input features
-    scaled_bedrooms = scaler.transform([[bedrooms]])
-    scaled_building_area = scaler.transform([[building_area]])
-    scaled_land_area = scaler.transform([[land_area]])
-
-    # Combine the scaled features and city encoding
-    input_features = np.concatenate((city_encoded, scaled_bedrooms, scaled_building_area, scaled_land_area), axis=1)
-
-    # Make predictions using the trained model
-    predicted_price = model.predict(input_features)
-
-    # Display the predicted price
-    st.write(f'Prediksi Harga Rumah: Rp {predicted_price[0]:,.2f}')
-
+    # Tampilkan hasil prediksi
+    st.header("Hasil Prediksi Harga Rumah")
+    st.write("Harga Rumah: Rp", str(int(prediksi)))
 
 if __name__ == '__main__':
     main()
+
+#===============================================================================================
+
+# def run_ml_app():
+#     import streamlit as st
+#     import numpy as np
+#     import pickle
+
+#     # Load the model, scaler, and encoder objects
+#     with open('./data/final_model.pkl', 'rb') as f:
+#         model = pickle.load(f)
+
+#     with open('./data/scaling_object.pkl', 'rb') as f:
+#         scaler = pickle.load(f)
+
+#     with open('./data/encoding_object.pkl', 'rb') as f:
+#         encoder = pickle.load(f)
+
+#     # Define the city options for the dropdown menu
+#     city_options = ['bekasi', 'bogor', 'depok', 'jakarta_barat', 'jakarta_pusat', 'jakarta_selatan', 'jakarta_timur', 'jakarta_utara', 'tangerang', 'tangerang_selatan']
+
+#     st.title('Prediksi Harga Rumah')
+
+#     # Define the user input fields
+#     city = st.selectbox('Pilih Kota', city_options)
+#     bedrooms = st.number_input('Masukkan Jumlah Kamar Tidur', min_value=1, max_value=10, step=1)
+#     building_area = st.number_input('Masukkan Luas Bangunan (m2)', min_value=1, max_value=1000, step=1)
+#     land_area = st.number_input('Masukkan Luas Tanah (m2)', min_value=1, max_value=1000, step=1)
+
+#     # Perform one-hot encoding for the selected city
+#     city_encoded = encoder.transform([[city]]).toarray()
+
+#     # Scale the input features
+#     scaled_bedrooms = scaler.transform([[bedrooms]])
+#     scaled_building_area = scaler.transform([[building_area]])
+#     scaled_land_area = scaler.transform([[land_area]])
+
+#     # Combine the scaled features and city encoding
+#     input_features = np.concatenate((city_encoded, scaled_bedrooms, scaled_building_area, scaled_land_area), axis=1)
+
+#     # Make predictions using the trained model
+#     predicted_price = model.predict(input_features)
+
+#     # Display the predicted price
+#     st.write(f'Prediksi Harga Rumah: Rp {predicted_price[0]:,.2f}')
+
+
+# if __name__ == '__main__':
+#     main()
 
 #==============================================================================================================
 
