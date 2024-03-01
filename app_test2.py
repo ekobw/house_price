@@ -246,7 +246,7 @@ def run_ml_app():
     kota_encoded_input = pd.get_dummies([kota_input], columns=kota_encoded_training.columns)
 
     # Gabungkan data kota dengan variabel lain
-    data_input = np.hstack((kota_encoded_input, luas_bangunan, luas_lahan, kamar_tidur))
+    data_input = np.hstack((kota_encoded_input, luas_bangunan_m2, luas_tanah_m2, kamar_tidur))
 
     # Prediksi harga rumah
     prediksi = model.predict(data_input)
