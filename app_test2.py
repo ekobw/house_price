@@ -233,9 +233,6 @@ def run_ml_app():
     with open('./data/final_model.pkl', 'rb') as f:
         model = pickle.load(f)
 
-    # Get the feature names from the model
-    feature_names = model.feature_names
-
     # Create a mapping dictionary
     kota_mapping = {
         'Jakarta Pusat': 'kota_jakarta_pusat',
@@ -269,7 +266,13 @@ def run_ml_app():
     kamar_tidur_series = pd.Series([kamar_tidur])
 
     data_input = pd.concat([kota_encoded_input, luas_bangunan_series, luas_tanah_series, kamar_tidur_series], axis=1)
-    data_input.columns = feature_names
+    
+    # Define the expected feature names
+    expected_feature_names = ['kota_jakarta_pusat', 'kota_jakarta_selatan', 'kota_jakarta_barat', 'kota_jakarta_utara', 'kota_jakarta_timur', 'kota_bogor', 'kota_depok', 'kota_bekasi', 'kota_tangerang', 'kota_tangerang_selatan', 'luas_bangunan_m2', 'luas_tanah_m2', 'kamar_tidur']
+
+    # Update the column names of data_input
+    data_input.columns = expected_feature_names
+
 
     # Prediksi harga rumah
     prediksi = model.predict(data_input)
