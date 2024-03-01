@@ -228,7 +228,7 @@ def run_ml_app():
 
     # Lakukan one-hot encoding pada data training
     kota_encoded_training = pd.get_dummies(data_training["kota"])
-    print(kota_encoded_training)
+    kota_encoded_training
 
     # # Muat model
     # with open('./data/final_model.pkl', 'rb') as f:
