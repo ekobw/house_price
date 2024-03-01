@@ -232,14 +232,35 @@ def run_ml_app():
 
     encoded_data = pd.read_csv('./data/encoded_data.csv')
     #encoded_data = joblib.load('./data/encoded_data.pkl')
-    model = joblib.load('./data/final_model.pkl')    
+    model = joblib.load('./data/final_model.pkl')
+
+    # Create a mapping dictionary
+    city_mapping = {
+        'kota_jakarta_pusat': 'Jakarta Pusat',
+        'kota_jakarta_selatan': 'Jakarta Selatan',
+        'kota_jakarta_barat': 'Jakarta Barat',
+        'kota_jakarta_utara': 'Jakarta Utara',
+        'kota_jakarta_timur': 'Jakarta Timur',
+        'kota_bogor': 'Bogor',
+        'kota_depok': 'Depok',
+        'kota_bekasi': 'Bekasi',
+        'kota_tangerang': 'Tangerang',
+        'kota_tangerang_selatan': 'Tangerang Selatan'
+        }    
+
+    # Concatenate all columns containing encoded city information
+    encoded_city_columns = [col for col in encoded_data.columns if col.startswith('kota_')]
+    encoded_data['encoded_city'] = encoded_data[encoded_city_columns].apply(lambda x: ''.join(x), axis=1)
+
+    # Map encoded city names to user-friendly city names
+    encoded_data['city_name'] = encoded_data['encoded_city'].map(city_mapping)
 
     # Sidebar for input data
     st.sidebar.header("Masukkan Data Rumah")
     luas_bangunan_m2 = st.sidebar.number_input("Luas Bangunan (m²)", min_value=0)
     luas_tanah_m2 = st.sidebar.number_input("Luas Tanah (m²)", min_value=0)
     kamar_tidur = st.sidebar.number_input("Jumlah Kamar Tidur", min_value=0)
-    kota_input = st.sidebar.selectbox('Kota', encoded_data['kota_encoded'])
+    kota_input = st.sidebar.selectbox('Kota', encoded_data['city_name'])
 
     # Create DataFrame for input data
     data_input = pd.DataFrame({
@@ -249,12 +270,12 @@ def run_ml_app():
     })
 
     # Map the selected city to the corresponding encoded column
-    kota_encoded_column = 'kota_' + kota_input.lower().replace(' ', '_')
+    #kota_encoded_column = 'kota_' + kota_input.lower().replace(' ', '_')
 
     # Check if the selected city is in the encoded data
-    if kota_encoded_column in encoded_data:
+    if kota_input in encoded_data:
         # Add the selected city's encoded column to the input data
-        data_input[kota_encoded_column] = 1
+        data_input[kota_input] = 1
     else:
         st.error("Error: Invalid city selected.")
 
