@@ -233,18 +233,21 @@ def run_ml_app():
     with open('./data/final_model.pkl', 'rb') as f:
         model = pickle.load(f)
 
+    # Get the feature names from the model
+    feature_names = model.feature_names
+
     # Create a mapping dictionary
-        kota_mapping = {
-            'Jakarta Pusat': 'kota_jakarta_pusat',
-            'Jakarta Selatan': 'kota_jakarta_selatan',
-            'Jakarta Barat': 'kota_jakarta_barat',
-            'Jakarta Utara': 'kota_jakarta_utara',
-            'Jakarta Timur': 'kota_jakarta_timur',
-            'Bogor': 'kota_bogor',
-            'Depok': 'kota_depok',
-            'Bekasi': 'kota_bekasi',
-            'Tangerang': 'kota_tangerang',
-            'Tangerang Selatan': 'kota_tangerang_selatan'
+    kota_mapping = {
+        'Jakarta Pusat': 'kota_jakarta_pusat',
+        'Jakarta Selatan': 'kota_jakarta_selatan',
+        'Jakarta Barat': 'kota_jakarta_barat',
+        'Jakarta Utara': 'kota_jakarta_utara',
+        'Jakarta Timur': 'kota_jakarta_timur',
+        'Bogor': 'kota_bogor',
+        'Depok': 'kota_depok',
+        'Bekasi': 'kota_bekasi',
+        'Tangerang': 'kota_tangerang',
+        'Tangerang Selatan': 'kota_tangerang_selatan'
         }
 
     # Buat sidebar untuk input data
@@ -266,6 +269,7 @@ def run_ml_app():
     kamar_tidur_series = pd.Series([kamar_tidur])
 
     data_input = pd.concat([kota_encoded_input, luas_bangunan_series, luas_tanah_series, kamar_tidur_series], axis=1)
+    data_input.columns = feature_names
 
     # Prediksi harga rumah
     prediksi = model.predict(data_input)
