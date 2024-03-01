@@ -216,76 +216,127 @@ def main():
         st.header("Prediction Model")
         run_ml_app()
 
-
 def run_ml_app():
     import streamlit as st
     import pandas as pd
     import numpy as np
-    from sklearn.linear_model import LinearRegression
+    import pickle
 
-    # Muat data training
-    data_training = pd.read_csv("./data/clean_house_price.csv")
+    # Load encoded data used during training
+    with open('./data/encoded_data.pkl', 'rb') as f:
+        encoded_data = pickle.load(f)
 
-    # Lakukan one-hot encoding pada data training
-    kota_encoded_training = pd.get_dummies(data_training["kota"])
-    #kota_encoded_training
-
-    # Muat model
+    # Load model
     with open('./data/final_model.pkl', 'rb') as f:
         model = pickle.load(f)
 
-    # Create a mapping dictionary
-    kota_mapping = {
-        'Jakarta Pusat': 'kota_jakarta_pusat',
-        'Jakarta Selatan': 'kota_jakarta_selatan',
-        'Jakarta Barat': 'kota_jakarta_barat',
-        'Jakarta Utara': 'kota_jakarta_utara',
-        'Jakarta Timur': 'kota_jakarta_timur',
-        'Bogor': 'kota_bogor',
-        'Depok': 'kota_depok',
-        'Bekasi': 'kota_bekasi',
-        'Tangerang': 'kota_tangerang',
-        'Tangerang Selatan': 'kota_tangerang_selatan'
-        }
-
-    # Buat sidebar untuk input data
+    # Sidebar for input data
     st.sidebar.header("Masukkan Data Rumah")
     luas_bangunan_m2 = st.sidebar.number_input("Luas Bangunan (m²)", min_value=0)
     luas_tanah_m2 = st.sidebar.number_input("Luas Tanah (m²)", min_value=0)
     kamar_tidur = st.sidebar.number_input("Jumlah Kamar Tidur", min_value=0)
-    kota_input = st.sidebar.selectbox('Kota', list(kota_mapping.keys()))
+    kota_input = st.sidebar.selectbox('Kota', encoded_data['kota_encoded'])
 
-    # Dapatkan value yang dimapping
-    kota_encoded = kota_mapping[kota_input]
+    # Create DataFrame for input data
+    data_input = pd.DataFrame({
+        'luas_bangunan_m2': [luas_bangunan_m2],
+        'luas_tanah_m2': [luas_tanah_m2],
+        'kamar_tidur': [kamar_tidur]
+    })
 
-    # Lakukan one-hot encoding pada data input pengguna
-    # kota_encoded_input = pd.get_dummies([kota_encoded], columns=kota_encoded_training.columns)
-    kota_encoded_input = pd.get_dummies(pd.Series([kota_encoded]), prefix='', prefix_sep='')
+    # Map the selected city to the corresponding encoded column
+    kota_encoded_column = 'kota_' + kota_input.lower().replace(' ', '_')
 
+    # Check if the selected city is in the encoded data
+    if kota_encoded_column in encoded_data:
+        # Add the selected city's encoded column to the input data
+        data_input[kota_encoded_column] = 1
+    else:
+        st.error("Error: Invalid city selected.")
 
-    # Gabungkan data kota dengan variabel lain
-    luas_bangunan_series = pd.Series([luas_bangunan_m2])
-    luas_tanah_series = pd.Series([luas_tanah_m2])
-    kamar_tidur_series = pd.Series([kamar_tidur])
-
-    data_input = pd.concat([kota_encoded_input, luas_bangunan_series, luas_tanah_series, kamar_tidur_series], axis=1)
-    
-    # Define the expected feature names
-    expected_feature_names = ['kota_jakarta_pusat', 'kota_jakarta_selatan', 'kota_jakarta_barat', 'kota_jakarta_utara', 'kota_jakarta_timur', 'kota_bogor', 'kota_depok', 'kota_bekasi', 'kota_tangerang', 'kota_tangerang_selatan', 'luas_bangunan_m2', 'luas_tanah_m2', 'kamar_tidur']
-
-    # Update the column names of data_input
-    data_input.columns = expected_feature_names
-
-
-    # Prediksi harga rumah
+    # Predict house price
     prediksi = model.predict(data_input)
 
-    # Tampilkan hasil prediksi
+    # Show prediction result
     st.header("Hasil Prediksi Harga Rumah")
     st.write("Harga Rumah: Rp", str(int(prediksi)))
 
+# Call the function to run the ML app
 if __name__ == '__main__':
-    main()
+#     main()
+
+
+#================================================================================================
+
+# def run_ml_app():
+#     import streamlit as st
+#     import pandas as pd
+#     import numpy as np
+#     from sklearn.linear_model import LinearRegression
+
+#     # Muat data training
+#     data_training = pd.read_csv("./data/clean_house_price.csv")
+
+#     # Lakukan one-hot encoding pada data training
+#     kota_encoded_training = pd.get_dummies(data_training["kota"])
+#     #kota_encoded_training
+
+#     # Muat model
+#     with open('./data/final_model.pkl', 'rb') as f:
+#         model = pickle.load(f)
+
+#     # Create a mapping dictionary
+#     kota_mapping = {
+#         'Jakarta Pusat': 'kota_jakarta_pusat',
+#         'Jakarta Selatan': 'kota_jakarta_selatan',
+#         'Jakarta Barat': 'kota_jakarta_barat',
+#         'Jakarta Utara': 'kota_jakarta_utara',
+#         'Jakarta Timur': 'kota_jakarta_timur',
+#         'Bogor': 'kota_bogor',
+#         'Depok': 'kota_depok',
+#         'Bekasi': 'kota_bekasi',
+#         'Tangerang': 'kota_tangerang',
+#         'Tangerang Selatan': 'kota_tangerang_selatan'
+#         }
+
+#     # Buat sidebar untuk input data
+#     st.sidebar.header("Masukkan Data Rumah")
+#     luas_bangunan_m2 = st.sidebar.number_input("Luas Bangunan (m²)", min_value=0)
+#     luas_tanah_m2 = st.sidebar.number_input("Luas Tanah (m²)", min_value=0)
+#     kamar_tidur = st.sidebar.number_input("Jumlah Kamar Tidur", min_value=0)
+#     kota_input = st.sidebar.selectbox('Kota', list(kota_mapping.keys()))
+
+#     # Dapatkan value yang dimapping
+#     kota_encoded = kota_mapping[kota_input]
+
+#     # Lakukan one-hot encoding pada data input pengguna
+#     # kota_encoded_input = pd.get_dummies([kota_encoded], columns=kota_encoded_training.columns)
+#     kota_encoded_input = pd.get_dummies(pd.Series([kota_encoded]), prefix='', prefix_sep='')
+
+
+#     # Gabungkan data kota dengan variabel lain
+#     luas_bangunan_series = pd.Series([luas_bangunan_m2])
+#     luas_tanah_series = pd.Series([luas_tanah_m2])
+#     kamar_tidur_series = pd.Series([kamar_tidur])
+
+#     data_input = pd.concat([kota_encoded_input, luas_bangunan_series, luas_tanah_series, kamar_tidur_series], axis=1)
+    
+#     # Define the expected feature names
+#     expected_feature_names = ['kota_jakarta_pusat', 'kota_jakarta_selatan', 'kota_jakarta_barat', 'kota_jakarta_utara', 'kota_jakarta_timur', 'kota_bogor', 'kota_depok', 'kota_bekasi', 'kota_tangerang', 'kota_tangerang_selatan', 'luas_bangunan_m2', 'luas_tanah_m2', 'kamar_tidur']
+
+#     # Update the column names of data_input
+#     data_input.columns = expected_feature_names
+
+
+#     # Prediksi harga rumah
+#     prediksi = model.predict(data_input)
+
+#     # Tampilkan hasil prediksi
+#     st.header("Hasil Prediksi Harga Rumah")
+#     st.write("Harga Rumah: Rp", str(int(prediksi)))
+
+# if __name__ == '__main__':
+#     main()
 
 #===============================================================================================
 
