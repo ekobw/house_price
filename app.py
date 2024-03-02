@@ -286,6 +286,8 @@ def run_ml_app():
         except Exception as e:
             st.error(f"Terjadi Kesalahan: {e}")
 
+    st.caption('Copyright :copyright: 2024 by Eko B.W.: https://www.linkedin.com/in/eko-bw')
+
 # Call the function to run the ML app
 if __name__ == '__main__':
      main()
