@@ -254,13 +254,13 @@ def run_ml_app():
         elif kota == 'Tangerang Selatan':
             return [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
 
-    # Define function to preprocess input data
-    def preprocess_input(kamar_tidur, luas_bangunan_m2, luas_tanah_m2, kota):
-        kota_encoded = encode_kota(kota)
-        other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2]).reshape(1, -1)
-        other_features_scaled = scaler.fit_transform(other_features)
-        kota_encoded_array = np.array(kota_encoded).reshape(1, -1)  # Ubah kota_encoded menjadi array NumPy
-        return np.concatenate([other_features_scaled, kota_encoded_array], axis=1)
+    # # Define function to preprocess input data
+    # def preprocess_input(kamar_tidur, luas_bangunan_m2, luas_tanah_m2, kota):
+    #     kota_encoded = encode_kota(kota)
+    #     other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2]).reshape(1, -1)
+    #     other_features_scaled = scaler.fit_transform(other_features)
+    #     kota_encoded_array = np.array(kota_encoded).reshape(1, -1)  # Ubah kota_encoded menjadi array NumPy
+    #     return np.concatenate([other_features_scaled, kota_encoded_array], axis=1)
 
     # Initialize Streamlit app
     st.markdown("""
@@ -280,40 +280,40 @@ def run_ml_app():
     # Predict button
     button = st.button('Prediksi Harga')
 
-    # # Make prediction and show result
-    # if button:
-    #     try:
-    #         # Preprocess user input
-    #         kota_encoded = encode_kota(kota)
-    #         kota_features = np.array(kota_encoded)
-    #         other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2])
-
-    #         # Reshape other features
-    #         other_features_reshaped = other_features.reshape(1, -1)
-
-    #         # Combine all features
-    #         input_data = np.concatenate([other_features_reshaped, kota_features.reshape(1, -1)], axis=1)
-
-    #         # Make prediction
-    #         prediction = model.predict(input_data)
-
-    #         # Format result
-    #         result = f"Harga Rumah Diperkirakan: Rp {prediction[0]:,.2f}"
-    #         st.success(result)
-    #     except Exception as e:
-    #         st.error(f"Terjadi Kesalahan: {e}")
-
-
+    # Make prediction and show result
     if button:
-        # Call the function to preprocess input data and make prediction
-        def predict_price(kamar_tidur, luas_bangunan_m2, luas_tanah_m2, kota):
-            input_data = preprocess_input(kamar_tidur, luas_bangunan_m2, luas_tanah_m2, kota)
-            df_input = pd.DataFrame(input_data)
-            prediction = model.predict(df_input)
-            return prediction[0]
+        try:
+            # Preprocess user input
+            kota_encoded = encode_kota(kota)
+            kota_features = np.array(kota_encoded).reshape(1, -1)
+            other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2])
 
-        predicted_price = predict_price(kamar_tidur, luas_bangunan_m2, luas_tanah_m2, kota)
-        st.write(f"Prediksi Harga Rumah: Rp {predicted_price:,.2f}")
+            # Reshape other features
+            other_features_reshaped = other_features.reshape(1, -1)
+            other_features_scaled = scaler.fit_transform(other_features)
+
+            # Combine all features
+            input_data = np.concatenate([other_features_scaled, kota_features], axis=1)
+
+            # Make prediction
+            prediction = model.predict(input_data)
+
+            # Format result
+            result = f"Harga Rumah Diperkirakan: Rp {prediction[0]:,.2f}"
+            st.success(result)
+        except Exception as e:
+            st.error(f"Terjadi Kesalahan: {e}")
+
+
+    # if button:
+    #     # Call the function to preprocess input data and make prediction
+    #     def predict_price(kamar_tidur, luas_bangunan_m2, luas_tanah_m2, kota):
+    #         input_data = preprocess_input(kamar_tidur, luas_bangunan_m2, luas_tanah_m2, kota)
+    #         prediction = model.predict(input_data)
+    #         return prediction[0]
+
+    #     predicted_price = predict_price(kamar_tidur, luas_bangunan_m2, luas_tanah_m2, kota)
+    #     st.write(f"Prediksi Harga Rumah: Rp {predicted_price:,.2f}")
 
 # Call the function to run the ML app
 if __name__ == '__main__':
