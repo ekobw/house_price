@@ -244,11 +244,11 @@ def run_ml_app():
         elif kota == 'Jakarta Timur':
             return [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
         elif kota == 'Bogor':
-            return [0, 1, 0, 0, 0, 1, 0, 0, 0, 0]
+            return [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
         elif kota == 'Depok':
-            return [0, 0, 1, 0, 0, 0, 1, 0, 0, 0]
+            return [0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
         elif kota == 'Bekasi':
-            return [1, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+            return [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         elif kota == 'Tangerang':
             return [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
         elif kota == 'Tangerang Selatan':
