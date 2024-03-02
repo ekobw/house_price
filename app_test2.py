@@ -285,24 +285,47 @@ def run_ml_app():
         try:
             # Preprocess user input
             kota_encoded = encode_kota(kota)
-            kota_features = np.array(kota_encoded).reshape(1, -1)
+            kota_features = np.array(kota_encoded)
             other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2])
 
-            # Reshape other features
-            other_features_reshaped = other_features.reshape(1, -1)
-            other_features_scaled = scaler.transform(other_features_reshaped)
-
             # Combine all features
-            input_data = np.concatenate([other_features_scaled, kota_features], axis=1)
+            input_data = np.concatenate([other_features, kota_features])
+
+            # Reshape input data
+            input_data_reshaped = input_data.reshape(1, -1)
+
+            # Transform input data using the loaded scaler
+            input_data_scaled = scaler.transform(input_data_reshaped)
 
             # Make prediction
-            prediction = model.predict(input_data)
+            prediction = model.predict(input_data_scaled)
 
             # Format result
             result = f"Harga Rumah Diperkirakan: Rp {prediction[0]:,.2f}"
             st.success(result)
         except Exception as e:
             st.error(f"Terjadi Kesalahan: {e}")
+
+        #     # Preprocess user input
+        #     kota_encoded = encode_kota(kota)
+        #     kota_features = np.array(kota_encoded).reshape(1, -1)
+        #     other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2])
+
+        #     # Reshape other features
+        #     other_features_reshaped = other_features.reshape(1, -1)
+        #     other_features_scaled = scaler.transform(other_features_reshaped)
+
+        #     # Combine all features
+        #     input_data = np.concatenate([other_features_scaled, kota_features], axis=1)
+
+        #     # Make prediction
+        #     prediction = model.predict(input_data)
+
+        #     # Format result
+        #     result = f"Harga Rumah Diperkirakan: Rp {prediction[0]:,.2f}"
+        #     st.success(result)
+        # except Exception as e:
+        #     st.error(f"Terjadi Kesalahan: {e}")
 
 
     # if button:
