@@ -244,7 +244,7 @@ def run_ml_app():
 
     # Initialize Streamlit app
     st.markdown("""
-    <p style="font-size: 16px; font-weight: bold">Prediksi Harga Rumah</p>
+    <p style="font-size: 16px; font-weight: bold">House Price Predictions</p>
     """, unsafe_allow_html=True)
 
     # Create sidebar for user input
