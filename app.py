@@ -55,7 +55,7 @@ def main():
 
         text3 = """
                 From the bar chart above, we can see that the number of houses being sold for each region is more or less the same. \
-                Likewise for the Jakarta area, if it is accumulated, the total is around 1300 houses for sale for the entire Jakarta area.
+                Likewise for the Jakarta area, if it is accumulated, the total is around 1200 houses for sale for the entire Jakarta area.
                 """
 
         text4 = """
@@ -249,16 +249,16 @@ def run_ml_app():
 
     # Create sidebar for user input
     left, right = st.columns((2,2))
-    kota = left.selectbox('Lokasi',
+    kota = left.selectbox('Location',
                         ('Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat',
                         'Jakarta Selatan', 'Jakarta Timur', 'Bogor', 'Depok',
                         'Bekasi', 'Tangerang', 'Tangerang Selatan'))
-    kamar_tidur = left.number_input('Jumlah Kamar Tidur', 0, 50)
-    luas_bangunan_m2 = right.number_input('Luas Bangunan (m2)', 0, 5000)
-    luas_tanah_m2 = right.number_input('Luas Tanah (m2)', 0, 10000)
+    kamar_tidur = left.number_input('Number of Bedrooms', 0, 50)
+    luas_bangunan_m2 = right.number_input('Building Area (m2)', 0, 5000)
+    luas_tanah_m2 = right.number_input('Land Area (m2)', 0, 10000)
 
     # Predict button
-    button = st.button('Prediksi Harga')
+    button = st.button('Price Prediction')
 
     # Make prediction and show result
     if button:
@@ -281,10 +281,10 @@ def run_ml_app():
             prediction = model.predict(input_data_scaled)
 
             # Format result
-            result = f"Harga Rumah Diperkirakan: Rp {prediction[0]:,.2f}"
+            result = f"Estimated House Prices: Rp {prediction[0]:,.2f}"
             st.success(result)
         except Exception as e:
-            st.error(f"Terjadi Kesalahan: {e}")
+            st.error(f"Sorry, something wrong: {e}")
 
     st.caption('Copyright :copyright: 2024 by Eko B.W.: https://www.linkedin.com/in/eko-bw')
 
