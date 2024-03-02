@@ -290,7 +290,7 @@ def run_ml_app():
 
             # Reshape other features
             other_features_reshaped = other_features.reshape(1, -1)
-            other_features_scaled = scaler.fit_transform(other_features_reshaped)
+            other_features_scaled = scaler.transform(other_features_reshaped)
 
             # Combine all features
             input_data = np.concatenate([other_features_scaled, kota_features], axis=1)
