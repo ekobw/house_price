@@ -1,7 +1,5 @@
 import streamlit as st
-import streamlit.components.v1 as stc
 import pickle
-import joblib
 import pandas as pd
 import numpy as np
 import altair as alt
@@ -20,10 +18,10 @@ def main():
     with st.sidebar:
         st.image("house_price.jpg")
 
-        menu = ["Overview"]
+        menu = ["Dashboard", "Prediction"]
         choice = st.sidebar.selectbox("Menu", menu)
 
-    if choice == "Overview":
+    if choice == "Dashboard":
         st.header("Overview")
         st.markdown("This is a dashboard for analyzing the prices of houses sold in the Jakarta, Bogor, Depok, Tangerang, Bekasi and Tangerang Selatan areas.")
 
@@ -38,7 +36,7 @@ def main():
 
         text1 = """
 
-                - This dataset consists of a total of 7,252 rows (entries) and contains 5 columns of variable.
+                - The original dataset consists of a total of 9,000 rows (entries) and 6 columns of variables. After cleaning and transformation, the amount of clean data becomes 7,252 rows (entries) and 5 columns of variables.
                 - The dataset contains house information data from 6 regions, namely **Jakarta**, **Bogor**, **Depok**, **Tangerang**, **Bekasi** and **Tangerang Selatan**.
                 - The independent variables consist of **kamar_tidur**, **luas_bangunan_m2**, **luas_tanah_m2**, and **lokasi** which contain information about the house specifications.
                 - The dependent variable is **harga**, which informs the selling price of the house.
@@ -210,6 +208,90 @@ def main():
         st.markdown(text5)
 
         st.caption('Copyright :copyright: 2024 by Eko B.W.: https://www.linkedin.com/in/eko-bw')
+
+    elif choice == "Prediction":
+        st.header("Prediction Model")
+        run_ml_app()
+
+def run_ml_app():
+    # Load model
+    with open('./data/final_model.pkl', 'rb') as f:
+        model = pickle.load(f)
+
+    # Load scaler
+    with open('./data/scaler.pkl', 'rb') as f:
+        scaler = pickle.load(f)
+
+    # Define function to encode kota
+    def encode_kota(kota):
+        if kota == 'Jakarta Pusat':
+            return [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+        elif kota == 'Jakarta Utara':
+            return [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+        elif kota == 'Jakarta Barat':
+            return [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+        elif kota == 'Jakarta Selatan':
+            return [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+        elif kota == 'Jakarta Timur':
+            return [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+        elif kota == 'Bogor':
+            return [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+        elif kota == 'Depok':
+            return [0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
+        elif kota == 'Bekasi':
+            return [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        elif kota == 'Tangerang':
+            return [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+        elif kota == 'Tangerang Selatan':
+            return [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+
+    # Initialize Streamlit app
+    st.markdown("""
+    <p style="font-size: 16px; font-weight: bold">Prediksi Harga Rumah</p>
+    """, unsafe_allow_html=True)
+
+    # Create sidebar for user input
+    left, right = st.columns((2,2))
+    kota = left.selectbox('Lokasi',
+                        ('Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat',
+                        'Jakarta Selatan', 'Jakarta Timur', 'Bogor', 'Depok',
+                        'Bekasi', 'Tangerang', 'Tangerang Selatan'))
+    kamar_tidur = left.number_input('Jumlah Kamar Tidur', 0, 50)
+    luas_bangunan_m2 = right.number_input('Luas Bangunan (m2)', 0, 5000)
+    luas_tanah_m2 = right.number_input('Luas Tanah (m2)', 0, 10000)
+
+    # Predict button
+    button = st.button('Prediksi Harga')
+
+    # Make prediction and show result
+    if button:
+        try:
+            # Preprocess user input
+            kota_encoded = encode_kota(kota)
+            kota_features = np.array(kota_encoded)
+            other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2])
+
+            # Combine all features
+            input_data = np.concatenate([other_features, kota_features])
+
+            # Reshape input data
+            input_data_reshaped = input_data.reshape(1, -1)
+
+            # Transform input data using the loaded scaler
+            input_data_scaled = scaler.transform(input_data_reshaped)
+
+            # Make prediction
+            prediction = model.predict(input_data_scaled)
+
+            # Format result
+            result = f"Harga Rumah Diperkirakan: Rp {prediction[0]:,.2f}"
+            st.success(result)
+        except Exception as e:
+            st.error(f"Terjadi Kesalahan: {e}")
+
+# Call the function to run the ML app
+if __name__ == '__main__':
+     main()
 
 if __name__ == "__main__":
     main()
