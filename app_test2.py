@@ -258,7 +258,7 @@ def run_ml_app():
     def preprocess_input(kamar_tidur, luas_bangunan_m2, luas_tanah_m2, kota):
         kota_encoded = encode_kota(kota)
         other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2]).reshape(1, -1)
-        other_features_scaled = scaler.fit_transform(other_features)
+        other_features_scaled = scaler.transform(other_features)
         return np.concatenate([other_features_scaled, kota_encoded.reshape(1, -1)], axis=1)
 
     # Initialize Streamlit app
