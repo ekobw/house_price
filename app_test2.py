@@ -220,16 +220,16 @@ def run_ml_app():
     import joblib
 
     # # Load model and scaler from pickle files
-    # model = joblib.load('./data/final_model.pkl')
-    # scaler = joblib.load('./data/scaler.pkl')
+    model = joblib.load('./data/final_model.pkl')
+    scaler = joblib.load('./data/scaler.pkl')
 
-    # Load model
-    with open('./data/final_model.pkl', 'rb') as f:
-        model = pickle.load(f)
+    # # Load model
+    # with open('./data/final_model.pkl', 'rb') as f:
+    #     model = pickle.load(f)
 
-    # Load scaler
-    with open('./data/scaler.pkl', 'rb') as f:
-        scaler = pickle.load(f)
+    # # Load scaler
+    # with open('./data/scaler.pkl', 'rb') as f:
+    #     scaler = pickle.load(f)
 
     # Define function to encode kota
     def encode_kota(kota):
