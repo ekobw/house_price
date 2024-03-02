@@ -260,7 +260,7 @@ def run_ml_app():
         other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2]).reshape(1, -1)
         other_features_scaled = scaler.fit_transform(other_features)
         kota_encoded_array = np.array(kota_encoded).reshape(1, -1)  # Ubah kota_encoded menjadi array NumPy
-        return np.concatenate([other_features_scaled, kota_encoded_array])
+        return np.concatenate([other_features_scaled, kota_encoded_array], axis=1)
 
     # Initialize Streamlit app
     st.markdown("""
@@ -308,7 +308,8 @@ def run_ml_app():
         # Call the function to preprocess input data and make prediction
         def predict_price(kamar_tidur, luas_bangunan_m2, luas_tanah_m2, kota):
             input_data = preprocess_input(kamar_tidur, luas_bangunan_m2, luas_tanah_m2, kota)
-            prediction = model.predict(input_data)
+            df_input = pd.DataFrame(input_data)
+            prediction = model.predict(df_input)
             return prediction[0]
 
         predicted_price = predict_price(kamar_tidur, luas_bangunan_m2, luas_tanah_m2, kota)
