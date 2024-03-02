@@ -276,11 +276,11 @@ def run_ml_app():
             kota_features = np.array(kota_encoded)
             other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2])
 
-            # Scale other features using the loaded scaler
-            #other_features_scaled = scaler.transform(other_features.reshape(1, -1))
+            # Reshape other features
+            other_features_reshaped = other_features.reshape(1, -1)
 
             # Combine all features
-            input_data = np.concatenate([other_features, kota_features])
+            input_data = np.concatenate([other_features_reshaped, kota_features.reshape(1, -1)], axis=1)
 
             # Make prediction
             prediction = model.predict(input_data)
