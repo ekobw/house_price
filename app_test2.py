@@ -260,7 +260,7 @@ def run_ml_app():
         other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2]).reshape(1, -1)
         other_features_scaled = scaler.fit_transform(other_features)
         kota_encoded_array = np.array(kota_encoded).reshape(1, -1)  # Ubah kota_encoded menjadi array NumPy
-        return np.concatenate([other_features_scaled, kota_encoded_array], axis=1)
+        return np.concatenate([other_features_scaled, kota_encoded_array])
 
     # Initialize Streamlit app
     st.markdown("""
