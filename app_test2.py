@@ -216,71 +216,151 @@ def main():
         st.header("Prediction Model")
         run_ml_app()
 
-
 def run_ml_app():
-    import streamlit as st
-    import pandas as pd
-    import numpy as np
-    import pickle
+    import joblib
 
-    encoded_data = pd.read_csv('./data/encoded_data.csv')
-    model = joblib.load('./data/final_model.pkl')
+    # # Load model and scaler from pickle files
+    # model = joblib.load('./data/final_model.pkl')
+    # scaler = joblib.load('./data/scaler.pkl')
 
-    # Create a mapping dictionary
-    city_mapping = {
-        'Jakarta Pusat': 'kota_jakarta_pusat',
-        'Jakarta Selatan': 'kota_jakarta_selatan',
-        'Jakarta Barat': 'kota_jakarta_barat',
-        'Jakarta Utara': 'kota_jakarta_utara',
-        'Jakarta Timur': 'kota_jakarta_timur',
-        'Bogor': 'kota_bogor',
-        'Depok': 'kota_depok',
-        'Bekasi': 'kota_bekasi',
-        'Tangerang': 'kota_tangerang',
-        'Tangerang Selatan': 'kota_tangerang_selatan'
-    }    
+    # Load the model, scaler, and encoder objects
+    with open('./data/final_model.pkl', 'rb') as f:
+        model = pickle.load(f)
 
-    # Sidebar for input data
-    st.sidebar.header("Masukkan Data Rumah")
-    luas_bangunan_m2 = st.sidebar.number_input("Luas Bangunan (m²)", min_value=0)
-    luas_tanah_m2 = st.sidebar.number_input("Luas Tanah (m²)", min_value=0)
-    kamar_tidur = st.sidebar.number_input("Jumlah Kamar Tidur", min_value=0)
-    kota_input = st.sidebar.selectbox('Kota', encoded_data['encoded_city'])
+    # Define function to encode kota
+    def encode_kota(kota):
+        if kota == 'Jakarta Pusat':
+            return [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+        elif kota == 'Jakarta Utara':
+            return [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+        elif kota == 'Jakarta Barat':
+            return [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+        elif kota == 'Jakarta Selatan':
+            return [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+        elif kota == 'Jakarta Timur':
+            return [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+        elif kota == 'Bogor':
+            return [0, 1, 0, 0, 0, 1, 0, 0, 0, 0]
+        elif kota == 'Depok':
+            return [0, 0, 1, 0, 0, 0, 1, 0, 0, 0]
+        elif kota == 'Bekasi':
+            return [1, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+        elif kota == 'Tangerang':
+            return [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+        elif kota == 'Tangerang Selatan':
+            return [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
 
-    # Map the selected city to the corresponding encoded column
-    kota_encoded_column = city_mapping.get(kota_input)
+    # Initialize Streamlit app
+    st.markdown("""
+    <p style="font-size: 16px; font-weight: bold">Prediksi Harga Rumah</p>
+    """, unsafe_allow_html=True)
 
-    # Check if the selected city is in the encoded data
-    if kota_encoded_column in encoded_data.columns:
-        # Create DataFrame for input data
-        data_input = pd.DataFrame({
-            'luas_bangunan_m2': [luas_bangunan_m2],
-            'luas_tanah_m2': [luas_tanah_m2],
-            'kamar_tidur': [kamar_tidur]
-        })
+    # Create sidebar for user input
+    left, right = st.columns((2,2))
+    kota = left.selectbox('Lokasi',
+                        ('Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat',
+                        'Jakarta Selatan', 'Jakarta Timur', 'Bogor', 'Depok',
+                        'Bekasi', 'Tangerang', 'Tangerang Selatan'))
+    kamar_tidur = left.number_input('Jumlah Kamar Tidur', 0, 50)
+    luas_bangunan_m2 = right.number_input('Luas Bangunan (m2)', 0, 5000)
+    luas_tanah_m2 = right.number_input('Luas Tanah (m2)', 0, 10000)
 
-        # Map the selected city to the corresponding encoded column
-        kota_encoded_column = 'kota_' + kota_input.lower().replace(' ', '_')
+    # Predict button
+    button = st.button('Prediksi Harga')
 
-        # Check if the selected city is in the encoded data
-        if kota_encoded_column in encoded_data.columns:
-            # Add the selected city's encoded column to the input data
-            data_input[kota_encoded_column] = 1
-        else:
-            st.error("Error: Invalid city selected.")
+    # Make prediction and show result
+    if button:
+        try:
+            # Preprocess user input
+            kota_encoded = encode_kota(kota)
+            kota_features = np.array(kota_encoded)
+            other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2])
 
-        # Predict house price
-        prediksi = model.predict(data_input)
+            # Scale other features using the loaded scaler
+            #other_features_scaled = scaler.transform(other_features.reshape(1, -1))
 
-        # Show prediction result
-        st.header("Hasil Prediksi Harga Rumah")
-        st.write("Harga Rumah: Rp", str(int(prediksi)))
-    else:
-        st.error("Error: Invalid city selected.")
+            # Combine all features
+            input_data = np.concatenate([other_features, kota_features])
+
+            # Make prediction
+            prediction = model.predict(input_data)
+
+            # Format result
+            result = f"Harga Rumah Diperkirakan: Rp {prediction[0]:,.2f}"
+            st.success(result)
+        except Exception as e:
+            st.error(f"Terjadi Kesalahan: {e}")
 
 # Call the function to run the ML app
 if __name__ == '__main__':
      main()
+
+#============================================================================================================
+
+# def run_ml_app():
+#     import streamlit as st
+#     import pandas as pd
+#     import numpy as np
+#     import pickle
+
+#     encoded_data = pd.read_csv('./data/encoded_data.csv')
+#     model = joblib.load('./data/final_model.pkl')
+
+#     # Create a mapping dictionary
+#     city_mapping = {
+#         'Jakarta Pusat': 'kota_jakarta_pusat',
+#         'Jakarta Selatan': 'kota_jakarta_selatan',
+#         'Jakarta Barat': 'kota_jakarta_barat',
+#         'Jakarta Utara': 'kota_jakarta_utara',
+#         'Jakarta Timur': 'kota_jakarta_timur',
+#         'Bogor': 'kota_bogor',
+#         'Depok': 'kota_depok',
+#         'Bekasi': 'kota_bekasi',
+#         'Tangerang': 'kota_tangerang',
+#         'Tangerang Selatan': 'kota_tangerang_selatan'
+#     }
+
+#     # Sidebar for input data
+#     st.sidebar.header("Masukkan Data Rumah")
+#     luas_bangunan_m2 = st.sidebar.number_input("Luas Bangunan (m²)", min_value=0)
+#     luas_tanah_m2 = st.sidebar.number_input("Luas Tanah (m²)", min_value=0)
+#     kamar_tidur = st.sidebar.number_input("Jumlah Kamar Tidur", min_value=0)
+#     kota_input = st.sidebar.selectbox('Kota', encoded_data['encoded_city'])
+
+#     # Map the selected city to the corresponding encoded column
+#     kota_encoded_column = city_mapping.get(kota_input)
+
+#     # Check if the selected city is in the encoded data
+#     if kota_encoded_column in encoded_data.columns:
+#         # Create DataFrame for input data
+#         data_input = pd.DataFrame({
+#             'luas_bangunan_m2': [luas_bangunan_m2],
+#             'luas_tanah_m2': [luas_tanah_m2],
+#             'kamar_tidur': [kamar_tidur]
+#         })
+
+#         # Map the selected city to the corresponding encoded column
+#         kota_encoded_column = 'kota_' + kota_input.lower().replace(' ', '_')
+
+#         # Check if the selected city is in the encoded data
+#         if kota_encoded_column in encoded_data.columns:
+#             # Add the selected city's encoded column to the input data
+#             data_input[kota_encoded_column] = 1
+#         else:
+#             st.error("Error: Invalid city selected.")
+
+#         # Predict house price
+#         prediksi = model.predict(data_input)
+
+#         # Show prediction result
+#         st.header("Hasil Prediksi Harga Rumah")
+#         st.write("Harga Rumah: Rp", str(int(prediksi)))
+#     else:
+#         st.error("Error: Invalid city selected.")
+
+# # Call the function to run the ML app
+# if __name__ == '__main__':
+#      main()
 
 #==================================================================================================
 
@@ -305,7 +385,7 @@ if __name__ == '__main__':
 #         'kota_bekasi': 'Bekasi',
 #         'kota_tangerang': 'Tangerang',
 #         'kota_tangerang_selatan': 'Tangerang Selatan'
-#         }    
+#         }
 
 #     # Concatenate all columns containing encoded city information
 #     encoded_city_columns = [col for col in encoded_data.columns if col.startswith('kota_')]
@@ -404,7 +484,7 @@ if __name__ == '__main__':
 #     kamar_tidur_series = pd.Series([kamar_tidur])
 
 #     data_input = pd.concat([kota_encoded_input, luas_bangunan_series, luas_tanah_series, kamar_tidur_series], axis=1)
-    
+
 #     # Define the expected feature names
 #     expected_feature_names = ['kota_jakarta_pusat', 'kota_jakarta_selatan', 'kota_jakarta_barat', 'kota_jakarta_utara', 'kota_jakarta_timur', 'kota_bogor', 'kota_depok', 'kota_bekasi', 'kota_tangerang', 'kota_tangerang_selatan', 'luas_bangunan_m2', 'luas_tanah_m2', 'kamar_tidur']
 
