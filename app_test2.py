@@ -312,7 +312,7 @@ def run_ml_app():
             return prediction[0]
 
         predicted_price = predict_price(kamar_tidur, luas_bangunan_m2, luas_tanah_m2, kota)
-        print("Predicted Price:", predicted_price)
+        st.write(f"Prediksi Harga Rumah: Rp {predicted_price:,.2f}")
 
 # Call the function to run the ML app
 if __name__ == '__main__':
