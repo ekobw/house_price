@@ -4,9 +4,6 @@ import pandas as pd
 import numpy as np
 import altair as alt
 
-# with open('./data/final_model.pkl','rb') as file:
-#     Final_Model = pickle.load(file)
-
 def main():
     # stc.html(html_temp)
     # st.title("House Price Prediction App")
@@ -292,6 +289,3 @@ def run_ml_app():
 # Call the function to run the ML app
 if __name__ == '__main__':
      main()
-
-if __name__ == "__main__":
-    main()
