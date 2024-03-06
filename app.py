@@ -207,7 +207,7 @@ def main():
         st.caption('Copyright :copyright: 2024 by Eko B.W.: https://www.linkedin.com/in/eko-bw')
 
     elif choice == "Prediction":
-        st.title("House Price Prediction Application")
+        st.header("House Price Prediction Application")
         run_ml_app()
 
 def run_ml_app():
