@@ -6,7 +6,7 @@ import altair as alt
 
 def main():
     # stc.html(html_temp)
-    # st.title("House Price Prediction App")
+    st.title("House Price Prediction App")
     st.markdown("""
             <p style="font-size: 38px; color: #023047;font-weight: bold">House Price Analytics (Jabodetabek)</p>
             """, unsafe_allow_html=True)
@@ -243,6 +243,7 @@ def run_ml_app():
             return [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
 
     # Initialize Streamlit app
+    st.markdown("This house price prediction application uses a Machine Learning model that has been trained using previous datasets.")
     st.markdown("""
     <p style="font-size: 16px; font-weight: bold">House Price Predictions</p>
     """, unsafe_allow_html=True)
