@@ -84,11 +84,11 @@ def main():
         histograms = []
         for col in numeric_columns:
             histogram = alt.Chart(df).mark_bar().encode(
-                alt.X(col, bin=alt.Bin(maxbins=20)),
+                alt.X(col, bin=alt.Bin(maxbins=10)),
                 y='count()'
             ).properties(
-                width=300,
-                height=200,
+                width=500,
+                height=300,
                 title=f'Distribution of {col}'
             )
             histograms.append(histogram)
@@ -146,12 +146,11 @@ def main():
         st.write("This chart visualizes the average sale price of houses across different cities.")
 
         # Compute the average house price per city
-        bin_extent = [0, 500000000]
         mean_prices = df.groupby('kota')['harga'].mean().sort_values()
 
         # Create Altair chart
         chart = alt.Chart(mean_prices.reset_index()).mark_bar().encode(
-            x=alt.X('harga:Q', title='Average Price', bin=alt.Bin(extent=bin_extent)),
+            x=alt.X('harga:Q', title='Average Price'),
             y=alt.Y('kota:N', title='City', sort='-x')
         ).properties(
             width=500,
