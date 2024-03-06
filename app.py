@@ -146,7 +146,7 @@ def main():
         st.write("This chart visualizes the average sale price of houses across different cities.")
 
         # Compute the average house price per city
-        bin_extent = [0, 1000000]
+        bin_extent = [0, 500000000]
         mean_prices = df.groupby('kota')['harga'].mean().sort_values()
 
         # Create Altair chart
