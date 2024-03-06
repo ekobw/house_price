@@ -150,7 +150,7 @@ def main():
 
         # Create Altair chart
         chart = alt.Chart(mean_prices.reset_index()).mark_bar().encode(
-            x=alt.X('harga:Q', title='Average Price'),
+            x=alt.X('harga:Q', title='Average Price', bin=alt.Bin(maxbins=20)),
             y=alt.Y('kota:N', title='City', sort='-x')
         ).properties(
             width=500,
