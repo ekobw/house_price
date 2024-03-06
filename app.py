@@ -84,7 +84,7 @@ def main():
         histograms = []
         for col in numeric_columns:
             histogram = alt.Chart(df).mark_bar().encode(
-                alt.X(col, bin=alt.Bin(maxbins=30)),
+                alt.X(col, bin=alt.Bin(maxbins=40)),
                 y='count()'
             ).properties(
                 width=600,
