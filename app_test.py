@@ -1,35 +1,26 @@
 import streamlit as st
-import streamlit.components.v1 as stc
 import pickle
-import joblib
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.preprocessing import RobustScaler
 import altair as alt
-
-# with open('./data/final_model.pkl','rb') as file:
-#     Final_Model = pickle.load(file)
 
 def main():
     # stc.html(html_temp)
     # st.title("House Price Prediction App")
     st.markdown("""
-            <p style="font-size: 44px; color: #023047;font-weight: bold">House Price Prediction App</p>
+            <p style="font-size: 38px; color: #023047;font-weight: bold">House Price Analytics (Jabodetabek)</p>
             """, unsafe_allow_html=True)
-    st.markdown("This application was created for the Capstone Project Tetris Batch 4 from DQLab")
+    st.markdown("This dashboard was created for the Capstone Project Tetris Batch 4 from DQLab")
 
     with st.sidebar:
         st.image("house_price.jpg")
 
-        menu = ["Overview"]
+        menu = ["Dashboard", "Prediction"]
         choice = st.sidebar.selectbox("Menu", menu)
 
-    if choice == "Overview":
+    if choice == "Dashboard":
         st.header("Overview")
-        st.markdown("House Price Prediction App utilize machine learning to predict house prices based on house specifications and locations. \
-                    This allows users to find out the price range of the house they want to sell, or find out the price of the house they are looking for so they can adjust it to their budget.")
+        st.markdown("This is a dashboard for analyzing the prices of houses sold in the Jakarta, Bogor, Depok, Tangerang, Bekasi and Tangerang Selatan areas.")
 
         st.markdown("""
             <p style="font-size: 16px; font-weight: bold">Dataset Overview</p>
@@ -42,7 +33,7 @@ def main():
 
         text1 = """
 
-                - This dataset consists of a total of 8,298 rows (entries) and contains 5 columns of variable.
+                - The original dataset consists of a total of 9,000 rows (entries) and 6 columns of variables. After cleaning and transformation, the amount of clean data becomes 7,252 rows (entries) and 5 columns of variables.
                 - The dataset contains house information data from 6 regions, namely **Jakarta**, **Bogor**, **Depok**, **Tangerang**, **Bekasi** and **Tangerang Selatan**.
                 - The independent variables consist of **kamar_tidur**, **luas_bangunan_m2**, **luas_tanah_m2**, and **lokasi** which contain information about the house specifications.
                 - The dependent variable is **harga**, which informs the selling price of the house.
@@ -64,7 +55,7 @@ def main():
 
         text3 = """
                 From the bar chart above, we can see that the number of houses being sold for each region is more or less the same. \
-                Likewise for the Jakarta area, if it is accumulated, the total is around 1300 houses for sale for the entire Jakarta area.
+                Likewise for the Jakarta area, if it is accumulated, the total is around 1200 houses for sale for the entire Jakarta area.
                 """
 
         text4 = """
@@ -74,7 +65,7 @@ def main():
                 """
 
         text5 = """
-                Correlation Matrix shows that luas_bangunan_m2 and luas_tanah_m2 variables have a stronger relationship than the kamar_tidur variable. \
+                Correlation Matrix shows that **luas_bangunan_m2** and **luas_tanah_m2** variables have a stronger relationship with **harga** variable than the **kamar_tidur** variable. \
                 It can be concluded that houses that have a larger building area or land area tend to have higher prices than houses that have many bedrooms.
                 """
 
@@ -87,43 +78,65 @@ def main():
         # Display the chart title
         st.title("Distribution of Data")
 
-        # Create the figure without labels
-        fig, ax = plt.subplots()
-        df.hist(bins=20, color='skyblue', edgecolor='black', ax=ax)
+        numeric_columns = df.select_dtypes(include=['float64', 'int64']).columns
 
-        # Add labels and title separately below the chart
-        ax.set_xlabel('Values')
-        ax.set_ylabel('Count')
-        ax.set_title('Distribution of Data')
+        # Create histograms for each numeric column
+        histograms = []
+        for col in numeric_columns:
+            histogram = alt.Chart(df).mark_bar().encode(
+                alt.X(col, bin=alt.Bin(maxbins=20)),
+                y='count()'
+            ).properties(
+                width=300,
+                height=200,
+                title=f'Distribution of {col}'
+            )
+            histograms.append(histogram)
 
-        plt.tight_layout()  # Adjust spacing
+        # Arrange histograms in a grid layout
+        histogram_grid = alt.vconcat(*histograms)
 
-        # Show the plot using st.pyplot
-        st.pyplot(fig)
+        # Display Altair chart
+        st.altair_chart(histogram_grid, use_container_width=True)
 
         st.markdown(text2)
 
 
         # Display the chart title and explanation
-        st.title("Number of Houses for Sale per City")
+        st.title("Number of Houses Being Sold per City")
         st.write("This chart visualizes the distribution of houses across different cities.")
 
-        # Sort and filter data for better visualization (optional)
-        value_counts = df['kota'].value_counts().sort_values(ascending=True)
+        # Count the number of houses per city
+        house_counts = df['kota'].value_counts().reset_index()
+        house_counts.columns = ['kota', 'jumlah']
 
-        # # Create the bar chart within a Streamlit container
-        with st.container():
-            plt.figure(figsize=(8, 6))
-            bars1 = plt.barh(value_counts.index, value_counts, color='skyblue')
-            plt.title('Number of Houses for Sale per City')
-            plt.ylabel('City')
-            plt.xlabel('Number of Houses')
+        # Sort the DataFrame by 'jumlah' column in descending order
+        house_counts = house_counts.sort_values(by='jumlah', ascending=False)
 
-            # Add labels to bars
-            plt.bar_label(bars1, fontsize=10)
+        # Create Altair chart
+        chart = alt.Chart(house_counts).mark_bar().encode(
+            x=alt.X('jumlah:Q', title='Number of Houses Being Sold'),
+            y=alt.Y('kota:N', title='City', sort='-x')  # Sort the bars by 'jumlah' in descending order
+        ).properties(
+            width=500,
+            height=300
+        )
 
-            plt.tight_layout()
-            st.pyplot(plt)
+        # Add labels to bars
+        text = chart.mark_text(
+            align='left',
+            baseline='middle',
+            dx=3,  # Nudge text to right side of bar
+            color='black'  # Set text color
+        ).encode(
+            text='jumlah:Q'  # Use 'jumlah' as text
+        )
+
+        # Combine chart and text
+        chart = (chart + text).interactive()
+
+        # Display Altair chart
+        st.altair_chart(chart, use_container_width=True)
 
         st.markdown(text3)
 
@@ -132,22 +145,20 @@ def main():
         st.title("Average House Price per City")
         st.write("This chart visualizes the average sale price of houses across different cities.")
 
-        # Sort and filter data for better presentation (optional)
-        mean_prices = df.groupby('kota')['harga'].mean().sort_values(ascending=True)
+        # Compute the average house price per city
+        mean_prices = df.groupby('kota')['harga'].mean().sort_values()
 
-        # Create the bar chart within a Streamlit container
-        with st.container():
-            plt.figure(figsize=(8, 6))
-            bars2 = plt.barh(mean_prices.index, mean_prices, color='lightgreen')
-            plt.title('Average House Price per City')
-            plt.ylabel('City')
-            plt.xlabel('Average Price')
+        # Create Altair chart
+        chart = alt.Chart(mean_prices.reset_index()).mark_bar().encode(
+            x=alt.X('harga:Q', title='Average Price'),
+            y=alt.Y('kota:N', title='City', sort='-x')
+        ).properties(
+            width=500,
+            height=300,
+        )
 
-            # Add labels to bars
-            plt.bar_label(bars2, fontsize=10)
-
-            plt.tight_layout()
-            st.pyplot(plt)
+        # Display Altair chart
+        st.altair_chart(chart, use_container_width=True)
 
         st.markdown(text4)
 
@@ -155,409 +166,128 @@ def main():
         # Display the chart title
         st.title("Correlation Matrix of Numeric Variables")
 
-        # Filter out columns with object data type
+        # Select only numeric columns
         numeric_df = df.select_dtypes(include=['float64', 'int64'])
 
         # Calculate correlation matrix
-        correlation_matrix = numeric_df.corr()
+        correlation_matrix = numeric_df.corr().reset_index().rename(columns={'index': 'variable1'})
 
-        # Create a new figure and axis
-        fig, ax = plt.subplots(figsize=(8, 6))
+        # Melt correlation matrix
+        melted_df = pd.melt(correlation_matrix, id_vars='variable1', var_name='variable2', value_name='correlation')
 
-        # Create heatmap
-        sns.heatmap(correlation_matrix, annot=True, linewidths=0.5, ax=ax)
-        ax.set_title('Correlation Matrix of Numeric Variables')
+        # Create heatmap using Altair
+        heatmap = alt.Chart(melted_df).mark_rect().encode(
+            x='variable1:N',
+            y='variable2:N',
+            color='correlation:Q',
+            tooltip=['variable1', 'variable2', 'correlation']
+        ).properties(
+            width=500,
+            height=400,
+        )
 
-        # Display heatmap
-        st.pyplot(fig)
+        # Add text on heatmap
+        text = heatmap.mark_text(baseline='middle').encode(
+            text=alt.Text('correlation:Q', format='.2f'),
+            color=alt.condition(
+                alt.datum.correlation > 0.5,
+                alt.value('white'),
+                alt.value('black')
+            )
+        )
+
+        # Combine heatmap and text layers
+        chart = (heatmap + text)
+
+        # Display the chart
+        st.altair_chart(chart, use_container_width=True)
 
         st.markdown(text5)
 
-    elif choice == "Machine Learning":
+        st.caption('Copyright :copyright: 2024 by Eko B.W.: https://www.linkedin.com/in/eko-bw')
+
+    elif choice == "Prediction":
         st.header("Prediction Model")
         run_ml_app()
 
-
-
-
-# import streamlit as st
-# import numpy as np
-# from sklearn.preprocessing import RobustScaler  # Adjust scaler type if needed
-# from sklearn.model_selection import train_test_split
-# from sklearn.metrics import mean_absolute_error
-# import joblib
-
-# # Load model and scaler from pickle files
-# model = joblib.load('./data/final_model.pkl')
-# scaler = joblib.load('./data/scaler.pkl')
-
-# # Define function to encode kota
-# def encode_kota(kota):
-#     if kota == 'Jakarta Pusat':
-#         return [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
-#     elif kota == 'Jakarta Utara':
-#         return [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
-#     elif kota == 'Jakarta Barat':
-#         return [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
-#     elif kota == 'Jakarta Selatan':
-#         return [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
-#     elif kota == 'Jakarta Timur':
-#         return [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
-#     elif kota == 'Bogor':
-#         return [0, 1, 0, 0, 0, 1, 0, 0, 0, 0]
-#     elif kota == 'Depok':
-#         return [0, 0, 1, 0, 0, 0, 1, 0, 0, 0]
-#     elif kota == 'Bekasi':
-#         return [1, 0, 0, 0, 0, 0, 0, 1, 0, 0]
-#     elif kota == 'Tangerang':
-#         return [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
-#     elif kota == 'Tangerang Selatan':
-#         return [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
-
-# # Initialize Streamlit app
-# st.markdown("""
-# <p style="font-size: 16px; font-weight: bold">Prediksi Harga Rumah</p>
-# """, unsafe_allow_html=True)
-
-# # Create sidebar for user input
-# left, right = st.columns((2,2))
-# kota = left.selectbox('Lokasi',
-#                     ('Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat',
-#                      'Jakarta Selatan', 'Jakarta Timur', 'Bogor', 'Depok',
-#                      'Bekasi', 'Tangerang', 'Tangerang Selatan'))
-# kamar_tidur = left.number_input('Jumlah Kamar Tidur', 0, 50)
-# luas_bangunan_m2 = right.number_input('Luas Bangunan (m2)', 0, 5000)
-# luas_tanah_m2 = right.number_input('Luas Tanah (m2)', 0, 10000)
-
-# # Predict button
-# button = st.button('Prediksi Harga')
-
-# # Make prediction and show result
-# if button:
-#     try:
-#         # Preprocess user input
-#         kota_encoded = encode_kota(kota)
-#         other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2])
-
-#         # Scale other features using the loaded scaler
-#         other_features_scaled = scaler.transform(other_features.reshape(1, -1))
-
-#         # Combine all features
-#         input_data = np.concatenate((kota_encoded, other_features_scaled), axis=1)
-
-#         # Make prediction
-#         prediction = model.predict(input_data)
-
-#         # Format result
-#         result = f"Harga Rumah Diperkirakan: Rp {prediction[0]:,.2f}"
-#         st.success(result)
-#     except Exception as e:
-#         st.error(f"Terjadi Kesalahan: {e}")
-
-
 def run_ml_app():
-
-import streamlit as st
-import pandas as pd
-import pickle
-from sklearn.preprocessing import RobustScaler
-
-# Load the model
-@st.cache(allow_output_mutation=True)
-def load_model():
+    # Load model
     with open('./data/final_model.pkl', 'rb') as f:
         model = pickle.load(f)
-    return model
 
-model = load_model()
+    # Load scaler
+    with open('./data/scaler.pkl', 'rb') as f:
+        scaler = pickle.load(f)
 
-# Function to preprocess input data
-def preprocess_input(city, bedrooms, building_area, land_area):
-    # Encode city
-    encoded_city = encode_city(city)
-    
-    # Scale input features
-    scaler = RobustScaler()
-    bedrooms_scaled = scaler.fit_transform([[bedrooms]])[0][0]
-    building_area_scaled = scaler.fit_transform([[building_area]])[0][0]
-    land_area_scaled = scaler.fit_transform([[land_area]])[0][0]
-    
-    return encoded_city, bedrooms_scaled, building_area_scaled, land_area_scaled
+    # Define function to encode kota
+    def encode_kota(kota):
+        if kota == 'Jakarta Pusat':
+            return [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+        elif kota == 'Jakarta Utara':
+            return [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+        elif kota == 'Jakarta Barat':
+            return [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+        elif kota == 'Jakarta Selatan':
+            return [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+        elif kota == 'Jakarta Timur':
+            return [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+        elif kota == 'Bogor':
+            return [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+        elif kota == 'Depok':
+            return [0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
+        elif kota == 'Bekasi':
+            return [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        elif kota == 'Tangerang':
+            return [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+        elif kota == 'Tangerang Selatan':
+            return [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
 
-# Function to encode city
-def encode_city(city):
-    # Your encoding logic here
-    # Return the encoded value
-    pass
+    # Initialize Streamlit app
+    st.markdown("""
+    <p style="font-size: 16px; font-weight: bold">House Price Predictions</p>
+    """, unsafe_allow_html=True)
 
-# Function to predict house price
-def predict_price(encoded_city, bedrooms, building_area, land_area):
-    features = [[encoded_city, bedrooms, building_area, land_area]]
-    prediction = model.predict(features)
-    return prediction[0]
+    # Create sidebar for user input
+    left, right = st.columns((2,2))
+    kota = left.selectbox('Location',
+                        ('Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat',
+                        'Jakarta Selatan', 'Jakarta Timur', 'Bogor', 'Depok',
+                        'Bekasi', 'Tangerang', 'Tangerang Selatan'))
+    kamar_tidur = left.number_input('Number of Bedrooms', 0, 50)
+    luas_bangunan_m2 = right.number_input('Building Area (m2)', 0, 5000)
+    luas_tanah_m2 = right.number_input('Land Area (m2)', 0, 10000)
 
-# Streamlit app
-def main():
-    st.title("House Price Prediction")
-    
-    # Dropdown for city selection
-    city = st.selectbox("Select city", ["City 1", "City 2", "City 3", "City 4", "City 5", "City 6", "City 7", "City 8", "City 9"])
-    
-    # Textboxes for input
-    bedrooms = st.number_input("Number of bedrooms", min_value=1, step=1)
-    building_area = st.number_input("Building area (m^2)", min_value=0, step=1)
-    land_area = st.number_input("Land area (m^2)", min_value=0, step=1)
-    
-    # Preprocess input data
-    encoded_city, bedrooms_scaled, building_area_scaled, land_area_scaled = preprocess_input(city, bedrooms, building_area, land_area)
-    
-    # Predict house price
-    if st.button("Predict"):
-        price_prediction = predict_price(encoded_city, bedrooms_scaled, building_area_scaled, land_area_scaled)
-        st.success(f"Predicted house price: {price_prediction}")
+    # Predict button
+    button = st.button('Price Prediction')
 
-if __name__ == "__main__":
-    main()
+    # Make prediction and show result
+    if button:
+        try:
+            # Preprocess user input
+            kota_encoded = encode_kota(kota)
+            kota_features = np.array(kota_encoded)
+            other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2])
 
+            # Combine all features
+            input_data = np.concatenate([other_features, kota_features])
 
+            # Reshape input data
+            input_data_reshaped = input_data.reshape(1, -1)
 
+            # Transform input data using the loaded scaler
+            input_data_scaled = scaler.transform(input_data_reshaped)
 
-#     st.markdown("""
-#     <p style="font-size: 16px; font-weight: bold">Insert Data</p>
-#     """, unsafe_allow_html=True)
+            # Make prediction
+            prediction = model.predict(input_data_scaled)
 
-#     left, right = st.columns((2,2))
-#     kota = left.selectbox('Location',
-#                             ('Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat',
-#                              'Jakarta Selatan', 'Jakarta Timur', 'Bogor', 'Depok',
-#                              'Bekasi', 'Tangerang', 'Tangerang Selatan'))
-#     kamar_tidur = left.number_input('Number of Bedrooms', 0, 50)
-#     luas_bangunan_m2 = right.number_input('Building Area (m2)', 0, 5000)
-#     luas_tanah_m2 = right.number_input('Land Area (m2)', 0, 10000)
+            # Format result
+            result = f"Estimated House Prices: Rp {prediction[0]:,.2f}"
+            st.success(result)
+        except Exception as e:
+            st.error(f"Sorry, something wrong: {e}")
 
-#     button = st.button('Predict House Prices')
+    st.caption('Copyright :copyright: 2024 by Eko B.W.: https://www.linkedin.com/in/eko-bw')
 
-#     scaler = RobustScaler()
-
-#     #if button is clicked
-#     if button:
-#         try:
-#             # Preprocess user input
-#             kota_encoded = encode_kota(kota)
-#             kota_encoded_array = np.array([kota_encoded])  # Reshape to 2D array
-#             other_features = np.array([kamar_tidur, luas_bangunan_m2, luas_tanah_m2])
-
-#             # Combine all input features to a 2D array
-#             #input_data = np.concatenate((kota_encoded_array, [other_features]), axis=1)
-
-#             # Scale other features (excluding kota_encoded)
-#             other_features_scaled = scaler.fit_transform(other_features.reshape(1, -1))
-
-#             # Combine all features
-#             input_data = np.concatenate((kota_encoded_array, other_features_scaled), axis=1)
-
-#             # Load the trained model
-#             model = joblib.load('./data/final_model.pkl')
-
-#             # Making prediction
-#             prediction = model.predict(input_data)
-
-#             # Format result
-#             result = f"Harga Rumah Diperkirakan: Rp {prediction[0]:,.2f}"
-#             st.success(result)
-#         except Exception as e:
-#             st.error(f"Terjadi Kesalahan: {e}")
-
-# def encode_kota(kota):
-#     if kota == 'Jakarta Pusat':
-#         return [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
-#     elif kota == 'Jakarta Utara':
-#         return [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
-#     elif kota == 'Jakarta Barat':
-#         return [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
-#     elif kota == 'Jakarta Selatan':
-#         return [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
-#     elif kota == 'Jakarta Timur':
-#         return [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
-#     elif kota == 'Bogor':
-#         return [0, 1, 0, 0, 0, 1, 0, 0, 0, 0]
-#     elif kota == 'Depok':
-#         return [0, 0, 1, 0, 0, 0, 1, 0, 0, 0]
-#     elif kota == 'Bekasi':
-#         return [1, 0, 0, 0, 0, 0, 0, 1, 0, 0]
-#     elif kota == 'Tangerang':
-#         return [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
-#     elif kota == 'Tangerang Selatan':
-#         return [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
-
-# if __name__ == "__main__":
-#     run_ml_app()
-
-
-
-
-# def run_ml_app():
-
-#     st.markdown("""
-#     <p style="font-size: 16px; font-weight: bold">Insert Data</p>
-#     """, unsafe_allow_html=True)
-
-#     left, right = st.columns((2,2))
-#     kota = left.selectbox('Location',
-#                             ('Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat',
-#                              'Jakarta Selatan', 'Jakarta Timur', 'Bogor', 'Depok',
-#                              'Bekasi', 'Tangerang', 'Tangerang Selatan'))
-#     kamar_tidur = left.number_input('Number of Bedrooms', 0, 50)
-#     luas_bangunan_m2 = right.number_input('Building Area (m2)', 0, 5000)
-#     luas_tanah_m2 = right.number_input('Land Area (m2)', 0, 10000)
-
-#     button = st.button('Predict House Prices')
-
-#     #if button is clicked (ketika button dipencet)
-#     if button:
-#         try:
-#             # Preprocess user input
-#             if kota == 'Jakarta Pusat':
-#                 kota_encoded = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-#             elif kota == 'Jakarta Utara':
-#                 kota_encoded = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
-#             elif kota == 'Jakarta Barat':
-#                 kota_encoded = [0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
-#             elif kota == 'Jakarta Selatan':
-#                 kota_encoded = [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
-#             elif kota == 'Jakarta Timur':
-#                 kota_encoded = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
-#             elif kota == 'Bogor':
-#                 kota_encoded = [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
-#             elif kota == 'Depok':
-#                 kota_encoded = [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
-#             elif kota == 'Bekasi':
-#                 kota_encoded = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
-#             elif kota == 'Tangerang':
-#                 kota_encoded = [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
-#             elif kota == 'Tangerang Selatan':
-#                 kota_encoded = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
-
-#             # Convert kota_encoded list to array
-#             kota_encoded_array = np.array(kota_encoded)
-
-#             # Combine all input features to a 2D array
-#             input_data = np.concatenate((kota_encoded_array, [kamar_tidur, luas_bangunan_m2, luas_tanah_m2]), axis=0)
-
-#             # Load the trained model
-#             model = joblib.load('./data/final_model.pkl')
-
-#             # Making prediction
-#             prediction = model.predict(input_data)
-
-#             # Format hasil
-#             result = f"Harga Rumah Diperkirakan: Rp {prediction[0]:,.2f}"
-
-#             st.success(result)
-#         except Exception as e:
-#             st.error(f"Terjadi Kesalahan: {e}")
-
-# if __name__ == "__main__":
-#     run_ml_app()
-
-
-# def run_ml_app():
-
-#     st.markdown("""
-#     <p style="font-size: 16px; font-weight: bold">Insert Data</p>
-#     """, unsafe_allow_html=True)
-
-#     left, right = st.columns((2,2))
-#     kota = left.selectbox('Location',
-#                             ('Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat', 'Jakarta Selatan', 'Jakarta Timur', 'Bogor', 'Depok', 'Bekasi', 'Tangerang', 'Tangerang Selatan'))
-#     kamar_tidur = left.number_input('Number of Bedrooms', 0, 50)
-#     luas_bangunan_m2 = right.number_input('Building Area (m2)', 0, 5000)
-#     luas_tanah_m2 = right.number_input('Land Area (m2)', 0, 10000)
-
-#     button = st.button('Predict House Prices')
-
-#     #if button is clicked (ketika button dipencet)
-#     if button:
-#         #make prediction
-#         result = predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2)
-#         st.write('Predicted House Price:', result)
-
-# def encode_kota(kota):
-#     if kota == 'Jakarta Pusat':
-#         kota_encoded = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-#     elif kota == 'Jakarta Utara':
-#         kota_encoded = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
-#     elif kota == 'Jakarta Barat':
-#         kota_encoded = [0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
-#     elif kota == 'Jakarta Selatan':
-#         kota_encoded = [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
-#     elif kota == 'Jakarta Timur':
-#         kota_encoded = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
-#     elif kota == 'Bogor':
-#         kota_encoded = [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
-#     elif kota == 'Depok':
-#         kota_encoded = [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
-#     elif kota == 'Bekasi':
-#         kota_encoded = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
-#     elif kota == 'Tangerang':
-#         kota_encoded = [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
-#     elif kota == 'Tangerang Selatan':
-#         kota_encoded = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
-
-# def predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
-#     # Encode 'kota' feature
-#     kota_encoded = encode_kota(kota)
-
-#     # Combine all input features to a 2D array
-#     input_data = np.array([[kota_encoded + [kamar_tidur, luas_bangunan_m2, luas_tanah_m2]]])
-
-#     # Load the trained model
-#     model = joblib.load('./data/final_model.pkl')
-
-#     # Making prediction
-#     prediction = model.predict([[kota_encoded, kamar_tidur, luas_bangunan_m2, luas_tanah_m2]])
-
-#     return prediction
-
-# if __name__ == "__main__":
-#     run_ml_app()
-
-
-
-# def run_ml_app():
-
-#     st.markdown("""
-#     <p style="font-size: 16px; font-weight: bold">Insert Data</p>
-#     """, unsafe_allow_html=True)
-
-#     left, right = st.columns((2,2))
-#     kota = left.selectbox('Location',
-#                             ('Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat', 'Jakarta Selatan', 'Jakarta Timur', 'Bogor', 'Depok', 'Bekasi', 'Tangerang', 'Tangerang Selatan'))
-#     kamar_tidur = left.number_input('Number of Bedrooms', 0, 50)
-#     luas_bangunan_m2 = right.number_input('Building Area (m2)', 0, 5000)
-#     luas_tanah_m2 = right.number_input('Land Area (m2)', 0, 10000)
-
-#     button = st.button('Predict House Prices')
-
-#     #if button is clicked (ketika button dipencet)
-#     if button:
-#         #make prediction
-#         result = predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2)
-#         if result == 'Eligible':
-#             st.success(f'You have {result} from the loan')
-#         else:
-#             st.warning(f'You have {result} for the loan')
-
-# def predict(kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2):
-#     #processing user input
-#     gen = 0 if gender == 'Male' else 1
-#     cre = 0 if has_credit_card == 'No' else 1
-
-#     #Making prediction
-#     prediction = Final_Model.predict([[kota, kamar_tidur, luas_bangunan_m2, luas_tanah_m2]])
-#     result = prediction
-
-#     return result
-
-if __name__ == "__main__":
-    main()
+# Call the function to run the ML app
+if __name__ == '__main__':
+     main()
