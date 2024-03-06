@@ -244,9 +244,9 @@ def run_ml_app():
 
     # Initialize Streamlit app
     st.markdown("This house price prediction application uses a Machine Learning model that has been trained using previous datasets.")
-    st.markdown("""
-    <p style="font-size: 16px; font-weight: bold">House Price Predictions</p>
-    """, unsafe_allow_html=True)
+    # st.markdown("""
+    # <p style="font-size: 16px; font-weight: bold">House Price Predictions</p>
+    # """, unsafe_allow_html=True)
 
     # Create sidebar for user input
     left, right = st.columns((2,2))
