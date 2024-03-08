@@ -152,7 +152,7 @@ def main():
         # Create Altair chart
         chart = alt.Chart(mean_prices).mark_bar().encode(
             x=alt.X('harga:Q', title='Average Price', axis=alt.Axis(format=',d')),
-            y=alt.Y('kota:N', title='City')
+            y=alt.Y('kota:N', title='City', sort='-x', sortField='harga:Q')
         ).properties(
             width=700,
             height=400,
