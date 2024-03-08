@@ -114,7 +114,7 @@ def main():
         house_counts = house_counts.sort_values(by='jumlah', ascending=False)
 
         # Create Altair chart
-        chart = alt.Chart(house_counts).mark_bar().encode(
+        chart1 = alt.Chart(house_counts).mark_bar().encode(
             x=alt.X('jumlah:Q', title='Number of Houses Being Sold'),
             y=alt.Y('kota:N', title='City', sort='-x')  # Sort the bars by 'jumlah' in descending order
         ).properties(
@@ -123,7 +123,7 @@ def main():
         )
 
         # Add labels to bars
-        text = chart.mark_text(
+        text1 = chart.mark_text(
             align='left',
             baseline='middle',
             dx=3,  # Nudge text to right side of bar
@@ -133,7 +133,7 @@ def main():
         )
 
         # Combine chart and text
-        chart = (chart + text).interactive()
+        chart1 = (chart1 + text1).interactive()
 
         # Display Altair chart
         st.altair_chart(chart, use_container_width=True)
@@ -149,7 +149,7 @@ def main():
         mean_prices = df.groupby('kota')['harga'].mean().sort_values(ascending=True)
 
         # Create Altair chart
-        chart = alt.Chart(mean_prices.reset_index()).mark_bar().encode(
+        chart2 = alt.Chart(mean_prices.reset_index()).mark_bar().encode(
             x=alt.X('harga:Q', title='Average Price', axis=alt.Axis(format=',d')),
             y=alt.Y('kota:N', title='City', sort='-x')
         ).properties(
@@ -158,7 +158,7 @@ def main():
         )
 
         # Add labels to bars
-        text = chart.mark_text(
+        text2 = chart.mark_text(
             align='left',
             baseline='middle',
             dx=3,  # Nudge text to right side of bar
@@ -168,7 +168,7 @@ def main():
         )
 
         # Combine chart and text
-        chart = (chart + text).interactive()
+        chart2 = (chart2 + text2).interactive()
 
         # Display Altair chart
         st.altair_chart(chart, use_container_width=True)
