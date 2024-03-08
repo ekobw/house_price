@@ -133,7 +133,7 @@ def main():
         )
 
         # Combine chart and text
-        chart1 = (chart + text).interactive()
+        chart = (chart + text).interactive()
 
         # Display Altair chart
         st.altair_chart(chart, use_container_width=True)
