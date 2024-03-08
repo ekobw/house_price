@@ -123,7 +123,7 @@ def main():
         )
 
         # Add labels to bars
-        text1 = chart.mark_text(
+        text1 = chart1.mark_text(
             align='left',
             baseline='middle',
             dx=3,  # Nudge text to right side of bar
@@ -158,7 +158,7 @@ def main():
         )
 
         # Add labels to bars
-        text2 = chart.mark_text(
+        text2 = chart2.mark_text(
             align='left',
             baseline='middle',
             dx=3,  # Nudge text to right side of bar
