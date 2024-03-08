@@ -2,6 +2,8 @@ gunicorn
 pandas == 2.0.3
 scikit-learn == 1.2.1
 pickleshare == 0.7.5
+matplotlib
+seaborn
 altair
 xgboost
 plotly
