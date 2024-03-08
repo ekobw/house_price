@@ -26,7 +26,7 @@ def main():
         st.header("Business Understanding")
         st.markdown("Jakarta is the capital city of Indonesia, and the center of the economy. Many residents from the area have moved and settled in areas around Jakarta, because they want to earn a living in the capital city area. As a result, the population around the Jakarta area is increasing. So the need for housing will of course also increase.")
 
-        st.markdown("This project was created to analyze house prices in the Jakarta area and several surrounding areas, such as Bogor, Depok, Bekasi, Tangerang and South Tangerang.")
+        st.markdown("This project was created to analyze house prices in the Jakarta area and several surrounding areas, such as Bogor, Depok, Bekasi, Tangerang and Tangerang Selatan.")
 
         st.header("Dataset Overview")
 
