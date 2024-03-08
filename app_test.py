@@ -162,10 +162,9 @@ def main():
             align='left',
             baseline='middle',
             dx=3,  # Nudge text to right side of bar
-            color='black',  # Set text color
-            format=',.0f'
+            color='black'  # Set text color
         ).encode(
-            text='harga:Q'  # Use 'harga' as text
+            text=()'harga:Q', format=',.0f')  # Use 'harga' as text
         )
 
         # Combine chart and text
