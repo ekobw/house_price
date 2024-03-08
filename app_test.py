@@ -146,10 +146,10 @@ def main():
         st.write("This chart visualizes the average sale price of houses across different cities.")
 
         # Compute the average house price per city
-        mean_prices = df.groupby('kota')['harga'].mean().sort_values(ascending=True)
+        mean_prices = df.groupby('kota')['harga'].mean().sort_values(ascending=False)
 
         # Create Altair chart
-        chart2 = alt.Chart(mean_prices.reset_index()).mark_bar().encode(
+        chart = alt.Chart(mean_prices.reset_index()).mark_bar().encode(
             x=alt.X('harga:Q', title='Average Price', axis=alt.Axis(format=',d')),
             y=alt.Y('kota:N', title='City', sort='-x')
         ).properties(
@@ -158,7 +158,7 @@ def main():
         )
 
         # Add labels to bars
-        text2 = chart2.mark_text(
+        text = chart.mark_text(
             align='left',
             baseline='middle',
             dx=3,  # Nudge text to right side of bar
@@ -168,10 +168,10 @@ def main():
         )
 
         # Combine chart and text
-        chart2 = (chart2 + text2).interactive()
+        chart = (chart + text).interactive()
 
         # Display Altair chart
-        st.altair_chart(chart2, use_container_width=True)
+        st.altair_chart(chart, use_container_width=True)
 
         st.markdown(text4)
 
