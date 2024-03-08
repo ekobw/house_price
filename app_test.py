@@ -118,8 +118,8 @@ def main():
             x=alt.X('jumlah:Q', title='Number of Houses Being Sold'),
             y=alt.Y('kota:N', title='City', sort='-x')  # Sort the bars by 'jumlah' in descending order
         ).properties(
-            width=500,
-            height=300
+            width=700,
+            height=400
         )
 
         # Add labels to bars
