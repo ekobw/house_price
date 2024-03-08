@@ -3,7 +3,9 @@ import pickle
 import pandas as pd
 import numpy as np
 import altair as alt
+import seaborn as sns
 import plotly.express as px
+import matplotlib.pyplot as plt
 from scipy.stats import pearsonr
 
 def main():
@@ -252,16 +254,20 @@ def main():
 
         # Create visualization function
         def visualize(df):
-            # Create scatter plot using Plotly
-            scatter_plot = px.scatter(df, x='kamar_tidur', y='harga', title='Correlation between count of bedrooms and house price',
-                                    trendline='ols', trendline_color_override='#0775fb')  # Add regression line with specified color
-                                    
+            # Create scatter plot using Seaborn
+            plt.figure(figsize=(10, 6))
+            sns.regplot(data=df, x='kamar_tidur', y='harga', color='#0775fb',
+                        scatter_kws={'edgecolor': 'white'}, line_kws={"color": "#fb5607"})  # Set regression line color
+            plt.title('Correlation between count of bedrooms and house price', fontsize=17)
+            plt.xlabel('Count of Bedrooms', fontsize=14)
+            plt.ylabel('House Price', fontsize=14)
+
             # Calculate Pearson correlation coefficient
             pearson_corr, _ = pearsonr(df['kamar_tidur'], df['harga'])
             st.write("Pearson correlation coefficient:", pearson_corr)
 
-            # Display scatter plot with regression line
-            st.plotly_chart(scatter_plot, use_container_width=True)
+            # Display scatter plot
+            st.pyplot()
 
         # Display the chart title and explanation
         st.title("Average House Price per City")
