@@ -157,6 +157,19 @@ def main():
             height=300,
         )
 
+        # Add labels to bars
+        text = chart.mark_text(
+            align='left',
+            baseline='middle',
+            dx=3,  # Nudge text to right side of bar
+            color='black'  # Set text color
+        ).encode(
+            text='harga:Q'  # Use 'harga' as text
+        )
+
+        # Combine chart and text
+        chart = (chart + text).interactive()
+
         # Display Altair chart
         st.altair_chart(chart, use_container_width=True)
 
@@ -177,6 +190,19 @@ def main():
             width=600,
             height=300,
         )
+
+        # Add labels to bars
+        text = chart.mark_text(
+            align='left',
+            baseline='middle',
+            dx=3,  # Nudge text to right side of bar
+            color='black'  # Set text color
+        ).encode(
+            text='kamar_tidur:Q'  # Use 'kamar_tidur' as text
+        )
+
+        # Combine chart and text
+        chart = (chart + text).interactive()
 
         # Display Altair chart
         st.altair_chart(chart, use_container_width=True)
