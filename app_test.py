@@ -147,12 +147,12 @@ def main():
 
         # Compute the average house price per city
         mean_prices = df.groupby('kota')['harga'].mean().reset_index()
-        mean_prices = mean_prices.sort_values(by='harga', ascending=False)
+        #mean_prices = mean_prices.sort_values(by='harga', ascending=False)
 
         # Create Altair chart
         chart = alt.Chart(mean_prices).mark_bar().encode(
             x=alt.X('harga:Q', title='Average Price', axis=alt.Axis(format=',d')),
-            y=alt.Y('kota:N', title='City', sort=alt.SortField(field='harga', order='descending'))
+            y=alt.Y('kota:N', title='City', sort='-x'))
         ).properties(
             width=700,
             height=400,
