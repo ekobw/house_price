@@ -19,12 +19,12 @@ def main():
         choice = st.sidebar.selectbox("Menu", menu)
 
     if choice == "Dashboard":
-        st.header("Overview")
-        st.markdown("This is a dashboard for analyzing the prices of houses sold in the Jakarta, Bogor, Depok, Tangerang, Bekasi and Tangerang Selatan areas.")
+        st.header("Business Understanding")
+        st.markdown("""Jakarta is the capital city of Indonesia, and the center of the economy. Many residents from the area have moved and settled in areas around Jakarta, because they want to earn a living in the capital city area. As a result, the population around the Jakarta area is increasing. So the need for housing will of course also increase.
 
-        st.markdown("""
-            <p style="font-size: 16px; font-weight: bold">Dataset Overview</p>
-            """, unsafe_allow_html=True)
+        This project was created to analyze house prices in the Jakarta area and several surrounding areas, such as Bogor, Depok, Bekasi, Tangerang and South Tangerang.""")
+
+        st.header("Dataset Overview")
 
         url = "https://raw.githubusercontent.com/ekobw/house_price_prediction/main/data/clean_house_price.csv"
         df = pd.read_csv(url)
