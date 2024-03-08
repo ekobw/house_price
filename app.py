@@ -211,10 +211,6 @@ def main():
         #st.markdown(text6)
 
 
-        # Display the chart title and explanation
-        st.title("Pearson Correlation")
-        st.write("This chart visualizes the relationship between numeric features and target variable.")
-
         # # Create visualization function
         # def visualize(df):
         #     # Create scatter plot using Altair
@@ -252,6 +248,10 @@ def main():
         # visualize(df)
 
 
+        # Display the chart title and explanation
+        st.title("Pearson Correlation")
+        st.write("This chart visualizes the average sale price of houses across different cities.")
+
         # Create visualization function
         def visualize(df):
             # Create scatter plot using Seaborn
@@ -269,9 +269,47 @@ def main():
             # Display scatter plot
             st.pyplot(fig)
 
-        # Display the chart title and explanation
-        st.title("Average House Price per City")
-        st.write("This chart visualizes the average sale price of houses across different cities.")
+        # Call the visualize function
+        visualize(df)
+
+
+                # Create visualization function
+        def visualize(df):
+            # Create scatter plot using Seaborn
+            fig, ax = plt.subplots(figsize=(10, 6))
+            sns.regplot(data=df, x='luas_bangunan_m2', y='harga', color='#0775fb',
+                        scatter_kws={'edgecolor': 'white'}, line_kws={"color": "#fb5607"}, ax=ax)  # Set regression line color
+            ax.set_title('Correlation between building area and house price', fontsize=17)
+            ax.set_xlabel('Building Area (m2)', fontsize=14)
+            ax.set_ylabel('House Price', fontsize=14)
+
+            # Calculate Pearson correlation coefficient
+            pearson_corr, _ = pearsonr(df['luas_bangunan_m2'], df['harga'])
+            st.write("Pearson correlation coefficient:", pearson_corr)
+
+            # Display scatter plot
+            st.pyplot(fig)
+
+        # Call the visualize function
+        visualize(df)
+
+
+                # Create visualization function
+        def visualize(df):
+            # Create scatter plot using Seaborn
+            fig, ax = plt.subplots(figsize=(10, 6))
+            sns.regplot(data=df, x='luas_tanah_m2', y='harga', color='#0775fb',
+                        scatter_kws={'edgecolor': 'white'}, line_kws={"color": "#fb5607"}, ax=ax)  # Set regression line color
+            ax.set_title('Correlation between land area and house price', fontsize=17)
+            ax.set_xlabel('Land Area (m2)', fontsize=14)
+            ax.set_ylabel('House Price', fontsize=14)
+
+            # Calculate Pearson correlation coefficient
+            pearson_corr, _ = pearsonr(df['luas_tanah_m2'], df['harga'])
+            st.write("Pearson correlation coefficient:", pearson_corr)
+
+            # Display scatter plot
+            st.pyplot(fig)
 
         # Call the visualize function
         visualize(df)
