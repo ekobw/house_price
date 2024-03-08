@@ -73,6 +73,12 @@ def main():
                 It can be concluded that houses that have a larger building area or land area tend to have higher prices than houses that have many bedrooms.
                 """
 
+        conclusion = """
+                1. The data distribution shows that the graph of all numerical variables is shaped right-skewed, which means the range of values is quite wide, but the data spread out tends to be more numerous at low values. So the specifications and price of the house are It's still quite affordable for sale.
+                2. The variables that have a significant impact on the selling price of a house are building area building area and land area. The larger the building area or land area, the higher the house prices.
+                3. Houses located in the Jakarta area have much higher prices compared to houses located outside Jakarta. This makes sense because, as the capital and economic center, so many residents work or earn a living in Jakarta. By having a house in the Jakarta area, they no longer need to spend a lot of time commuting every day to go home for their activities of working or earning a living. That's why the price of houses in the Jakarta area is more expensive than in other areas.
+                """
+
         st.markdown("""
             <p style="font-size: 16px; font-weight: bold">Dataset Description</p>
             """, unsafe_allow_html=True)
@@ -355,6 +361,10 @@ def main():
         st.altair_chart(chart, use_container_width=True)
 
         st.markdown(text5)
+
+
+        st.header("Conclusion")
+        st.markdown(conclusion)
 
         st.caption('Copyright :copyright: 2024 by Eko B.W.: https://www.linkedin.com/in/eko-bw')
 
