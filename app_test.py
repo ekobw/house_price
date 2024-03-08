@@ -154,8 +154,8 @@ def main():
             x=alt.X('harga:Q', title='Average Price', axis=alt.Axis(format=',d')),
             y=alt.Y('kota:N', title='City', sort='-x')
         ).properties(
-            width=600,
-            height=300,
+            width=700,
+            height=400,
         )
 
         # Add labels to bars
