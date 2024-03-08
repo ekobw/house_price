@@ -3,6 +3,7 @@ import pickle
 import pandas as pd
 import numpy as np
 import altair as alt
+from scipy.stats import pearsonr
 
 def main():
     # stc.html(html_temp)
@@ -205,6 +206,35 @@ def main():
         st.altair_chart(chart, use_container_width=True)
 
         #st.markdown(text6)
+
+
+        # Display the chart title and explanation
+        st.title("Pearson Correlation")
+        st.write("This chart visualizes the relationship between numeric features and target variable.")
+
+        # Create visualization function
+        def visualize(df):
+            # Create scatter plot using Altair
+            scatter_plot = alt.Chart(df).mark_circle(size=60).encode(
+                x='kamar_tidur:Q',
+                y='harga:Q',
+                color=alt.value('#fb5607'),  # Set color to orange
+                tooltip=['kamar_tidur', 'harga']  # Show tooltip with bedroom count and price
+            ).properties(
+                width=700,
+                height=400,
+                title='Correlation between count of bedrooms and house price'
+            ).interactive()
+
+            # Calculate Pearson correlation coefficient
+            pearson_corr, _ = pearsonr(df['kamar_tidur'], df['harga'])
+            st.write("Pearson correlation coefficient:", pearson_corr)
+
+            # Display scatter plot
+            st.altair_chart(scatter_plot, use_container_width=True)
+
+        # Call the visualize function
+        visualize(df)
 
 
         # Display the chart title
