@@ -3,6 +3,7 @@ import pickle
 import pandas as pd
 import numpy as np
 import altair as alt
+import plotly.express as px
 from scipy.stats import pearsonr
 
 def main():
@@ -212,34 +213,55 @@ def main():
         st.title("Pearson Correlation")
         st.write("This chart visualizes the relationship between numeric features and target variable.")
 
+        # # Create visualization function
+        # def visualize(df):
+        #     # Create scatter plot using Altair
+        #     scatter_plot = alt.Chart(df).mark_circle(size=60).encode(
+        #         x='kamar_tidur:Q',
+        #         y='harga:Q',
+        #         color=alt.value('#fb5607'),  # Set color to orange
+        #         tooltip=['kamar_tidur', 'harga']  # Show tooltip with bedroom count and price
+        #     ).properties(
+        #         width=700,
+        #         height=400,
+        #         title='Correlation between count of bedrooms and house price'
+        #     )
+
+        #     # Add regression line with specified color
+        #     regression_line = scatter_plot.transform_regression(
+        #         'kamar_tidur', 'harga'
+        #     ).mark_line(color='#0775fb')  # Set color to blue
+
+        #     # Combine scatter plot and regression line
+        #     chart = scatter_plot + regression_line
+
+        #     # Calculate Pearson correlation coefficient
+        #     pearson_corr, _ = pearsonr(df['kamar_tidur'], df['harga'])
+        #     st.write("Pearson correlation coefficient:", pearson_corr)
+
+        #     # Display scatter plot with regression line
+        #     st.altair_chart(chart, use_container_width=True)
+
+        # # Display the chart title and explanation
+        # st.title("Average House Price per City")
+        # st.write("This chart visualizes the average sale price of houses across different cities.")
+
+        # # Call the visualize function
+        # visualize(df)
+
+
         # Create visualization function
         def visualize(df):
-            # Create scatter plot using Altair
-            scatter_plot = alt.Chart(df).mark_circle(size=60).encode(
-                x='kamar_tidur:Q',
-                y='harga:Q',
-                color=alt.value('#fb5607'),  # Set color to orange
-                tooltip=['kamar_tidur', 'harga']  # Show tooltip with bedroom count and price
-            ).properties(
-                width=700,
-                height=400,
-                title='Correlation between count of bedrooms and house price'
-            )
-
-            # Add regression line with specified color
-            regression_line = scatter_plot.transform_regression(
-                'kamar_tidur', 'harga'
-            ).mark_line(color='#0775fb')  # Set color to blue
-
-            # Combine scatter plot and regression line
-            chart = scatter_plot + regression_line
-
+            # Create scatter plot using Plotly
+            scatter_plot = px.scatter(df, x='kamar_tidur', y='harga', title='Correlation between count of bedrooms and house price',
+                                    trendline='ols', trendline_color_override='#0775fb')  # Add regression line with specified color
+                                    
             # Calculate Pearson correlation coefficient
             pearson_corr, _ = pearsonr(df['kamar_tidur'], df['harga'])
             st.write("Pearson correlation coefficient:", pearson_corr)
 
             # Display scatter plot with regression line
-            st.altair_chart(chart, use_container_width=True)
+            st.plotly_chart(scatter_plot, use_container_width=True)
 
         # Display the chart title and explanation
         st.title("Average House Price per City")
