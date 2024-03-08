@@ -224,14 +224,22 @@ def main():
                 width=700,
                 height=400,
                 title='Correlation between count of bedrooms and house price'
-            ).interactive()
+            )
+
+            # Add regression line
+            regression_line = scatter_plot.transform_regression(
+                'kamar_tidur', 'harga'
+            ).mark_line(color='#0775fb')  # Set color to blue
+
+            # Combine scatter plot and regression line
+            chart = scatter_plot + regression_line
 
             # Calculate Pearson correlation coefficient
             pearson_corr, _ = pearsonr(df['kamar_tidur'], df['harga'])
             st.write("Pearson correlation coefficient:", pearson_corr)
 
-            # Display scatter plot
-            st.altair_chart(scatter_plot, use_container_width=True)
+            # Display scatter plot with regression line
+            st.altair_chart(chart, use_container_width=True)
 
         # Call the visualize function
         visualize(df)
