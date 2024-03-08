@@ -163,6 +163,50 @@ def main():
         st.markdown(text4)
 
 
+        # Display the chart title and explanation
+        st.title("Average Building Area per City")
+        st.write("This chart visualizes the average building area of houses across different cities.")
+
+        # Compute the average house price per city
+        mean_prices = df.groupby('kota')['luas_bangunan_m2'].mean().sort_values()
+
+        # Create Altair chart
+        chart = alt.Chart(mean_prices.reset_index()).mark_bar().encode(
+            x=alt.X('luas_bangunan_m2:Q', title='Average Building Area (m2)', axis=alt.Axis(format=',d')),
+            y=alt.Y('kota:N', title='City', sort='-x')
+        ).properties(
+            width=500,
+            height=300,
+        )
+
+        # Display Altair chart
+        st.altair_chart(chart, use_container_width=True)
+
+        #st.markdown(text5)
+
+
+        # Display the chart title and explanation
+        st.title("Average Land Area per City")
+        st.write("This chart visualizes the average land area of houses across different cities.")
+
+        # Compute the average house price per city
+        mean_prices = df.groupby('kota')['luas_tanah_m2'].mean().sort_values()
+
+        # Create Altair chart
+        chart = alt.Chart(mean_prices.reset_index()).mark_bar().encode(
+            x=alt.X('luas_tanah_m2:Q', title='Average Land Area (m2)', axis=alt.Axis(format=',d')),
+            y=alt.Y('kota:N', title='City', sort='-x')
+        ).properties(
+            width=500,
+            height=300,
+        )
+
+        # Display Altair chart
+        st.altair_chart(chart, use_container_width=True)
+
+        #st.markdown(text6)
+
+
         # Display the chart title
         st.title("Correlation Matrix of Numeric Variables")
 
