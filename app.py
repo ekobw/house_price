@@ -226,7 +226,7 @@ def main():
                 title='Correlation between count of bedrooms and house price'
             )
 
-            # Add regression line
+            # Add regression line with specified color
             regression_line = scatter_plot.transform_regression(
                 'kamar_tidur', 'harga'
             ).mark_line(color='#0775fb')  # Set color to blue
@@ -240,6 +240,10 @@ def main():
 
             # Display scatter plot with regression line
             st.altair_chart(chart, use_container_width=True)
+
+        # Display the chart title and explanation
+        st.title("Average House Price per City")
+        st.write("This chart visualizes the average sale price of houses across different cities.")
 
         # Call the visualize function
         visualize(df)
