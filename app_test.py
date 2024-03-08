@@ -102,43 +102,43 @@ def main():
         st.markdown(text2)
 
 
-        # Display the chart title and explanation
-        st.title("Number of Houses Being Sold per City")
-        st.write("This chart visualizes the distribution of houses across different cities.")
+        # # Display the chart title and explanation
+        # st.title("Number of Houses Being Sold per City")
+        # st.write("This chart visualizes the distribution of houses across different cities.")
 
-        # Count the number of houses per city
-        house_counts = df['kota'].value_counts().reset_index()
-        house_counts.columns = ['kota', 'jumlah']
+        # # Count the number of houses per city
+        # house_counts = df['kota'].value_counts().reset_index()
+        # house_counts.columns = ['kota', 'jumlah']
 
-        # Sort the DataFrame by 'jumlah' column in descending order
-        house_counts = house_counts.sort_values(by='jumlah', ascending=False)
+        # # Sort the DataFrame by 'jumlah' column in descending order
+        # house_counts = house_counts.sort_values(by='jumlah', ascending=False)
 
-        # Create Altair chart
-        chart = alt.Chart(house_counts).mark_bar().encode(
-            x=alt.X('jumlah:Q', title='Number of Houses Being Sold'),
-            y=alt.Y('kota:N', title='City', sort='-x')  # Sort the bars by 'jumlah' in descending order
-        ).properties(
-            width=500,
-            height=300
-        )
+        # # Create Altair chart
+        # chart = alt.Chart(house_counts).mark_bar().encode(
+        #     x=alt.X('jumlah:Q', title='Number of Houses Being Sold'),
+        #     y=alt.Y('kota:N', title='City', sort='-x')  # Sort the bars by 'jumlah' in descending order
+        # ).properties(
+        #     width=500,
+        #     height=300
+        # )
 
-        # Add labels to bars
-        text = chart.mark_text(
-            align='left',
-            baseline='middle',
-            dx=3,  # Nudge text to right side of bar
-            color='black'  # Set text color
-        ).encode(
-            text='jumlah:Q'  # Use 'jumlah' as text
-        )
+        # # Add labels to bars
+        # text = chart.mark_text(
+        #     align='left',
+        #     baseline='middle',
+        #     dx=3,  # Nudge text to right side of bar
+        #     color='black'  # Set text color
+        # ).encode(
+        #     text='jumlah:Q'  # Use 'jumlah' as text
+        # )
 
-        # Combine chart and text
-        chart1 = (chart + text).interactive()
+        # # Combine chart and text
+        # chart1 = (chart + text).interactive()
 
-        # Display Altair chart
-        st.altair_chart(chart, use_container_width=True)
+        # # Display Altair chart
+        # st.altair_chart(chart, use_container_width=True)
 
-        st.markdown(text3)
+        # st.markdown(text3)
 
 
         # Display the chart title and explanation
