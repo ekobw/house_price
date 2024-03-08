@@ -114,7 +114,7 @@ def main():
         house_counts = house_counts.sort_values(by='jumlah', ascending=False)
 
         # Create Altair chart
-        chart1 = alt.Chart(house_counts).mark_bar().encode(
+        chart = alt.Chart(house_counts).mark_bar().encode(
             x=alt.X('jumlah:Q', title='Number of Houses Being Sold'),
             y=alt.Y('kota:N', title='City', sort='-x')  # Sort the bars by 'jumlah' in descending order
         ).properties(
@@ -123,7 +123,7 @@ def main():
         )
 
         # Add labels to bars
-        text1 = chart1.mark_text(
+        text = chart.mark_text(
             align='left',
             baseline='middle',
             dx=3,  # Nudge text to right side of bar
@@ -133,10 +133,10 @@ def main():
         )
 
         # Combine chart and text
-        chart1 = (chart1 + text1).interactive()
+        chart1 = (chart + text).interactive()
 
         # Display Altair chart
-        st.altair_chart(chart1, use_container_width=True)
+        st.altair_chart(chart, use_container_width=True)
 
         st.markdown(text3)
 
