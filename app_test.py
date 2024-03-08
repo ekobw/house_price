@@ -136,7 +136,7 @@ def main():
         chart1 = (chart1 + text1).interactive()
 
         # Display Altair chart
-        st.altair_chart(chart, use_container_width=True)
+        st.altair_chart(chart1, use_container_width=True)
 
         st.markdown(text3)
 
@@ -171,7 +171,7 @@ def main():
         chart2 = (chart2 + text2).interactive()
 
         # Display Altair chart
-        st.altair_chart(chart, use_container_width=True)
+        st.altair_chart(chart2, use_container_width=True)
 
         st.markdown(text4)
 
