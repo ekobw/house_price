@@ -118,7 +118,7 @@ def main():
             x=alt.X('jumlah:Q', title='Number of Houses Being Sold'),
             y=alt.Y('kota:N', title='City', sort='-x')  # Sort the bars by 'jumlah' in descending order
         ).properties(
-            width=600,
+            width=500,
             height=300
         )
 
@@ -154,7 +154,7 @@ def main():
             x=alt.X('harga:Q', title='Average Price', axis=alt.Axis(format=',d')),
             y=alt.Y('kota:N', title='City', sort='-x')
         ).properties(
-            width=500,
+            width=600,
             height=300,
         )
 
