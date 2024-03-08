@@ -335,7 +335,7 @@ def main():
             tooltip=['variable1', 'variable2', 'correlation']
         ).properties(
             width=500,
-            height=400,
+            height=500,
         )
 
         # Add text on heatmap
