@@ -255,19 +255,19 @@ def main():
         # Create visualization function
         def visualize(df):
             # Create scatter plot using Seaborn
-            plt.figure(figsize=(10, 6))
+            fig, ax = plt.subplots(figsize=(10, 6))
             sns.regplot(data=df, x='kamar_tidur', y='harga', color='#0775fb',
-                        scatter_kws={'edgecolor': 'white'}, line_kws={"color": "#fb5607"})  # Set regression line color
-            plt.title('Correlation between count of bedrooms and house price', fontsize=17)
-            plt.xlabel('Count of Bedrooms', fontsize=14)
-            plt.ylabel('House Price', fontsize=14)
+                        scatter_kws={'edgecolor': 'white'}, line_kws={"color": "#fb5607"}, ax=ax)  # Set regression line color
+            ax.set_title('Correlation between count of bedrooms and house price', fontsize=17)
+            ax.set_xlabel('Count of Bedrooms', fontsize=14)
+            ax.set_ylabel('House Price', fontsize=14)
 
             # Calculate Pearson correlation coefficient
             pearson_corr, _ = pearsonr(df['kamar_tidur'], df['harga'])
             st.write("Pearson correlation coefficient:", pearson_corr)
 
             # Display scatter plot
-            st.pyplot()
+            st.pyplot(fig)
 
         # Display the chart title and explanation
         st.title("Average House Price per City")
