@@ -162,6 +162,27 @@ def main():
 
         st.markdown(text4)
 
+        # Display the chart title and explanation
+        st.title("Average Number of Bedrooms per City")
+        st.write("This chart visualizes the average number of bedrooms in a house in various cities.")
+
+        # Compute the average house price per city
+        mean_prices = df.groupby('kota')['kamar_tidur'].mean().sort_values()
+
+        # Create Altair chart
+        chart = alt.Chart(mean_prices.reset_index()).mark_bar().encode(
+            x=alt.X('kamar_tidur:Q', title='Average Number of Bedrooms'),
+            y=alt.Y('kota:N', title='City', sort='-x')
+        ).properties(
+            width=600,
+            height=300,
+        )
+
+        # Display Altair chart
+        st.altair_chart(chart, use_container_width=True)
+
+        #st.markdown(text5)
+
 
         # Display the chart title
         st.title("Correlation Matrix of Numeric Variables")
