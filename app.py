@@ -74,8 +74,8 @@ def main():
                 """
 
         conclusion = """
-                1. The data distribution shows that the graph of all numerical variables is shaped right-skewed, which means the range of values is quite wide, but the data spread out tends to be more numerous at low values. So the specifications and price of the house are It's still quite affordable for sale.
-                2. The variables that have a significant impact on the selling price of a house are building area building area and land area. The larger the building area or land area, the higher the house prices.
+                1. The data distribution shows that the graph of all numerical variables is right-skewed, which means the range of values is quite wide, but the data spread out tends to be more numerous at low values. So the specifications and price of the houses are still quite affordable for sale.
+                2. The variables that have significant impact on the selling price of a house are **building area** and **land area**. The larger the building area or land area, the higher the house prices.
                 3. Houses located in the Jakarta area have much higher prices compared to houses located outside Jakarta. This makes sense because, as the capital and economic center, so many residents work or earn a living in Jakarta. By having a house in the Jakarta area, they no longer need to spend a lot of time commuting every day to go home for their activities of working or earning a living. That's why the price of houses in the Jakarta area is more expensive than in other areas.
                 """
 
