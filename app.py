@@ -10,10 +10,10 @@ from scipy.stats import pearsonr
 
 def main():
     # stc.html(html_temp)
-    st.title("House Price Analytics (Jabodetabek)")
-    # st.markdown("""
-    #         <p style="font-size: 38px; color: #023047;font-weight: bold">House Price Analytics (Jabodetabek)</p>
-    #         """, unsafe_allow_html=True)
+    # st.title("House Price Analytics (Jabodetabek)")
+    st.markdown("""
+            <p style="font-size: 38px; color: #023047;font-weight: bold">House Price Analytics (Jabodetabek)</p>
+            """, unsafe_allow_html=True)
     st.markdown("This dashboard was created for the Capstone Project Tetris Batch 4 from DQLab")
 
     with st.sidebar:
