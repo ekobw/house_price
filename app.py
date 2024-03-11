@@ -27,9 +27,14 @@ def main():
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Business Understanding</h1>""", unsafe_allow_html=True)
         # st.header("Business Understanding")
-        st.markdown("Jakarta is the capital city of Indonesia, and the center of the economy. Many residents from the area have moved and settled in areas around Jakarta, because they want to earn a living in the capital city area. As a result, the population around the Jakarta area is increasing. So the need for housing will of course also increase.")
+        st.markdown("""Jakarta is the capital of Indonesia and the center of the economy.
+                    Many residents from villages and cities outside Jakarta have moved and settled in areas around Jakarta,
+                    because they want to work or earn a living in the capital city area.
+                    As a result, the population around the Jakarta area is increasing.
+                    So the need for housing will of course also increase.""")
 
-        st.markdown("This project was created to analyze house prices in the Jakarta area and several surrounding areas, such as Bogor, Depok, Bekasi, Tangerang and Tangerang Selatan.")
+        st.markdown("""This project was created to analyze house prices in the Jakarta area
+                    and several surrounding areas, such as **Bogor**, **Depok**, **Bekasi**, **Tangerang** and **Tangerang Selatan**.""")
 
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
@@ -44,7 +49,7 @@ def main():
         text1a = """
                 - The original dataset consists of a total of 9,000 rows (entries) and 6 columns of variables. After cleaning and transformation, the amount of clean data becomes 7,252 rows (entries) and 5 columns of variables.
                 - The dataset contains house information data from 6 regions, namely **Jakarta**, **Bogor**, **Depok**, **Tangerang**, **Bekasi** and **Tangerang Selatan**.
-                - The independent variables consist of **kamar_tidur**, **luas_bangunan_m2**, **luas_tanah_m2**, and **lokasi** which contain information about the house specifications.
+                - The independent variables consists of **kamar_tidur**, **luas_bangunan_m2**, **luas_tanah_m2**, and **lokasi** which contain information about the house specifications.
                 - The dependent variable is **harga**, which informs the selling price of the house.
                 """
 
@@ -106,14 +111,221 @@ def main():
         # Create histograms for each numeric column
         histograms = []
         for col in numeric_columns:
+            # Calculate mean and median
+            mean_val = df[col].mean()
+            median_val = df[col].median()
+
+            # Create histogram with mean and median annotations
             histogram = alt.Chart(df).mark_bar().encode(
                 alt.X(col, bin=alt.Bin(maxbins=40)),
                 y='count()'
             ).properties(
-                width=300,
-                height=150,
+                width=300,  # decrease width
+                height=150,  # decrease height
                 title=f'Distribution of {col}'
+            ).configure_axis(
+                labelFontSize=12,
+                titleFontSize=14
+            ).configure_title(
+                fontSize=16
+            ).configure_legend(
+                labelFontSize=12
+            ).configure_view(
+                strokeWidth=0
+            ).configure_axisX(
+                labelAngle=0
+            ).configure_axisY(
+                labelAngle=0
+            ).configure_axis(
+                labelFontSize=12
+            ).configure_axisX(
+                labelFontSize=12
+            ).configure_axisY(
+                labelFontSize=12
+            ).configure_title(
+                fontSize=14
+            ).configure_legend(
+                labelFontSize=12
+            ).configure_view(
+                strokeWidth=0
+            ).configure_axisX(
+                labelAngle=0
+            ).configure_axisY(
+                labelAngle=0
+            ).configure_axis(
+                labelFontSize=12
+            ).configure_axisX(
+                labelFontSize=12
+            ).configure_axisY(
+                labelFontSize=12
+            ).configure_title(
+                fontSize=14
+            ).configure_legend(
+                labelFontSize=12
+            ).configure_view(
+                strokeWidth=0
+            ).configure_axisX(
+                labelAngle=0
+            ).configure_axisY(
+                labelAngle=0
+            ).configure_axis(
+                labelFontSize=12
+            ).configure_axisX(
+                labelFontSize=12
+            ).configure_axisY(
+                labelFontSize=12
+            ).configure_title(
+                fontSize=14
+            ).configure_legend(
+                labelFontSize=12
+            ).configure_view(
+                strokeWidth=0
+            ).configure_axisX(
+                labelAngle=0
+            ).configure_axisY(
+                labelAngle=0
+            ).configure_axis(
+                labelFontSize=12
+            ).configure_axisX(
+                labelFontSize=12
+            ).configure_axisY(
+                labelFontSize=12
+            ).configure_title(
+                fontSize=14
+            ).configure_legend(
+                labelFontSize=12
+            ).configure_view(
+                strokeWidth=0
+            ).configure_axisX(
+                labelAngle=0
+            ).configure_axisY(
+                labelAngle=0
+            ).configure_axis(
+                labelFontSize=12
+            ).configure_axisX(
+                labelFontSize=12
+            ).configure_axisY(
+                labelFontSize=12
+            ).configure_title(
+                fontSize=14
+            ).configure_legend(
+                labelFontSize=12
+            ).configure_view(
+                strokeWidth=0
+            ).configure_axisX(
+                labelAngle=0
+            ).configure_axisY(
+                labelAngle=0
+            ).configure_axis(
+                labelFontSize=12
+            ).configure_axisX(
+                labelFontSize=12
+            ).configure_axisY(
+                labelFontSize=12
+            ).configure_title(
+                fontSize=14
+            ).configure_legend(
+                labelFontSize=12
+            ).configure_view(
+                strokeWidth=0
+            ).configure_axisX(
+                labelAngle=0
+            ).configure_axisY(
+                labelAngle=0
+            ).configure_axis(
+                labelFontSize=12
+            ).configure_axisX(
+                labelFontSize=12
+            ).configure_axisY(
+                labelFontSize=12
+            ).configure_title(
+                fontSize=14
+            ).configure_legend(
+                labelFontSize=12
+            ).configure_view(
+                strokeWidth=0
+            ).configure_axisX(
+                labelAngle=0
+            ).configure_axisY(
+                labelAngle=0
+            ).configure_axis(
+                labelFontSize=12
+            ).configure_axisX(
+                labelFontSize=12
+            ).configure_axisY(
+                labelFontSize=12
+            ).configure_title(
+                fontSize=14
+            ).configure_legend(
+                labelFontSize=12
+            ).configure_view(
+                strokeWidth=0
+            ).configure_axisX(
+                labelAngle=0
+            ).configure_axisY(
+                labelAngle=0
+            ).configure_axis(
+                labelFontSize=12
+            ).configure_axisX(
+                labelFontSize=12
+            ).configure_axisY(
+                labelFontSize=12
+            ).configure_title(
+                fontSize=14
+            ).configure_legend(
+                labelFontSize=12
+            ).configure_view(
+                strokeWidth=0
+            ).configure_axisX(
+                labelAngle=0
+            ).configure_axisY(
+                labelAngle=0
+            ).configure_axis(
+                labelFontSize=12
+            ).configure_axisX(
+                labelFontSize=12
+            ).configure_axisY(
+                labelFontSize=12
+            ).configure_title(
+                fontSize=14
+            ).configure_legend(
+                labelFontSize=12
+            ).configure_view(
+                strokeWidth=0
+            ).configure_axisX(
+                labelAngle=0
+            ).configure_axisY(
+                labelAngle=0
+            ).configure_axis(
+                labelFontSize=12
+            ).configure_axisX(
+                labelFontSize=12
+            ).configure_axisY(
+                labelFontSize=12
+            ).configure_title(
+                fontSize=14
+            ).configure_legend(
+                labelFontSize=12
+            ).configure_view(
+                strokeWidth=0
+            ).configure_axisX(
+                labelAngle=0
+            ).configure_axisY(
+                labelAngle=0
             )
+
+            histogram |= alt.Chart(df).mark_rule(color='red').encode(
+                x='mean(' + col + '):Q',
+                size=alt.value(2),
+                opacity=alt.value(0.7)
+            )
+
+            histogram |= alt.Chart(df).mark_rule(color='blue').encode(
+                x='median(' + col + '):Q',
+                size=alt.value(2),
+                opacity=alt.value(0.7)
+            )
+
             histograms.append(histogram)
 
         # Arrange histograms in a 2x2 grid layout
@@ -125,6 +337,29 @@ def main():
 
         # Display Altair chart
         st.altair_chart(histogram_grid, use_container_width=True)
+
+        # # Create histograms for each numeric column
+        # histograms = []
+        # for col in numeric_columns:
+        #     histogram = alt.Chart(df).mark_bar().encode(
+        #         alt.X(col, bin=alt.Bin(maxbins=40)),
+        #         y='count()'
+        #     ).properties(
+        #         width=300,
+        #         height=150,
+        #         title=f'Distribution of {col}'
+        #     )
+        #     histograms.append(histogram)
+
+        # # Arrange histograms in a 2x2 grid layout
+        # histograms_grid = []
+        # for i in range(0, len(histograms), 2):
+        #     row = alt.hconcat(*histograms[i:i+2])
+        #     histograms_grid.append(row)
+        # histogram_grid = alt.vconcat(*histograms_grid)
+
+        # # Display Altair chart
+        # st.altair_chart(histogram_grid, use_container_width=True)
 
         st.markdown(text2)
 
@@ -295,7 +530,7 @@ def main():
 
 
         # Create visualization function
-        def visualize(df, x_col, y_col, title, correlation_desc):
+        def visualize(df, x_col, y_col, title):
             # Create scatter plot using Seaborn
             fig, ax = plt.subplots(figsize=(10, 6))
             sns.regplot(data=df, x=x_col, y=y_col, color='#0775fb',
@@ -306,7 +541,7 @@ def main():
 
             # Calculate Pearson correlation coefficient
             pearson_corr, _ = pearsonr(df[x_col], df['harga'])
-            st.write(f"Pearson correlation coefficient {correlation_desc}:", pearson_corr)
+            st.write("Pearson correlation coefficient:", pearson_corr)
 
             # Display scatter plot
             st.pyplot(fig)
@@ -316,13 +551,13 @@ def main():
 
         # Call the visualize function for each pair of variables
         with col1:
-            visualize(df, 'kamar_tidur', 'harga', 'Correlation between count of bedrooms and house price', 'between count of bedrooms and house price')
+            visualize(df, 'kamar_tidur', 'harga', 'Correlation between count of bedrooms and house price')
 
         with col2:
-            visualize(df, 'luas_bangunan_m2', 'harga', 'Correlation between building area and house price', 'between building area and house price')
+            visualize(df, 'luas_bangunan_m2', 'harga', 'Correlation between building area and house price')
 
         with col3:
-            visualize(df, 'luas_tanah_m2', 'harga', 'Correlation between land area and house price', 'between land area and house price')
+            visualize(df, 'luas_tanah_m2', 'harga', 'Correlation between land area and house price')
 
 
         # # Create visualization function
