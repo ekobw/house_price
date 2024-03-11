@@ -295,24 +295,34 @@ def main():
 
 
         # Create visualization function
-        def visualize(df):
+        def visualize(df, x_col, y_col, title):
             # Create scatter plot using Seaborn
             fig, ax = plt.subplots(figsize=(10, 6))
-            sns.regplot(data=df, x='kamar_tidur', y='harga', color='#0775fb',
+            sns.regplot(data=df, x=x_col, y=y_col, color='#0775fb',
                         scatter_kws={'edgecolor': 'white'}, line_kws={"color": "#fb5607"}, ax=ax)  # Set regression line color
-            ax.set_title('Correlation between count of bedrooms and house price', fontsize=17)
-            ax.set_xlabel('Count of Bedrooms', fontsize=14)
+            ax.set_title(title, fontsize=17)
+            ax.set_xlabel(x_col.capitalize(), fontsize=14)
             ax.set_ylabel('House Price', fontsize=14)
 
-            # Calculate Spearman correlation coefficient
-            spearman_corr, _ = spearmanr(df['kamar_tidur'], df['harga'])
-            st.write("Spearman correlation coefficient:", spearman_corr)
+            # Calculate Pearson correlation coefficient
+            pearson_corr, _ = pearsonr(df[x_col], df['harga'])
+            st.write("Pearson correlation coefficient:", pearson_corr)
 
             # Display scatter plot
             st.pyplot(fig)
 
-        # Call the visualize function
-        visualize(df)
+        # Layout columns for displaying visuals side by side
+        col1, col2, col3 = st.columns(3)
+
+        # Call the visualize function for each pair of variables
+        with col1:
+            visualize(df, 'kamar_tidur', 'harga', 'Correlation between count of bedrooms and house price')
+
+        with col2:
+            visualize(df, 'luas_bangunan_m2', 'harga', 'Correlation between building area and house price')
+
+        with col3:
+            visualize(df, 'luas_tanah_m2', 'harga', 'Correlation between land area and house price')
 
 
         # Create visualization function
