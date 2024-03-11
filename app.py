@@ -122,18 +122,24 @@ def main():
             )
 
             # Add mean and median lines
-            histogram += alt.Chart(df).mark_rule(color='red').encode(
+            mean_rule = alt.Chart(df).mark_rule(color='red').encode(
                 x=f'average({col}):Q',
                 size=alt.value(2),
-                opacity=alt.value(0.7),
-                axis=None
+                opacity=alt.value(0.7)
+            ).properties(
+                width=300,  # set the width of the rule
             )
 
-            histogram += alt.Chart(df).mark_rule(color='blue').encode(
+            median_rule = alt.Chart(df).mark_rule(color='blue').encode(
                 x=f'median({col}):Q',
                 size=alt.value(2),
-                opacity=alt.value(0.7),
-                axis=None
+                opacity=alt.value(0.7)
+            ).properties(
+                width=300,  # set the width of the rule
+            )
+
+            histogram += (mean_rule + median_rule).configure_axis(
+                labels=False  # disable axis labels
             )
 
             histograms.append(histogram)
