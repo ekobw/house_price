@@ -23,27 +23,32 @@ def main():
         choice = st.sidebar.selectbox("Menu", menu)
 
     if choice == "Dashboard":
-        st.header("Business Understanding")
+        st.markdown("""
+            <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+                Business Understanding</h1>""", unsafe_allow_html=True)
+        # st.header("Business Understanding")
         st.markdown("Jakarta is the capital city of Indonesia, and the center of the economy. Many residents from the area have moved and settled in areas around Jakarta, because they want to earn a living in the capital city area. As a result, the population around the Jakarta area is increasing. So the need for housing will of course also increase.")
 
         st.markdown("This project was created to analyze house prices in the Jakarta area and several surrounding areas, such as Bogor, Depok, Bekasi, Tangerang and Tangerang Selatan.")
 
-        st.header("Dataset Overview")
+        st.markdown("""
+            <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+                Dataset Overview</h1>""", unsafe_allow_html=True)
+        # st.header("Dataset Overview")
 
         url = "https://raw.githubusercontent.com/ekobw/house_price_prediction/main/data/clean_house_price.csv"
         df = pd.read_csv(url)
         top_10_rows = df.head(10)
         st.table(top_10_rows)
 
-        text1 = """
-
+        text1a = """
                 - The original dataset consists of a total of 9,000 rows (entries) and 6 columns of variables. After cleaning and transformation, the amount of clean data becomes 7,252 rows (entries) and 5 columns of variables.
                 - The dataset contains house information data from 6 regions, namely **Jakarta**, **Bogor**, **Depok**, **Tangerang**, **Bekasi** and **Tangerang Selatan**.
                 - The independent variables consist of **kamar_tidur**, **luas_bangunan_m2**, **luas_tanah_m2**, and **lokasi** which contain information about the house specifications.
                 - The dependent variable is **harga**, which informs the selling price of the house.
+                """
 
-                Features:
-
+        text1b = """
                 - **kamar_tidur** : Number of bedrooms
                 - **luas_bangunan_m2** : Building area of the house in square meters
                 - **luas_tanah_m2** : Land area of the house in square meters
@@ -80,10 +85,15 @@ def main():
                 """
 
         st.markdown("""
-            <p style="font-size: 16px; font-weight: bold">Dataset Description</p>
+            <p style="font-size: 16px; font-weight: bold">Dataset Description:</p>
             """, unsafe_allow_html=True)
+        st.markdown(text1a)
 
-        st.markdown(text1)
+        st.markdown("""
+            <p style="font-size: 16px; font-weight: bold">Features:</p>
+            """, unsafe_allow_html=True)
+        st.markdown(text1b)
+
 
         # Display the chart title
         st.markdown("""
