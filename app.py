@@ -115,7 +115,7 @@ def main():
             histogram = alt.Chart(df).mark_bar().encode(
                 alt.X(col, bin=alt.Bin(maxbins=40)),
                 y='count()',
-                tooltip=[alt.Tooltip('count()', title='Count', format=',')]
+                tooltip=[alt.Tooltip(col, title='Value', format=',')]
             ).properties(
                 width=300,  # decrease width
                 height=150,  # decrease height
