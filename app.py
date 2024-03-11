@@ -216,7 +216,7 @@ def main():
 
         # Display the chart title and explanation
         st.markdown("""
-            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+            <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Average Land Area per City</p>""", unsafe_allow_html=True)
         # st.title("Average Land Area per City")
         st.markdown("<p style='text-align: center'>This chart visualizes the average land area of houses across different cities.</p>", unsafe_allow_html=True)
@@ -279,7 +279,7 @@ def main():
 
         # Display the chart title and explanation
         st.markdown("""
-            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+            <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Pearson Correlation</p>""", unsafe_allow_html=True)
         # st.title("Pearson Correlation")
 
@@ -348,7 +348,7 @@ def main():
 
         # Display the chart title
         st.markdown("""
-            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+            <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Correlation Matrix of Numeric Variables</p>""", unsafe_allow_html=True)
         # st.title("Correlation Matrix of Numeric Variables")
 
@@ -392,7 +392,7 @@ def main():
 
 
         st.markdown("""
-            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+            <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Conclusion</p>""", unsafe_allow_html=True)
         # st.header("Conclusion")
         st.markdown(conclusion)
