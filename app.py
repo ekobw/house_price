@@ -141,7 +141,7 @@ def main():
             ))
 
         # Arrange histograms in a grid layout
-        histogram_grid = alt.vconcat(*[alt.hconcat(*histograms[i:i+2]) for i in range(0, len(histograms), 2)])
+        histogram_grid = alt.vconcat(*[alt.hconcat(*histograms[i:i+2], config={'axis': {'labelFontSize': 0}}) for i in range(0, len(histograms), 2)])
 
         # Display Altair chart
         st.altair_chart(histogram_grid, use_container_width=True)
