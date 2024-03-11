@@ -97,14 +97,18 @@ def main():
                 alt.X(col, bin=alt.Bin(maxbins=40)),
                 y='count()'
             ).properties(
-                width=600,
-                height=300,
+                width=300,
+                height=150,
                 title=f'Distribution of {col}'
             )
             histograms.append(histogram)
 
-        # Arrange histograms in a grid layout
-        histogram_grid = alt.vconcat(*histograms)
+        # Arrange histograms in a 2x2 grid layout
+        histograms_grid = []
+        for i in range(0, len(histograms), 2):
+            row = alt.hconcat(*histograms[i:i+2])
+            histograms_grid.append(row)
+        histogram_grid = alt.vconcat(*histograms_grid)
 
         # Display Altair chart
         st.altair_chart(histogram_grid, use_container_width=True)
