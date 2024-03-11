@@ -12,8 +12,8 @@ def main():
     # stc.html(html_temp)
     # st.title("House Price Analytics (Jabodetabek)")
     st.markdown("""
-            <p style="text-align: center; font-size: 42px; color: #023047; font-weight: bold">
-                House Price Analytics (Jabodetabek)</p>""", unsafe_allow_html=True)
+            <h1 style="text-align: center; font-size: 42px; color: #023047; font-weight: bold">
+                House Price Analytics (Jabodetabek)</h1>""", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center'>This dashboard was created for the Capstone Project Tetris Batch 4 from DQLab</p>", unsafe_allow_html=True)
 
     with st.sidebar:
@@ -87,8 +87,8 @@ def main():
 
         # Display the chart title
         st.markdown("""
-            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
-                Distribution of Data</p>""", unsafe_allow_html=True)
+            <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+                Distribution of Data</h1>""", unsafe_allow_html=True)
         # st.title("Distribution of Data")
 
         numeric_columns = df.select_dtypes(include=['float64', 'int64']).columns
@@ -121,8 +121,8 @@ def main():
 
         # Display the chart title and explanation
         st.markdown("""
-            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
-                Number of Houses Being Sold per City</p>""", unsafe_allow_html=True)
+            <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+                Number of Houses Being Sold per City</h1>""", unsafe_allow_html=True)
         # st.title("Number of Houses Being Sold per City")
         st.markdown("<p style='text-align: center'>This chart visualizes the distribution of houses across different cities.</p>", unsafe_allow_html=True)
         # st.write("This chart visualizes the distribution of houses across different cities.")
@@ -164,8 +164,8 @@ def main():
 
         # Display the chart title and explanation
         st.markdown("""
-            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
-                Average House Price per City</p>""", unsafe_allow_html=True)
+            <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+                Average House Price per City</h1>""", unsafe_allow_html=True)
         # st.title("Average House Price per City")
         st.markdown("<p style='text-align: center'>This chart visualizes the average sale price of houses across different cities.</p>", unsafe_allow_html=True)
         # st.write("This chart visualizes the average sale price of houses across different cities.")
@@ -190,8 +190,8 @@ def main():
 
         # Display the chart title and explanation
         st.markdown("""
-            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
-                Average Building Area per City</p>""", unsafe_allow_html=True)
+            <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+                Average Building Area per City</h1>""", unsafe_allow_html=True)
         # st.title("Average Building Area per City")
         st.markdown("<p style='text-align: center'>This chart visualizes the average building area of houses across different cities.</p>", unsafe_allow_html=True)
         # st.write("This chart visualizes the average building area of houses across different cities.")
@@ -217,7 +217,7 @@ def main():
         # Display the chart title and explanation
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
-                Average Land Area per City</p>""", unsafe_allow_html=True)
+                Average Land Area per City</h1>""", unsafe_allow_html=True)
         # st.title("Average Land Area per City")
         st.markdown("<p style='text-align: center'>This chart visualizes the average land area of houses across different cities.</p>", unsafe_allow_html=True)
         # st.write("This chart visualizes the average land area of houses across different cities.")
@@ -280,7 +280,7 @@ def main():
         # Display the chart title and explanation
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
-                Pearson Correlation</p>""", unsafe_allow_html=True)
+                Pearson Correlation</h1>""", unsafe_allow_html=True)
         # st.title("Pearson Correlation")
 
         # Create visualization function
@@ -349,7 +349,7 @@ def main():
         # Display the chart title
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
-                Correlation Matrix of Numeric Variables</p>""", unsafe_allow_html=True)
+                Correlation Matrix of Numeric Variables</h1>""", unsafe_allow_html=True)
         # st.title("Correlation Matrix of Numeric Variables")
 
         # Select only numeric columns
@@ -393,14 +393,17 @@ def main():
 
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
-                Conclusion</p>""", unsafe_allow_html=True)
+                Conclusion</h1>""", unsafe_allow_html=True)
         # st.header("Conclusion")
         st.markdown(conclusion)
 
         st.caption('Copyright :copyright: 2024 by Eko B.W.: https://www.linkedin.com/in/eko-bw')
 
     elif choice == "Prediction":
-        st.header("House Price Prediction Application")
+        st.markdown("""
+            <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+                House Price Prediction Application</h1>""", unsafe_allow_html=True)
+        # st.header("House Price Prediction Application")
         run_ml_app()
 
 def run_ml_app():
