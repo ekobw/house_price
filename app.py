@@ -65,6 +65,12 @@ def main():
                 From the histogram chart above, we can see that the graph is right-skewed. \
                 This means that the range of data values is quite wide, but the data distribution is not evenly distributed. \
                 Most of the data has a low value, meaning that the most sold houses have specifications and prices that are still quite affordable.
+
+                From the histogram above it can also be seen that:
+                - The average house for sale has 2 bedrooms.
+                - The average house for sale has a building area of 133 m2.
+                - The average house for sale has a land area of 142 m2.
+                - The average price of houses sold is around 2.6 billion.
                 """
 
         text3 = """
@@ -72,15 +78,49 @@ def main():
                 Likewise for the Jakarta area, if it is accumulated, the total is around 1200 houses for sale for the entire Jakarta area.
                 """
 
-        text4 = """
+        text4a = """
                 From the bar chart above, we can see that the average price of houses sold in the Jakarta area is higher than in areas outside Jakarta. \
                 Almost all areas of Jakarta are in the top position, except East Jakarta which is below South Tangerang. \
                 This may occur due to the unequal amount of data in the two cities, where data for the East Jakarta area is less than for South Tangerang area.
+
+                Top 3 cities with the highest average house prices:
+                - Jakarta Selatan
+                - Jakarta Pusat
+                - Jakarta Utara
+
+                Bottom 3 cities with the lowest average house prices:
+                - Depok
+                - Bekasi
+                - Bogor
+                """
+
+        text4b = """
+                Top 3 cities with the largest average building area:
+                - Jakarta Selatan
+                - Jakarta Utara
+                - Jakarta Pusat
+
+                Bottom 3 cities with the smallest average building area:
+                - Depok
+                - Bekasi
+                - Bogor
+                """
+
+        text4c = """
+                Top 3 cities with the largest average land area:
+                - Jakarta Selatan
+                - Jakarta Utara
+                - Jakarta Pusat
+
+                Bottom 3 cities with the smallest average land area:
+                - Depok
+                - Tangerang
+                - Bekasi
                 """
 
         text5 = """
                 Pearson Correlation and Correlation Matrix shows that **luas_bangunan_m2** and **luas_tanah_m2** variables have a stronger relationship with **harga** variable than the **kamar_tidur** variable. \
-                It can be concluded that houses that have a larger building area or land area tend to have higher prices than houses that have many bedrooms.
+                It can be concluded that houses that have a larger building area or land area tends to have higher prices than houses that have many bedrooms.
                 """
 
         conclusion = """
@@ -244,7 +284,7 @@ def main():
         # Display Altair chart
         st.altair_chart(chart, use_container_width=True)
 
-        st.markdown(text4)
+        st.markdown(text4a)
 
 
         # Display the chart title and explanation
@@ -270,7 +310,7 @@ def main():
         # Display Altair chart
         st.altair_chart(chart, use_container_width=True)
 
-        #st.markdown(text5)
+        st.markdown(text4b)
 
 
         # Display the chart title and explanation
@@ -296,7 +336,7 @@ def main():
         # Display Altair chart
         st.altair_chart(chart, use_container_width=True)
 
-        #st.markdown(text6)
+        st.markdown(text4c)
 
 
         # # Create visualization function
