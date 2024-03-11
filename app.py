@@ -111,20 +111,9 @@ def main():
         # Create histograms for each numeric column
         histograms = []
         for col in numeric_columns:
-            # Calculate mean and median
-            mean_value = df[col].mean()
-            median_value = df[col].median()
-
-            # Create a new DataFrame for mean and median
-            df_mean_median = pd.DataFrame({
-                col: [mean_value, median_value],
-                'value': ['Mean', 'Median'],
-                'color': ['red', 'green']
-            })
-
             # Create histogram with mean and median annotations
             histogram = alt.Chart(df).mark_bar().encode(
-                alt.X(col, bin=alt.Bin(maxbins=40), title=f'{col} (binned)'),  # add title here
+                alt.X(col, bin=alt.Bin(maxbins=40)),
                 y='count()'
             ).properties(
                 width=300,  # decrease width
@@ -133,21 +122,17 @@ def main():
             )
 
             # Add mean and median lines
-            mean_median_line = alt.Chart(df_mean_median).mark_rule().encode(
-                x=col+':Q',
-                color='color:N',
+            histogram += alt.Chart(df).mark_rule(color='red').encode(
+                x=f'average({col}):Q',
                 size=alt.value(2),
                 opacity=alt.value(0.7)
             )
 
-            mean_median_text = alt.Chart(df_mean_median).mark_text(align='right', x=300, dy=-5).encode(
-                y=alt.Y('value:N', axis=alt.Axis(title=None)),
-                text=alt.Text(col+':Q', format='.2f'),
-                color='color:N'
+            histogram += alt.Chart(df).mark_rule(color='green').encode(
+                x=f'median({col}):Q',
+                size=alt.value(2),
+                opacity=alt.value(0.7)
             )
-
-            # Combine histogram and mean/median lines without legend
-            histogram = alt.layer(histogram, mean_median_line, mean_median_text).resolve_scale(color='independent')
 
             histograms.append(histogram)
 
@@ -156,41 +141,6 @@ def main():
 
         # Display Altair chart
         st.altair_chart(histogram_grid, use_container_width=True)
-
-
-        # # Create histograms for each numeric column
-        # histograms = []
-        # for col in numeric_columns:
-        #     # Create histogram with mean and median annotations
-        #     histogram = alt.Chart(df).mark_bar().encode(
-        #         alt.X(col, bin=alt.Bin(maxbins=40)),
-        #         y='count()'
-        #     ).properties(
-        #         width=300,  # decrease width
-        #         height=150,  # decrease height
-        #         title=f'Distribution of {col}'
-        #     )
-
-        #     # Add mean and median lines
-        #     histogram += alt.Chart(df).mark_rule(color='red').encode(
-        #         x=f'average({col}):Q',
-        #         size=alt.value(2),
-        #         opacity=alt.value(0.7)
-        #     )
-
-        #     histogram += alt.Chart(df).mark_rule(color='green').encode(
-        #         x=f'median({col}):Q',
-        #         size=alt.value(2),
-        #         opacity=alt.value(0.7)
-        #     )
-
-        #     histograms.append(histogram)
-
-        # # Arrange histograms in a grid layout
-        # histogram_grid = alt.vconcat(*[alt.hconcat(*histograms[i:i+2]) for i in range(0, len(histograms), 2)])
-
-        # # Display Altair chart
-        # st.altair_chart(histogram_grid, use_container_width=True)
 
 # ==================================================================================================================
 
