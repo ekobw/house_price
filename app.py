@@ -111,13 +111,9 @@ def main():
         # Create histograms for each numeric column
         histograms = []
         for col in numeric_columns:
-            # Calculate mean and median
-            mean_val = df[col].mean()
-            median_val = df[col].median()
-
             # Create histogram with mean and median annotations
             histogram = alt.Chart(df).mark_bar().encode(
-                alt.X(col, bin=alt.Bin(maxbins=40), title=col),  # add title parameter here
+                alt.X(col, bin=alt.Bin(maxbins=40)),
                 y='count()'
             ).properties(
                 width=300,  # decrease width
