@@ -347,7 +347,10 @@ def main():
 
 
         # Display the chart title
-        st.title("Correlation Matrix of Numeric Variables")
+        st.markdown("""
+            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+                Correlation Matrix of Numeric Variables</p>""", unsafe_allow_html=True)
+        # st.title("Correlation Matrix of Numeric Variables")
 
         # Select only numeric columns
         numeric_df = df.select_dtypes(include=['float64', 'int64'])
@@ -388,7 +391,10 @@ def main():
         st.markdown(text5)
 
 
-        st.header("Conclusion")
+        st.markdown("""
+            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+                Conclusion</p>""", unsafe_allow_html=True)
+        # st.header("Conclusion")
         st.markdown(conclusion)
 
         st.caption('Copyright :copyright: 2024 by Eko B.W.: https://www.linkedin.com/in/eko-bw')
