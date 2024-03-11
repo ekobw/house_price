@@ -128,14 +128,24 @@ def main():
                 opacity=alt.value(0.7)
             )
 
+            mean_text = alt.Chart(df).mark_text(align='left', dx=3, dy=-5, color='red').encode(
+                x=f'average({col}):Q',
+                text=alt.Text(f'average({col}):Q', format='.2f')
+            )
+
             median_line = alt.Chart(df).mark_rule(color='green').encode(
                 x=f'median({col}):Q',
                 size=alt.value(2),
                 opacity=alt.value(0.7)
             )
 
+            median_text = alt.Chart(df).mark_text(align='left', dx=3, dy=5, color='green').encode(
+                x=f'median({col}):Q',
+                text=alt.Text(f'median({col}):Q', format='.2f')
+            )
+
             # Combine histogram and mean/median lines without legend
-            histogram = alt.layer(histogram, mean_line, median_line).resolve_scale(color='independent')
+            histogram = alt.layer(histogram, mean_line, mean_text, median_line, median_text).resolve_scale(color='independent')
 
             histograms.append(histogram)
 
