@@ -6,7 +6,7 @@ import altair as alt
 import seaborn as sns
 import plotly.express as px
 import matplotlib.pyplot as plt
-from scipy.stats import pearsonr
+from scipy.stats import pearsonr, spearmanr
 
 def main():
     # stc.html(html_temp)
@@ -292,6 +292,25 @@ def main():
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Pearson Correlation</h1>""", unsafe_allow_html=True)
         # st.title("Pearson Correlation")
+
+
+        # Create visualization function
+        def visualize(df):
+            # Create scatter plot using Seaborn
+            fig, ax = plt.subplots(figsize=(10, 6))
+            sns.regplot(data=df, x='kamar_tidur', y='harga', color='#0775fb',
+                        scatter_kws={'edgecolor': 'white'}, line_kws={"color": "#fb5607"}, ax=ax)  # Set regression line color
+            ax.set_title('Correlation between count of bedrooms and house price', fontsize=17)
+            ax.set_xlabel('Count of Bedrooms', fontsize=14)
+            ax.set_ylabel('House Price', fontsize=14)
+
+            # Calculate Spearman correlation coefficient
+            spearman_corr, _ = spearmanr(df['kamar_tidur'], df['harga'])
+            st.write("Spearman correlation coefficient:", spearman_corr)
+
+            # Display scatter plot
+            st.pyplot(fig)
+
 
         # Create visualization function
         def visualize(df):
