@@ -111,32 +111,32 @@ def main():
         # Create histograms for each numeric column with custom legend labels
         histograms = []
         for col in numeric_columns:
-        # Create histogram with x-axis label
-        histogram = alt.Chart(df).mark_bar().encode(
-            alt.X(col, bin=alt.Bin(maxbins=40), title=col),  # Set title as x-axis label
-            y='count()'
-        ).properties(
-            width=300,
-            height=150,
-            title=f'Distribution of {col}'  # Title can be kept for overall chart
-        )
+            # Create histogram with x-axis label
+            histogram = alt.Chart(df).mark_bar().encode(
+                alt.X(col, bin=alt.Bin(maxbins=40), title=col),  # Set title as x-axis label
+                y='count()'
+            ).properties(
+                width=300,
+                height=150,
+                title=f'Distribution of {col}'  # Title can be kept for overall chart
+            )
 
-        # Add mean and median lines with custom legend entries
-        histogram += alt.Chart(df).mark_rule(color='red').encode(
-            x=f'average({col}):Q',
-            size=alt.value(2),
-            opacity=alt.value(0.7),
-            legend=alt.LegendEntry(text="Distribution")  # Custom legend text for mean
-        )
+            # Add mean and median lines with custom legend entries
+            histogram += alt.Chart(df).mark_rule(color='red').encode(
+                x=f'average({col}):Q',
+                size=alt.value(2),
+                opacity=alt.value(0.7),
+                legend=alt.LegendEntry(text="Distribution")  # Custom legend text for mean
+            )
 
-        histogram += alt.Chart(df).mark_rule(color='green').encode(
-            x=f'median({col}):Q',
-            size=alt.value(2),
-            opacity=alt.value(0.7),
-            legend=alt.LegendEntry(text="Distribution")  # Custom legend text for median
-        )
+            histogram += alt.Chart(df).mark_rule(color='green').encode(
+                x=f'median({col}):Q',
+                size=alt.value(2),
+                opacity=alt.value(0.7),
+                legend=alt.LegendEntry(text="Distribution")  # Custom legend text for median
+            )
 
-        histograms.append(histogram)
+            histograms.append(histogram)
 
         # Arrange histograms in a grid layout
         histogram_grid = alt.vconcat(*[alt.hconcat(*histograms[i:i+2]) for i in range(0, len(histograms), 2)])
