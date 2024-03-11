@@ -121,30 +121,28 @@ def main():
                 title=f'Distribution of {col}'
             )
 
-            # Calculate mean and median
-            mean_val = df[col].mean()
-            median_val = df[col].median()
-
-            # Create rule for mean
-            mean_rule = alt.Chart(pd.DataFrame({'mean_value': [mean_val]})).mark_rule(color='red').encode(
-                x='mean_value:Q',
+            # Add mean and median lines
+            mean_rule = alt.Chart(df).mark_rule(color='red').encode(
+                x=f'average({col}):Q',
                 size=alt.value(2),
-                opacity=alt.value(0.7),
+                opacity=alt.value(0.7)
+            ).properties(
+                width=300,  # set the width of the rule
             )
 
-            # Create rule for median
-            median_rule = alt.Chart(pd.DataFrame({'median_value': [median_val]})).mark_rule(color='blue').encode(
-                x='median_value:Q',
+            median_rule = alt.Chart(df).mark_rule(color='blue').encode(
+                x=f'median({col}):Q',
                 size=alt.value(2),
-                opacity=alt.value(0.7),
+                opacity=alt.value(0.7)
+            ).properties(
+                width=300,  # set the width of the rule
             )
 
-            # Layer histogram with mean and median rules
-            histogram = (histogram + mean_rule + median_rule).configure_axis(
+            histogram += (mean_rule + median_rule)
+
+            histograms.append(histogram.configure_axis(
                 labels=False  # disable axis labels
-            )
-
-            histograms.append(histogram)
+            ))
 
         # Arrange histograms in a grid layout
         histogram_grid = alt.vconcat(*[alt.hconcat(*histograms[i:i+2]) for i in range(0, len(histograms), 2)])
