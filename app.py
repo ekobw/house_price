@@ -14,7 +14,7 @@ def main():
     st.markdown("""
             <p style="text-align: center; font-size: 42px; color: #023047; font-weight: bold">
                 House Price Analytics (Jabodetabek)</p>""", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center'> This dashboard was created for the Capstone Project Tetris Batch 4 from DQLab</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center'>This dashboard was created for the Capstone Project Tetris Batch 4 from DQLab</p>", unsafe_allow_html=True)
 
     with st.sidebar:
         st.image("house_price.jpg")
@@ -120,8 +120,12 @@ def main():
 
 
         # Display the chart title and explanation
-        st.title("Number of Houses Being Sold per City")
-        st.write("This chart visualizes the distribution of houses across different cities.")
+        st.markdown("""
+            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+                Number of Houses Being Sold per City</p>""", unsafe_allow_html=True)
+        # st.title("Number of Houses Being Sold per City")
+        st.markdown("<p style='text-align: center'>This chart visualizes the distribution of houses across different cities.</p>", unsafe_allow_html=True)
+        # st.write("This chart visualizes the distribution of houses across different cities.")
 
         # Count the number of houses per city
         house_counts = df['kota'].value_counts().reset_index()
@@ -159,8 +163,12 @@ def main():
 
 
         # Display the chart title and explanation
-        st.title("Average House Price per City")
-        st.write("This chart visualizes the average sale price of houses across different cities.")
+        st.markdown("""
+            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+                Average House Price per City</p>""", unsafe_allow_html=True)
+        # st.title("Average House Price per City")
+        st.markdown("<p style='text-align: center'>This chart visualizes the average sale price of houses across different cities.</p>", unsafe_allow_html=True)
+        # st.write("This chart visualizes the average sale price of houses across different cities.")
 
         # Compute the average house price per city
         mean_prices = df.groupby('kota')['harga'].mean().sort_values()
