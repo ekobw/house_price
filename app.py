@@ -311,6 +311,9 @@ def main():
             # Display scatter plot
             st.pyplot(fig)
 
+        # Call the visualize function
+        visualize(df)
+
 
         # Create visualization function
         def visualize(df):
