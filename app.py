@@ -103,7 +103,7 @@ def main():
         # Display the chart title
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
-                Distribution of Data</h1>""", unsafe_allow_html=True)
+                Data Distribution</h1>""", unsafe_allow_html=True)
         # st.title("Distribution of Data")
 
         numeric_columns = df.select_dtypes(include=['float64', 'int64']).columns
@@ -121,17 +121,23 @@ def main():
                 title=f'Distribution of {col}'
             )
 
+            # Calculate mean and median
+            mean_val = round(df[col].mean())
+            median_val = round(df[col].median())
+
             # Add mean and median lines
-            histogram += alt.Chart(df).mark_rule(color='red').encode(
-                x=f'average({col}):Q',
+            histogram += alt.Chart(pd.DataFrame({'Mean': [mean_val]})).mark_rule(color='red').encode(
+                x='Mean:Q',
                 size=alt.value(2),
-                opacity=alt.value(0.7)
+                opacity=alt.value(0.7),
+                tooltip=[alt.Tooltip('Mean:Q', format=',')]
             )
 
-            histogram += alt.Chart(df).mark_rule(color='green').encode(
-                x=f'median({col}):Q',
+            histogram += alt.Chart(pd.DataFrame({'Median': [median_val]})).mark_rule(color='green').encode(
+                x='Median:Q',
                 size=alt.value(2),
-                opacity=alt.value(0.7)
+                opacity=alt.value(0.7),
+                tooltip=[alt.Tooltip('Median:Q', format=',')]
             )
 
             histograms.append(histogram)
@@ -141,6 +147,7 @@ def main():
 
         # Display Altair chart
         st.altair_chart(histogram_grid, use_container_width=True)
+
 
 # ==================================================================================================================
 
