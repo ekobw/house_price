@@ -12,9 +12,9 @@ def main():
     # stc.html(html_temp)
     # st.title("House Price Analytics (Jabodetabek)")
     st.markdown("""
-            <p style="text-align: center; font-size: 42px; color: #023047;font-weight: bold">House Price Analytics (Jabodetabek)</p>
-            """, unsafe_allow_html=True)
-    st.markdown("This dashboard was created for the Capstone Project Tetris Batch 4 from DQLab")
+            <p style="text-align: center; font-size: 42px; color: #023047; font-weight: bold">
+                House Price Analytics (Jabodetabek)</p>""", unsafe_allow_html=True)
+    st.markdown("<p style="text-align: center"> This dashboard was created for the Capstone Project Tetris Batch 4 from DQLab</p>", unsafe_allow_html=True)
 
     with st.sidebar:
         st.image("house_price.jpg")
