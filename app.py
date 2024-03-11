@@ -123,217 +123,25 @@ def main():
                 width=300,  # decrease width
                 height=150,  # decrease height
                 title=f'Distribution of {col}'
-            ).configure_axis(
-                labelFontSize=12,
-                titleFontSize=14
-            ).configure_title(
-                fontSize=16
-            ).configure_legend(
-                labelFontSize=12
-            ).configure_view(
-                strokeWidth=0
-            ).configure_axisX(
-                labelAngle=0
-            ).configure_axisY(
-                labelAngle=0
-            ).configure_axis(
-                labelFontSize=12
-            ).configure_axisX(
-                labelFontSize=12
-            ).configure_axisY(
-                labelFontSize=12
-            ).configure_title(
-                fontSize=14
-            ).configure_legend(
-                labelFontSize=12
-            ).configure_view(
-                strokeWidth=0
-            ).configure_axisX(
-                labelAngle=0
-            ).configure_axisY(
-                labelAngle=0
-            ).configure_axis(
-                labelFontSize=12
-            ).configure_axisX(
-                labelFontSize=12
-            ).configure_axisY(
-                labelFontSize=12
-            ).configure_title(
-                fontSize=14
-            ).configure_legend(
-                labelFontSize=12
-            ).configure_view(
-                strokeWidth=0
-            ).configure_axisX(
-                labelAngle=0
-            ).configure_axisY(
-                labelAngle=0
-            ).configure_axis(
-                labelFontSize=12
-            ).configure_axisX(
-                labelFontSize=12
-            ).configure_axisY(
-                labelFontSize=12
-            ).configure_title(
-                fontSize=14
-            ).configure_legend(
-                labelFontSize=12
-            ).configure_view(
-                strokeWidth=0
-            ).configure_axisX(
-                labelAngle=0
-            ).configure_axisY(
-                labelAngle=0
-            ).configure_axis(
-                labelFontSize=12
-            ).configure_axisX(
-                labelFontSize=12
-            ).configure_axisY(
-                labelFontSize=12
-            ).configure_title(
-                fontSize=14
-            ).configure_legend(
-                labelFontSize=12
-            ).configure_view(
-                strokeWidth=0
-            ).configure_axisX(
-                labelAngle=0
-            ).configure_axisY(
-                labelAngle=0
-            ).configure_axis(
-                labelFontSize=12
-            ).configure_axisX(
-                labelFontSize=12
-            ).configure_axisY(
-                labelFontSize=12
-            ).configure_title(
-                fontSize=14
-            ).configure_legend(
-                labelFontSize=12
-            ).configure_view(
-                strokeWidth=0
-            ).configure_axisX(
-                labelAngle=0
-            ).configure_axisY(
-                labelAngle=0
-            ).configure_axis(
-                labelFontSize=12
-            ).configure_axisX(
-                labelFontSize=12
-            ).configure_axisY(
-                labelFontSize=12
-            ).configure_title(
-                fontSize=14
-            ).configure_legend(
-                labelFontSize=12
-            ).configure_view(
-                strokeWidth=0
-            ).configure_axisX(
-                labelAngle=0
-            ).configure_axisY(
-                labelAngle=0
-            ).configure_axis(
-                labelFontSize=12
-            ).configure_axisX(
-                labelFontSize=12
-            ).configure_axisY(
-                labelFontSize=12
-            ).configure_title(
-                fontSize=14
-            ).configure_legend(
-                labelFontSize=12
-            ).configure_view(
-                strokeWidth=0
-            ).configure_axisX(
-                labelAngle=0
-            ).configure_axisY(
-                labelAngle=0
-            ).configure_axis(
-                labelFontSize=12
-            ).configure_axisX(
-                labelFontSize=12
-            ).configure_axisY(
-                labelFontSize=12
-            ).configure_title(
-                fontSize=14
-            ).configure_legend(
-                labelFontSize=12
-            ).configure_view(
-                strokeWidth=0
-            ).configure_axisX(
-                labelAngle=0
-            ).configure_axisY(
-                labelAngle=0
-            ).configure_axis(
-                labelFontSize=12
-            ).configure_axisX(
-                labelFontSize=12
-            ).configure_axisY(
-                labelFontSize=12
-            ).configure_title(
-                fontSize=14
-            ).configure_legend(
-                labelFontSize=12
-            ).configure_view(
-                strokeWidth=0
-            ).configure_axisX(
-                labelAngle=0
-            ).configure_axisY(
-                labelAngle=0
-            ).configure_axis(
-                labelFontSize=12
-            ).configure_axisX(
-                labelFontSize=12
-            ).configure_axisY(
-                labelFontSize=12
-            ).configure_title(
-                fontSize=14
-            ).configure_legend(
-                labelFontSize=12
-            ).configure_view(
-                strokeWidth=0
-            ).configure_axisX(
-                labelAngle=0
-            ).configure_axisY(
-                labelAngle=0
-            ).configure_axis(
-                labelFontSize=12
-            ).configure_axisX(
-                labelFontSize=12
-            ).configure_axisY(
-                labelFontSize=12
-            ).configure_title(
-                fontSize=14
-            ).configure_legend(
-                labelFontSize=12
-            ).configure_view(
-                strokeWidth=0
-            ).configure_axisX(
-                labelAngle=0
-            ).configure_axisY(
-                labelAngle=0
             )
 
-            histogram |= alt.Chart(df).mark_rule(color='red').encode(
-                x='mean(' + col + '):Q',
+            # Add mean and median lines
+            histogram += alt.Chart(df).mark_rule(color='red').encode(
+                x=f'average({col}):Q',
                 size=alt.value(2),
                 opacity=alt.value(0.7)
             )
 
-            histogram |= alt.Chart(df).mark_rule(color='blue').encode(
-                x='median(' + col + '):Q',
+            histogram += alt.Chart(df).mark_rule(color='blue').encode(
+                x=f'median({col}):Q',
                 size=alt.value(2),
                 opacity=alt.value(0.7)
             )
 
             histograms.append(histogram)
 
-        # Arrange histograms in a 2x2 grid layout
-        histograms_grid = []
-        for i in range(0, len(histograms), 2):
-            row = alt.hconcat(*histograms[i:i+2])
-            histograms_grid.append(row)
-        histogram_grid = alt.vconcat(*histograms_grid)
+        # Arrange histograms in a grid layout
+        histogram_grid = alt.vconcat(*[alt.hconcat(*histograms[i:i+2]) for i in range(0, len(histograms), 2)])
 
         # Display Altair chart
         st.altair_chart(histogram_grid, use_container_width=True)
