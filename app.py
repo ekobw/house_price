@@ -189,8 +189,12 @@ def main():
 
 
         # Display the chart title and explanation
-        st.title("Average Building Area per City")
-        st.write("This chart visualizes the average building area of houses across different cities.")
+        st.markdown("""
+            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+                Average Building Area per City</p>""", unsafe_allow_html=True)
+        # st.title("Average Building Area per City")
+        st.markdown("<p style='text-align: center'>This chart visualizes the average building area of houses across different cities.</p>", unsafe_allow_html=True)
+        # st.write("This chart visualizes the average building area of houses across different cities.")
 
         # Compute the average house price per city
         mean_prices = df.groupby('kota')['luas_bangunan_m2'].mean().sort_values()
@@ -211,8 +215,12 @@ def main():
 
 
         # Display the chart title and explanation
-        st.title("Average Land Area per City")
-        st.write("This chart visualizes the average land area of houses across different cities.")
+        st.markdown("""
+            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+                Average Land Area per City</p>""", unsafe_allow_html=True)
+        # st.title("Average Land Area per City")
+        st.markdown("<p style='text-align: center'>This chart visualizes the average land area of houses across different cities.</p>", unsafe_allow_html=True)
+        # st.write("This chart visualizes the average land area of houses across different cities.")
 
         # Compute the average house price per city
         mean_prices = df.groupby('kota')['luas_tanah_m2'].mean().sort_values()
@@ -270,8 +278,10 @@ def main():
 
 
         # Display the chart title and explanation
-        st.title("Pearson Correlation")
-        st.write("This chart visualizes the average sale price of houses across different cities.")
+        st.markdown("""
+            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
+                Pearson Correlation</p>""", unsafe_allow_html=True)
+        # st.title("Pearson Correlation")
 
         # Create visualization function
         def visualize(df):
