@@ -87,7 +87,7 @@ def main():
 
         # Display the chart title
         st.markdown("""
-            <p style="text-align: center; font-size: 30px; color: #023047; font-weight: bold">
+            <p style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Distribution of Data</p>""", unsafe_allow_html=True)
         # st.title("Distribution of Data")
 
