@@ -121,24 +121,26 @@ def main():
                 title=f'Distribution of {col}'
             )
 
-            # Add mean and median lines
-            mean_rule = alt.Chart(df).mark_rule(color='red').encode(
-                x=f'average({col}):Q',
+            # Calculate mean and median
+            mean_val = df[col].mean()
+            median_val = df[col].median()
+
+            # Create rule for mean
+            mean_rule = alt.Chart(pd.DataFrame({'mean_value': [mean_val]})).mark_rule(color='red').encode(
+                x='mean_value:Q',
                 size=alt.value(2),
-                opacity=alt.value(0.7)
-            ).properties(
-                width=300,  # set the width of the rule
+                opacity=alt.value(0.7),
             )
 
-            median_rule = alt.Chart(df).mark_rule(color='blue').encode(
-                x=f'median({col}):Q',
+            # Create rule for median
+            median_rule = alt.Chart(pd.DataFrame({'median_value': [median_val]})).mark_rule(color='blue').encode(
+                x='median_value:Q',
                 size=alt.value(2),
-                opacity=alt.value(0.7)
-            ).properties(
-                width=300,  # set the width of the rule
+                opacity=alt.value(0.7),
             )
 
-            histogram += (mean_rule + median_rule).configure_axis(
+            # Layer histogram with mean and median rules
+            histogram = (histogram + mean_rule + median_rule).configure_axis(
                 labels=False  # disable axis labels
             )
 
