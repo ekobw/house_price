@@ -86,7 +86,10 @@ def main():
         st.markdown(text1)
 
         # Display the chart title
-        st.title("Distribution of Data")
+        st.markdown("""
+            <p style="text-align: center; font-size: 30px; color: #023047; font-weight: bold">
+                Distribution of Data</p>""", unsafe_allow_html=True)
+        # st.title("Distribution of Data")
 
         numeric_columns = df.select_dtypes(include=['float64', 'int64']).columns
 
