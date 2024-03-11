@@ -108,7 +108,7 @@ def main():
 
         numeric_columns = df.select_dtypes(include=['float64', 'int64']).columns
 
-        # Create histograms for each numeric column with custom legend labels
+        # Create histograms for each numeric column with custom legend labels (using string formatting)
         histograms = []
         for col in numeric_columns:
             # Create histogram with x-axis label
@@ -121,19 +121,19 @@ def main():
                 title=f'Distribution of {col}'  # Title can be kept for overall chart
             )
 
-            # Add mean and median lines with custom legend entries
+            # Add mean and median lines with custom legend labels in string formatting
             histogram += alt.Chart(df).mark_rule(color='red').encode(
                 x=f'average({col}):Q',
                 size=alt.value(2),
                 opacity=alt.value(0.7),
-                legend=alt.LegendEntry(text="Distribution")  # Custom legend text for mean
+                legend=f"{col} (Distribution)"  # Custom legend text for mean
             )
 
             histogram += alt.Chart(df).mark_rule(color='green').encode(
                 x=f'median({col}):Q',
                 size=alt.value(2),
                 opacity=alt.value(0.7),
-                legend=alt.LegendEntry(text="Distribution")  # Custom legend text for median
+                legend=f"{col} (Distribution)"  # Custom legend text for median
             )
 
             histograms.append(histogram)
