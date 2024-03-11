@@ -111,6 +111,17 @@ def main():
         # Create histograms for each numeric column
         histograms = []
         for col in numeric_columns:
+            # Calculate mean and median
+            mean_value = df[col].mean()
+            median_value = df[col].median()
+
+            # Create a new DataFrame for mean and median
+            df_mean_median = pd.DataFrame({
+                col: [mean_value, median_value],
+                'value': ['Mean', 'Median'],
+                'color': ['red', 'green']
+            })
+
             # Create histogram with mean and median annotations
             histogram = alt.Chart(df).mark_bar().encode(
                 alt.X(col, bin=alt.Bin(maxbins=40), title=f'{col} (binned)'),  # add title here
@@ -122,28 +133,21 @@ def main():
             )
 
             # Add mean and median lines
-            mean_line = alt.Chart(df).mark_rule(color='red').encode(
-                x=f'average({col}):Q',
+            mean_median_line = alt.Chart(df_mean_median).mark_rule().encode(
+                x=col+':Q',
+                color='color:N',
                 size=alt.value(2),
                 opacity=alt.value(0.7)
             )
 
-            mean_text = alt.Chart(df).mark_text(align='right', x=300, y=20, color='red').encode(
-                text=alt.Text(f'"Mean: " + str(round(average({col}), 2))')
-            )
-
-            median_line = alt.Chart(df).mark_rule(color='green').encode(
-                x=f'median({col}):Q',
-                size=alt.value(2),
-                opacity=alt.value(0.7)
-            )
-
-            median_text = alt.Chart(df).mark_text(align='right', x=300, y=40, color='green').encode(
-                text=alt.Text(f'"Median: " + str(round(median({col}), 2))')
+            mean_median_text = alt.Chart(df_mean_median).mark_text(align='right', x=300, dy=-5).encode(
+                y=alt.Y('value:N', axis=alt.Axis(title=None)),
+                text=alt.Text(col+':Q', format='.2f'),
+                color='color:N'
             )
 
             # Combine histogram and mean/median lines without legend
-            histogram = alt.layer(histogram, mean_line, mean_text, median_line, median_text).resolve_scale(color='independent')
+            histogram = alt.layer(histogram, mean_median_line, mean_median_text).resolve_scale(color='independent')
 
             histograms.append(histogram)
 
