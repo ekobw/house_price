@@ -128,7 +128,7 @@ def main():
                 opacity=alt.value(0.7)
             )
 
-            histogram += alt.Chart(df).mark_rule(color='blue').encode(
+            histogram += alt.Chart(df).mark_rule(color='yellow').encode(
                 x=f'median({col}):Q',
                 size=alt.value(2),
                 opacity=alt.value(0.7)
