@@ -108,33 +108,34 @@ def main():
 
         numeric_columns = df.select_dtypes(include=['float64', 'int64']).columns
 
-        # Create histograms for each numeric column with custom legend labels (using string formatting)
+        # Create histograms for each numeric column
         histograms = []
         for col in numeric_columns:
-            # Create histogram with x-axis label
+            # Create histogram with mean and median annotations
             histogram = alt.Chart(df).mark_bar().encode(
-                alt.X(col, bin=alt.Bin(maxbins=40), title=col),  # Set title as x-axis label
+                alt.X(col, bin=alt.Bin(maxbins=40), title=f'{col} (binned)'),  # add title here
                 y='count()'
             ).properties(
-                width=300,
-                height=150,
-                title=f'Distribution of {col}'  # Title can be kept for overall chart
+                width=300,  # decrease width
+                height=150,  # decrease height
+                title=f'Distribution of {col}'
             )
 
-            # Add mean and median lines with custom legend labels in string formatting
-            histogram += alt.Chart(df).mark_rule(color='red').encode(
+            # Add mean and median lines
+            mean_line = alt.Chart(df).mark_rule(color='red').encode(
                 x=f'average({col}):Q',
                 size=alt.value(2),
-                opacity=alt.value(0.7),
-                legend=f"{col} (Distribution)"  # Custom legend text for mean
+                opacity=alt.value(0.7)
             )
 
-            histogram += alt.Chart(df).mark_rule(color='green').encode(
+            median_line = alt.Chart(df).mark_rule(color='green').encode(
                 x=f'median({col}):Q',
                 size=alt.value(2),
-                opacity=alt.value(0.7),
-                legend=f"{col} (Distribution)"  # Custom legend text for median
+                opacity=alt.value(0.7)
             )
+
+            # Combine histogram and mean/median lines without legend
+            histogram = alt.layer(histogram, mean_line, median_line).resolve_scale(color='independent')
 
             histograms.append(histogram)
 
