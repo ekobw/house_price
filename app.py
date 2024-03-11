@@ -122,17 +122,21 @@ def main():
             )
 
             # Add mean and median lines
-            histogram += alt.Chart(df).mark_rule(color='red').encode(
+            mean_rule = alt.Chart(df).mark_rule(color='red').encode(
                 x=f'average({col}):Q',
                 size=alt.value(2),
-                opacity=alt.value(0.7)
+                opacity=alt.value(0.7),
+                title=f'{col}(binned)'  # Set title to desired legend
             )
 
-            histogram += alt.Chart(df).mark_rule(color='yellow').encode(
+            median_rule = alt.Chart(df).mark_rule(color='green').encode(
                 x=f'median({col}):Q',
                 size=alt.value(2),
-                opacity=alt.value(0.7)
+                opacity=alt.value(0.7),
+                title=f'{col}(binned)'  # Set title to desired legend
             )
+
+            histogram += (mean_rule + median_rule)
 
             histograms.append(histogram)
 
@@ -142,6 +146,42 @@ def main():
         # Display Altair chart
         st.altair_chart(histogram_grid, use_container_width=True)
 
+
+        # # Create histograms for each numeric column
+        # histograms = []
+        # for col in numeric_columns:
+        #     # Create histogram with mean and median annotations
+        #     histogram = alt.Chart(df).mark_bar().encode(
+        #         alt.X(col, bin=alt.Bin(maxbins=40)),
+        #         y='count()'
+        #     ).properties(
+        #         width=300,  # decrease width
+        #         height=150,  # decrease height
+        #         title=f'Distribution of {col}'
+        #     )
+
+        #     # Add mean and median lines
+        #     histogram += alt.Chart(df).mark_rule(color='red').encode(
+        #         x=f'average({col}):Q',
+        #         size=alt.value(2),
+        #         opacity=alt.value(0.7)
+        #     )
+
+        #     histogram += alt.Chart(df).mark_rule(color='green').encode(
+        #         x=f'median({col}):Q',
+        #         size=alt.value(2),
+        #         opacity=alt.value(0.7)
+        #     )
+
+        #     histograms.append(histogram)
+
+        # # Arrange histograms in a grid layout
+        # histogram_grid = alt.vconcat(*[alt.hconcat(*histograms[i:i+2]) for i in range(0, len(histograms), 2)])
+
+        # # Display Altair chart
+        # st.altair_chart(histogram_grid, use_container_width=True)
+
+# ==================================================================================================================
 
         # # Create histograms for each numeric column
         # histograms = []
