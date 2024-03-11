@@ -113,7 +113,7 @@ def main():
         for col in numeric_columns:
             # Create histogram with mean and median annotations
             histogram = alt.Chart(df).mark_bar().encode(
-                alt.X(col, bin=alt.Bin(maxbins=40)),
+                alt.X(col, bin=alt.Bin(maxbins=40), title=f'{col} (binned)'),
                 y='count()',
                 tooltip=[alt.Tooltip(col, title='Value', format=',')]
             ).properties(
