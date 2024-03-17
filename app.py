@@ -27,11 +27,17 @@ def main():
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Business Understanding</h1>""", unsafe_allow_html=True)
         # st.header("Business Understanding")
-        st.markdown("""Jakarta is the capital of Indonesia and the center of the economy.
+        st.markdown("""
+                    Jakarta is the capital of Indonesia and the center of the economy.
                     Many residents from villages and cities outside Jakarta have moved and settled in areas around Jakarta,
                     because they want to work or earn a living in the capital city area.
-                    As a result, the population around the Jakarta area is increasing.
-                    So the need for housing will of course also increase.""")
+                    As a result, the population around the Jakarta area is increasing. So the need for housing will of course also increase.
+                    Based on data from the Badan Pusat Statistik (BPS), the population of Jakarta city in 2022 has reached 10.67 million people, with the number of households reaching 2.7 million.
+                    From this number, only around 56.13% of households already own their own house. This means that almost half of the households in Jakarta do not have their own house.
+                    And this makes Jakarta occupy the first rank as the province with the lowest national home ownership in 2022.
+                    So it is necessary to analyze why almost half of the households in Jakarta still do not own their own home.
+                    Is it related to house prices? And what is the trend of house prices in Jakarta area?
+                    """)
 
         st.markdown("""This project was created to analyze house prices in the Jakarta area
                     and several surrounding areas, such as **Bogor**, **Depok**, **Bekasi**, **Tangerang** and **Tangerang Selatan**.""")
@@ -47,7 +53,7 @@ def main():
         st.table(top_10_rows)
 
         text1a = """
-                - The original dataset consists of a total of 9,000 rows (entries) and 6 columns of variables. After cleaning and transformation, the amount of clean data becomes 7,252 rows (entries) and 5 columns of variables.
+                - The dataset comes from Lamudi. It initially consists of a total of 9,000 rows (entries) and 6 variable columns. After cleaning and transformation, the amount of clean data becomes 7,252 rows (entries) and 5 variable columns.
                 - The dataset contains house information data from 6 regions, namely **Jakarta**, **Bogor**, **Depok**, **Tangerang**, **Bekasi** and **Tangerang Selatan**.
                 - The independent variables consists of **kamar_tidur**, **luas_bangunan_m2**, **luas_tanah_m2**, and **lokasi** which contain information about the house specifications.
                 - The dependent variable is **harga**, which informs the selling price of the house.
@@ -68,8 +74,8 @@ def main():
 
                 From the histogram above it can also be seen that:
                 - The average house for sale has 2 bedrooms.
-                - The average house for sale has a building area of 133 m2.
-                - The average house for sale has a land area of 142 m2.
+                - The average house for sale has a building area of 133 m².
+                - The average house for sale has a land area of 142 m².
                 - The average price of houses sold is around 2.6 billion.
                 """
 
@@ -124,9 +130,13 @@ def main():
                 """
 
         conclusion = """
-                1. The data distribution shows that the graph of all numerical variables is right-skewed, which means the range of values is quite wide, but the data spread out tends to be more numerous at low values. So the specifications and price of the houses are still quite affordable for sale.
+                1. The data distribution shows that the graph of all numerical variables is right-skewed, which means the range of values is quite wide, but the data spread out tends to be more numerous at low values.
                 2. The variables that have significant impact on the selling price of a house are **building area** and **land area**. The larger the building area or land area, the higher the house prices.
-                3. Houses located in the Jakarta area have much higher prices compared to houses located outside Jakarta. This makes sense because, as the capital and economic center, so many residents work or earn a living in Jakarta. By having a house in the Jakarta area, they no longer need to spend a lot of time commuting every day to go home for their activities of working or earning a living. That's why the price of houses in the Jakarta area is more expensive than in other areas.
+                3. Houses located in the Jakarta area have much higher prices compared to houses located outside Jakarta. This makes sense because, as the capital and economic center, so many residents work or earn a living in Jakarta.
+                By having a house in the Jakarta area, they no longer need to spend a lot of time commuting every day to go home for their activities of working or earning a living. That's why the price of houses in the Jakarta area is more expensive than in other areas.
+                4. The house prices differences between the Jakarta area and surrounding cities is very significant. For example, Bogor has an average house price of around 1 billion, while South Jakarta has an average house price of up to 10 billion.
+                So the price difference is up to 10 times. Likewise with other areas of Jakarta, the average house price can reach 6-8 times from the house price in the Bogor area.
+                This factor may be the reason why almost half of the households in Jakarta do not have their own house, because the price is so expensive that it is not affordable for them.
                 """
 
         st.markdown("""
@@ -300,7 +310,7 @@ def main():
 
         # Create Altair chart
         chart = alt.Chart(mean_prices.reset_index()).mark_bar().encode(
-            x=alt.X('luas_bangunan_m2:Q', title='Average Building Area (m2)', axis=alt.Axis(format=',d')),
+            x=alt.X('luas_bangunan_m2:Q', title='Average Building Area (m²)', axis=alt.Axis(format=',d')),
             y=alt.Y('kota:N', title='City', sort='-x')
         ).properties(
             width=500,
@@ -326,7 +336,7 @@ def main():
 
         # Create Altair chart
         chart = alt.Chart(mean_prices.reset_index()).mark_bar().encode(
-            x=alt.X('luas_tanah_m2:Q', title='Average Land Area (m2)', axis=alt.Axis(format=',d')),
+            x=alt.X('luas_tanah_m2:Q', title='Average Land Area (m²)', axis=alt.Axis(format=',d')),
             y=alt.Y('kota:N', title='City', sort='-x')
         ).properties(
             width=500,
@@ -494,8 +504,8 @@ def main():
 
         # Create heatmap using Altair
         heatmap = alt.Chart(melted_df).mark_rect().encode(
-            x='variable1:N',
-            y='variable2:N',
+            x=alt.X('variable1:N', title=None, axis=alt.Axis(labelAngle=0)),
+            y=alt.Y('variable2:N', title=None),
             color='correlation:Q',
             tooltip=['variable1', 'variable2', 'correlation']
         ).properties(
@@ -570,7 +580,10 @@ def run_ml_app():
             return [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
 
     # Initialize Streamlit app
-    st.markdown("This house price prediction application uses a Machine Learning model that has been trained using previous datasets.")
+    st.markdown("""
+                This house price prediction application uses a Machine Learning model that has been trained using previous datasets.
+                The machine learning algorithm used is **XGBoost** with an accuracy level around 70%.
+                """)
     # st.markdown("""
     # <p style="font-size: 16px; font-weight: bold">House Price Predictions</p>
     # """, unsafe_allow_html=True)
