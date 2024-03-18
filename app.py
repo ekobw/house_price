@@ -53,7 +53,7 @@ def main():
         st.table(top_10_rows)
 
         text1a = """
-                - The dataset comes from Lamudi. It initially consists of a total of 9,000 rows (entries) and 6 variable columns. After cleaning and transformation, the amount of clean data becomes 7,252 rows (entries) and 5 variable columns.
+                - The data sources taken from Lamudi. It initially consists of a total of 9,000 rows (entries) and 6 variable columns. After cleaning and transformation, the amount of clean data becomes 7,252 rows (entries) and 5 variable columns.
                 - The dataset contains house information data from 6 regions, namely **Jakarta**, **Bogor**, **Depok**, **Tangerang**, **Bekasi** and **Tangerang Selatan**.
                 - The independent variables consists of **kamar_tidur**, **luas_bangunan_m2**, **luas_tanah_m2**, and **lokasi** which contain information about the house specifications.
                 - The dependent variable is **harga**, which informs the selling price of the house.
