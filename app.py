@@ -582,7 +582,7 @@ def run_ml_app():
     # Initialize Streamlit app
     st.markdown("""
                 This house price prediction application uses a Machine Learning model that has been trained using previous datasets.
-                The machine learning algorithm used is **XGBoost** with an accuracy level around 70%.
+                The machine learning algorithm used is **XGBoost** with an accuracy level around **70%**.
                 """)
     # st.markdown("""
     # <p style="font-size: 16px; font-weight: bold">House Price Predictions</p>
