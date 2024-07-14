@@ -2,6 +2,7 @@ gunicorn
 pandas == 2.0.3
 scikit-learn == 1.2.1
 pickleshare == 0.7.5
+numpy == 1.22.4
 matplotlib
 seaborn
 altair
