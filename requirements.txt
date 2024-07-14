@@ -2,7 +2,7 @@ gunicorn
 pandas==2.0.3
 scikit-learn==1.2.1
 pickleshare==0.7.5
-numpy==1.23.5  # Updated NumPy version, change if necessary
+numpy==1.23.5
 matplotlib==3.7.1
 seaborn==0.12.2
 altair==5.0.1
