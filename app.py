@@ -26,7 +26,6 @@ def main():
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Business Understanding</h1>""", unsafe_allow_html=True)
-        # st.header("Business Understanding")
         st.markdown("""
                     Jakarta is the capital of Indonesia and the center of the economy.
                     Many residents from villages and cities outside Jakarta have moved and settled in areas around Jakarta,
@@ -45,7 +44,6 @@ def main():
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Dataset Overview</h1>""", unsafe_allow_html=True)
-        # st.header("Dataset Overview")
 
         url = "https://raw.githubusercontent.com/ekobw/house_price_prediction/main/data/clean_house_price.csv"
         df = pd.read_csv(url)
@@ -154,7 +152,6 @@ def main():
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Data Distribution</h1>""", unsafe_allow_html=True)
-        # st.title("Distribution of Data")
 
         numeric_columns = df.select_dtypes(include=['float64', 'int64']).columns
 
@@ -167,8 +164,8 @@ def main():
                 y='count()',
                 tooltip=[alt.Tooltip(col, title='Value', format=',')]
             ).properties(
-                width=300,  # decrease width
-                height=150,  # decrease height
+                width=300,
+                height=150,
                 title=f'Distribution of {col}'
             )
 
@@ -232,9 +229,7 @@ def main():
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Number of Houses Being Sold per City</h1>""", unsafe_allow_html=True)
-        # st.title("Number of Houses Being Sold per City")
         st.markdown("<p style='text-align: center'>This chart visualizes the distribution of houses across different cities.</p>", unsafe_allow_html=True)
-        # st.write("This chart visualizes the distribution of houses across different cities.")
 
         # Count the number of houses per city
         house_counts = df['kota'].value_counts().reset_index()
@@ -246,7 +241,7 @@ def main():
         # Create Altair chart
         chart = alt.Chart(house_counts).mark_bar().encode(
             x=alt.X('jumlah:Q', title='Number of Houses Being Sold'),
-            y=alt.Y('kota:N', title='City', sort='-x')  # Sort the bars by 'jumlah' in descending order
+            y=alt.Y('kota:N', title='City', sort='-x')
         ).properties(
             width=500,
             height=300
@@ -256,10 +251,10 @@ def main():
         text = chart.mark_text(
             align='left',
             baseline='middle',
-            dx=3,  # Nudge text to right side of bar
-            color='black'  # Set text color
+            dx=3,
+            color='black'
         ).encode(
-            text='jumlah:Q'  # Use 'jumlah' as text
+            text='jumlah:Q'
         )
 
         # Combine chart and text
@@ -275,11 +270,9 @@ def main():
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Average House Price per City</h1>""", unsafe_allow_html=True)
-        # st.title("Average House Price per City")
         st.markdown("<p style='text-align: center'>This chart visualizes the average sale price of houses across different cities.</p>", unsafe_allow_html=True)
-        # st.write("This chart visualizes the average sale price of houses across different cities.")
 
-        # Compute the average house price per city
+        # Calculate the average house price per city
         mean_prices = df.groupby('kota')['harga'].mean().sort_values()
 
         # Create Altair chart
@@ -301,11 +294,9 @@ def main():
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Average Building Area per City</h1>""", unsafe_allow_html=True)
-        # st.title("Average Building Area per City")
         st.markdown("<p style='text-align: center'>This chart visualizes the average building area of houses across different cities.</p>", unsafe_allow_html=True)
-        # st.write("This chart visualizes the average building area of houses across different cities.")
 
-        # Compute the average house price per city
+        # Calculate the average house price per city
         mean_prices = df.groupby('kota')['luas_bangunan_m2'].mean().sort_values()
 
         # Create Altair chart
@@ -327,11 +318,9 @@ def main():
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Average Land Area per City</h1>""", unsafe_allow_html=True)
-        # st.title("Average Land Area per City")
         st.markdown("<p style='text-align: center'>This chart visualizes the average land area of houses across different cities.</p>", unsafe_allow_html=True)
-        # st.write("This chart visualizes the average land area of houses across different cities.")
 
-        # Compute the average house price per city
+        # Calculate the average house price per city
         mean_prices = df.groupby('kota')['luas_tanah_m2'].mean().sort_values()
 
         # Create Altair chart
@@ -390,7 +379,6 @@ def main():
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Pearson Correlation</h1>""", unsafe_allow_html=True)
-        # st.title("Pearson Correlation")
 
 
         # Create visualization function
@@ -491,7 +479,6 @@ def main():
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Correlation Matrix of Numeric Variables</h1>""", unsafe_allow_html=True)
-        # st.title("Correlation Matrix of Numeric Variables")
 
         # Select only numeric columns
         numeric_df = df.select_dtypes(include=['float64', 'int64'])
@@ -535,7 +522,6 @@ def main():
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 Conclusion</h1>""", unsafe_allow_html=True)
-        # st.header("Conclusion")
         st.markdown(conclusion)
 
         st.caption('Copyright :copyright: 2024 by Eko B.W.: https://www.linkedin.com/in/eko-bw')
@@ -544,7 +530,6 @@ def main():
         st.markdown("""
             <h1 style="text-align: center; font-size: 36px; color: #023047; font-weight: bold">
                 House Price Prediction Application</h1>""", unsafe_allow_html=True)
-        # st.header("House Price Prediction Application")
         run_ml_app()
 
 def run_ml_app():
