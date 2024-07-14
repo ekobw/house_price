@@ -1,8 +1,8 @@
 gunicorn
-pandas==2.0.3
+pandas==2.2.1
 scikit-learn==1.2.1
 pickleshare==0.7.5
-numpy==1.23.5
+numpy==1.25.0
 matplotlib==3.7.1
 seaborn==0.12.2
 altair==5.0.1
